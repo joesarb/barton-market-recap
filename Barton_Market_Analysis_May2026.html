@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chemical Market Analysis — April 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #181c25;
+    --border: #252a36;
+    --text: #dde3f0;
+    --muted: #7a8299;
+    --up: #ff4d4d;
+    --up-bg: rgba(255,77,77,0.08);
+    --up-border: rgba(255,77,77,0.3);
+    --stable-up: #f5a623;
+    --stable-up-bg: rgba(245,166,35,0.08);
+    --stable-up-border: rgba(245,166,35,0.3);
+    --stable: #4caf82;
+    --stable-bg: rgba(76,175,130,0.08);
+    --stable-border: rgba(76,175,130,0.3);
+    --down: #4c9fff;
+    --down-bg: rgba(76,159,255,0.08);
+    --down-border: rgba(76,159,255,0.25);
+    --volatile: #c471ed;
+    --volatile-bg: rgba(196,113,237,0.08);
+    --volatile-border: rgba(196,113,237,0.3);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-size: 17px;
+    line-height: 1.6;
+  }
+
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 24px 36px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-left h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #fff;
+    line-height: 1;
+  }
+
+  .header-left .subtitle {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 5px;
+    letter-spacing: 0.06em;
+  }
+
+  .legend {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  .filter-bar {
+    padding: 12px 36px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .filter-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-right: 4px;
+  }
+
+  .filter-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    color: #fff;
+    border-color: var(--up);
+    background: rgba(255,77,77,0.1);
+  }
+
+  main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 36px 60px;
+  }
+
+  .section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 36px 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .section-controls { display: flex; gap: 8px; }
+
+  .ctrl-btn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 3px 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .ctrl-btn:hover { color: #fff; border-color: #3a4155; }
+
+  .war-banner {
+    background: rgba(196,113,237,0.06);
+    border: 1px solid rgba(196,113,237,0.3);
+    border-left: 4px solid var(--volatile);
+    border-radius: 4px;
+    padding: 16px 20px;
+    margin-bottom: 8px;
+  }
+
+  .war-banner h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--volatile);
+    margin-bottom: 7px;
+  }
+
+  .war-banner p { color: #b0b8cc; font-size: 16px; line-height: 1.65; }
+
+  /* TABLE */
+  .table-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+
+  .product-row {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .product-row:last-child { border-bottom: none; }
+  .product-row.hidden { display: none; }
+
+  .product-row.trend-up { border-left: 3px solid var(--up); }
+  .product-row.trend-stable-up { border-left: 3px solid var(--stable-up); }
+  .product-row.trend-stable { border-left: 3px solid var(--stable); }
+  .product-row.trend-volatile { border-left: 3px solid var(--volatile); }
+
+  .product-row-header {
+    display: grid;
+    grid-template-columns: 200px 180px 1fr 130px;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 20px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.12s;
+  }
+
+  .product-row-header:hover { background: rgba(255,255,255,0.02); }
+  .product-row.open .product-row-header { background: rgba(255,255,255,0.025); }
+
+  .product-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #fff;
+  }
+
+  .product-driver {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    line-height: 1.5;
+  }
+
+  .product-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .product-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    padding: 2px 7px;
+    border-radius: 2px;
+  }
+
+  .row-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
+  .trend-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+
+  .trend-badge.up { background: var(--up-bg); color: var(--up); border: 1px solid var(--up-border); }
+  .trend-badge.stable-up { background: var(--stable-up-bg); color: var(--stable-up); border: 1px solid var(--stable-up-border); }
+  .trend-badge.stable { background: var(--stable-bg); color: var(--stable); border: 1px solid var(--stable-border); }
+  .trend-badge.volatile { background: var(--volatile-bg); color: var(--volatile); border: 1px solid var(--volatile-border); }
+
+  .toggle-chevron {
+    font-size: 11px;
+    color: var(--muted);
+    transition: transform 0.2s;
+    font-style: normal;
+    flex-shrink: 0;
+    transform: rotate(180deg);
+  }
+
+  .product-row.closed .toggle-chevron { transform: rotate(0deg); }
+
+  .product-detail {
+    display: block;
+    padding: 16px 20px 20px;
+    color: #b0b8cc;
+    font-size: 16px;
+    line-height: 1.75;
+    border-top: 1px solid var(--border);
+    background: rgba(0,0,0,0.12);
+  }
+
+  .product-detail.closed { display: none; }
+  .product-detail strong { color: var(--stable-up); }
+
+  .synopsis {
+    background: rgba(255,255,255,0.04);
+    border-left: 3px solid var(--muted);
+    border-radius: 0 4px 4px 0;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    font-size: 16px;
+    color: #ffffff;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 1.6;
+  }
+
+  .synopsis-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 5px;
+    font-style: normal;
+    display: block;
+  }
+
+  .full-detail-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    display: block;
+  }
+
+  .full-detail-text {
+    color: #b0b8cc;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.75;
+  }
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin-top: 8px;
+    font-size: 13.5px;
+    color: #b0b8cc;
+    line-height: 1.65;
+  }
+
+  .tariff-note strong {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--stable-up);
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .disclaimer {
+    margin-top: 36px;
+    padding: 14px 20px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  @media (max-width: 800px) {
+    header, .filter-bar, main { padding-left: 16px; padding-right: 16px; }
+    .product-row-header { grid-template-columns: 1fr 120px; }
+    .product-driver, .product-tags { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <h1>Chemical Market Analysis</h1>
+    <div class="subtitle">Barton Solvents &nbsp;|&nbsp; Updated 05 / 07 / 2026 &nbsp;|&nbsp; For Discussion Purposes Only</div>
+  </div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--up)"></div> Up</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--stable-up)"></div> Stable to Up</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--stable)"></div> Stable</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--down)"></div> Stable to Down</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--volatile)"></div> Volatile / Up</div>
+  </div>
+</header>
+
+<div class="filter-bar">
+  <span class="filter-label">Filter:</span>
+  <button class="filter-btn active" data-filter="all">All</button>
+  <button class="filter-btn" data-filter="up">↑ Up</button>
+  <button class="filter-btn" data-filter="stable-up">↑ Stable to Up</button>
+  <button class="filter-btn" data-filter="stable">→ Stable</button>
+  <button class="filter-btn" data-filter="volatile">⚡ Volatile</button>
+</div>
+
+<main>
+
+  <div class="section-label">Macro Context</div>
+  <div class="war-banner">
+    <h2>⚠ US–Iran Conflict — Month Three (Ongoing)</h2>
+    <p>We are now in the third month of the US/Iran war and the Strait of Hormuz continues to be functionally "closed" via threats from the Iranian military/government. A two-week cease fire starting April 7 did not stick. As of today, the US and Iran are edging toward a limited, temporary agreement to halt their war, working with mediators to formulate a one-page framework to restart negotiations aimed at ending the conflict and opening the Strait of Hormuz, with talks potentially coming in the second week of May in Pakistan. The situation with Iran remains very fluid and the markets will remain in flux as long as US military are present in the Strait of Hormuz. The continued closure is the primary driver behind price increases, force majeures, supply shortages, and freight cost surges across virtually all product categories below.</p>
+  </div>
+
+  <!-- PROPYLENE -->
+  <div class="section-label">
+    Propylene &amp; Derivatives
+    <div class="section-controls">
+      <button class="ctrl-btn" onclick="expandSection(this)">Expand All</button>
+      <button class="ctrl-btn" onclick="collapseSection(this)">Collapse All</button>
+    </div>
+  </div>
+  <div class="table-wrap">
+
+    <div class="product-row trend-up" data-trend="up">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">Propylene</div>
+        <div class="product-driver">CRUDE · PROPANE · NATURAL GAS</div>
+        <div class="product-tags">
+          <span class="product-tag">Cumene / Acetone</span><span class="product-tag">IPA</span><span class="product-tag">PG</span><span class="product-tag">Butanol</span><span class="product-tag">Butyl Acetate</span><span class="product-tag">P-Series Glycol Ethers</span>
+        </div>
+        <div class="row-right"><span class="trend-badge up">↑ Up</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>PGP settled up 12.5 cpp in April — the fourth straight monthly increase — bringing the YTD cumulative gain to 26.6 cpp. The continued closure of the Strait of Hormuz is the primary driver. Export demand for US propylene is soaring as North American cost-advantaged supply fills global gaps. No relief in sight.</div>
+        
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">Polymer Grade Propylene contract price settled up 12.5 cpp for April marking a fourth straight monthly increase and a cumulative gain of 26.6 cpp in 2026. Spot market prices remain elevated, driven by ongoing middle-east developments with no price relief. The market is awaiting AFPM's upcoming Q1 production and inventory data with expectations of lower levels compared to Q4 2025. Exports of propylene to Europe are expected to increase in May following shipments made in March and April. Crude oil inventories fell by 6.2 mm barrels week on week per the EIA, which was a larger inventory draw than analysts were expecting. The decline in crude stocks occurred as refinery utilization rates rose. US EIA data shows gasoline implied demand edged up week on week and remains slightly above seasonal norms. Demand is higher than the same period in 2025 with the four-week average at 9 mm barrels per day, exceeding last year's level. The continued closure of the Strait of Hormuz has severely constrained the movement of energy and petrochemical feedstocks causing substantial price surges for propylene, propane and downstream derivatives like polypropylene. While early 2026 was marked by oversupply, the situation in the middle-east flipped in April and now May to a shortage as export-driven demand for North American cost advantaged raw materials soared, tightening domestic inventories. Turnarounds and maintenance at production facilities in the second quarter, particularly in Europe, are further tightening the supply of Propylene. The US, benefiting from lower cost shale gas, is a primary supplier to the world. US polypropylene orders are strong and producers are pushing for high-margin exports leading to increased export demand from regions like Europe. Colorado State University released its initial 2026 Atlantic hurricane season forecast on April 9. The outlook predicts levels of named storms, hurricanes, major hurricanes and accumulated cyclone energy with updated forecasts scheduled for June 10, July 8 and August 5.<br><br>Macroeconomic indicators: US Federal Reserve keeps rates unchanged as economy expands at solid pace. US March housing starts rise by 11%, but permits fall. Durable goods orders in March rise after three declines; core orders rise 3.3%.</div>
+      </div>
+    </div>
+
+    <div class="product-row trend-stable-up" data-trend="stable-up">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">Propylene Oxide</div>
+        <div class="product-driver">PROPYLENE · NATURAL GAS</div>
+        <div class="product-tags">
+          <span class="product-tag">Propylene Glycol</span><span class="product-tag">P-Series Glycol Ethers</span>
+        </div>
+        <div class="row-right"><span class="trend-badge stable-up">↑ Stable to Up</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Prices rose again in April on higher propylene feedstock costs. Lyondell's March force majeure continues to be a major constraint on US supply. Global demand for polyether polyols remains strong across automotive, construction and furniture — keeping upward pressure on PO.</div>
+        
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">Propylene Oxide prices rose again in April on higher feedstock costs in Propylene. PGP finished up 12.5 cpp in April as the market saw continued volatility in the spot market as demand for PO globally is strong. US supply remains constrained by tight availability forcing manufacturers to focus on production efficiency. Lyondell's force majeure in March is a big part of the overall tightness in the US. Continued strong demand for polyether polyols in automotive, construction and furniture industries is supporting the market.</div>
+      </div>
+    </div>
+
+    <div class="product-row trend-up" data-trend="up">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">Acetone</div>
+        <div class="product-driver">PROPYLENE · PHENOL · BENZENE</div>
+        <div class="product-tags">
+          <span class="product-tag">Acetone</span><span class="product-tag">IPA</span>
+        </div>
+        <div class="row-right"><span class="trend-badge up">↑ Up</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Acetone is up ~25 cpp YTD with another split settlement in April averaging +13.7 cpp. Supply is tighter in Q2 with contract volumes being allocated at minimum levels. The Strait remains closed and benzene costs are surging — May benzene contract is forecast up almost 70 cpg after a 95 cpg rise in April.</div>
+        
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">Large buyer Acetone price had a split settlement again for April with an average increase of 13.745 cpp for the month. Large buyer is up ~25.12 cpp YTD. RGP settled up just shy of 7 cpp in the same month. ICIS assessed US April Gulf Coast and Midwest truck acetone contracts at a sharp increase as prices continue to escalate in the wake of the US/Iran conflict. Lower and higher prices were heard, but not widely confirmed. April barge acetone contracts are once again facing significantly higher propylene costs. Costs in the phenol value chain continue to be extremely volatile as US/Iran negotiations are on going with some hope a cease fire agreement by the second week of May. In the meantime, the Strait of Hormuz remains closed and crude futures remain volatile. Spot barge acetone offers were higher month over month to end April. Supply is tighter in Q2 with contract volumes being allocated at minimum levels in some regions and spot availability limited. Logistical delays have also been noted. Some participants have reported acetone availability remains low due to turnaround activity, a sluggish phenol market and lack of imports. Some acetone buyers may be sitting on the sidelines to avoid a price spike they view as temporary. At the same time, some derivative demand is being artificially driven by the conflict. Lack of growth in real consumption is raising concerns about how long inflation can be absorbed before demand starts to erode. Economic conditions remain challenging for the key construction and automotive markets, while unaffordability persists. Consumer sentiment in April was also the lowest on record. Visibility into the peak season is limited, but sentiment is not optimistic for May as the growth outlook deteriorates with the conflict. Prices in Europe are rising faster than the US so the demand for exported product is strong. The US is competing for domestic lbs as producers are chasing more profitable business overseas. However, some participants are seeing a small sampling of competitive prices in the market. US May Benzene contract price is forecasted to settle up almost 70 cpg after a 95 cpg rise in April.</div>
+      </div>
+    </div>
+
+    <div class="product-row trend-stable-up" data-trend="stable-up">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">IPA / Alcohol</div>
+        <div class="product-driver">PROPYLENE</div>
+        <div class="product-tags">
+          <span class="product-tag">IPA</span><span class="product-tag">Butanol</span><span class="product-tag">Propanol</span>
+        </div>
+        <div class="row-right"><span class="trend-badge stable-up">↑ Stable to Up</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>A domestic producer declared force majeure in April after a March fire disabled their propylene production — adding significant new pressure on top of the Iran conflict. Large buyer contracted prices will be higher in May. Barton is being told to expect supply tightness through all of Q2. Propanol rose again May 1.</div>
+        
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">IPA prices continue to rise as one domestic producer announced force majeure in April after a March fire disabled their propylene production. In addition, the US/Iran conflict continues to pressure global supply and create uncertainty among players. Rising crude oil and feedstock costs are leading to higher spot values. These higher trades are likely to continue in May supporting higher prices through the month. Global IPA supply is to remain tight in Q2, pressured further by outages, some participants are reporting. Large buyer contracted prices will be higher in May. Just like last month, US IPA spot prices increased further in April, driven by escalating geopolitical tensions in the middle-east and ongoing feedstock supply uncertainties. Rising propylene and acetone costs have continued to weigh on market sentiment. Market discussions were largely centered on US IPA, as global availability from other regional producers remained limited due to force majeures, especially in Asia. However, the force-majeure declared domestically in April should serve to place substantial pressure on even domestic supply of IPA. Though demand is relatively flat, concerns over supply have driven up spot prices, especially over the past two weeks. Rising propylene and acetone prices have supported higher IPA values. Spot IPA prices have been rising throughout April with contract prices expected to increase despite flat demand. Oxo alcohol volatility persists in the propylene chain. April contract prices rose due to high feedstock and demand for exports show signs of softening. US buyers continue to face elevated prices and supply constraints as US Butanol production remains tight. Producer partners are telling Barton, expect supply tightness through Q2. Propanol pricing rose again May 1 on higher feed costs. Producer who once offered quarterly price protection into the flexographic printer industry has limited this protection to monthly pricing.</div>
+      </div>
+    </div>
+
+    <div class="product-row trend-up" data-trend="up">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">Propylene Glycols</div>
+        <div class="product-driver">PROPYLENE · SUPPLY &amp; DEMAND</div>
+        <div class="product-tags">
+          <span class="product-tag">PGI</span><span class="product-tag">PG USP</span><span class="product-tag">DPG</span><span class="product-tag">PG-based HTF</span>
+        </div>
+        <div class="row-right"><span class="trend-badge up">↑ Up</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>PG tightness is now estimated to last through Q2 and into July. All producers remain on sales control for PGI and PG USP. Barton is monitoring allocations closely with customers. Buyers are being forced to fill gaps with brokered and imported material at premium prices. DPG supply is getting even tighter.</div>
+        
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">The PG market (all grades) continues to battle supply issues going into May. Product tightness is estimated to last through Q2 and into July. Allocations from all domestic producers are forcing buyers to fill in the gaps using brokered and/or imported material, which traditionally carries a higher price. Barton is monitoring allocations with customers very closely to insure supply availability is honored to the best of our ability. All producers are on sales control for both PGI and PG USP through Q2. Product was short before the US/Iran conflict and now supply chains globally have been disrupted including domestically at Lyondell's plant fire in Pasadena, TX on March 12 that forced them to declare FM. This supply shortage has caused significant price increases throughout March, April and more increases for May. Expect the ongoing supply depression to support higher prices well into Q2. Import material is becoming more scarce and comes at a premium price. With less PG in the market makes DPG even more tight, so expect supply issues here as well along with rising prices. Demand for higher value propylene based HTF needs will take precedent over basic PG demand as it carries a better margin and more profitability.</div>
+      </div>
+    </div>
+
+    <div class="product-row trend-stable-up" data-trend="stable-up">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">Glycol Ethers (P-Series)</div>
+        <div class="product-driver">PROPYLENE</div>
+        <div class="product-tags">
+          <span class="product-tag">PM</span><span class="product-tag">DPM</span><span class="product-tag">PM Acetate</span>
+        </div>
+        <div class="row-right"><span class="trend-badge up">↑ Up</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>More price increases announced through April on higher feed costs and less import material arriving in the US. The global supply situation is now worse than it was in March and April — product that was on the water before the war is no longer being shipped. PM Acetate remains especially tight with one channel partner likely going on sales control in May.</div>
+        
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">P-Series saw more price increase announcements through April on higher feed costs and less import material showing up in the US. Global supply shortages are being seen more now as product that was on the water prior to the war is now not being shipped or is experiencing much longer lead-times. PM Acetate continues to be tight and one channel partner is likely to go on sales control in May. Imports are shrinking, but are available with longer lead-times and volatile prices with higher shipping costs. Expect higher prices and tighter supply to continue in May as the global supply chain is in worse shape than it was in March and April. The competitive activity we experienced for the last two years has taken a hard pause since Feb 28.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ETHYLENE -->
+  <div class="section-label">
+    Ethylene &amp; Derivatives
+    <div class="section-controls">
+      <button class="ctrl-btn" onclick="expandSection(this)">Expand All</button>
+      <button class="ctrl-btn" onclick="collapseSection(this)">Collapse All</button>
+    </div>
+  </div>
+  <div class="table-wrap">
+
+    <div class="product-row trend-stable-up" data-trend="stable-up">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">Ethylene</div>
+        <div class="product-driver">CRUDE · NATURAL GAS · ETHANE</div>
+        <div class="product-tags">
+          <span class="product-tag">MEG</span><span class="product-tag">PEGs</span><span class="product-tag">Ethanolamines</span><span class="product-tag">Linear Alcohols</span><span class="product-tag">Polyethylene</span>
+        </div>
+        <div class="row-right"><span class="trend-badge stable-up">↑ Stable to Up</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Ethylene settled up another 2.25 cpp in April — now up 4.5 cpp YTD. Crackers are running at high rates to capitalize on favorable margins and meet strong export demand. All major derivative demand (PE, EO, EG) remains firm. Strength is largely export-driven rather than domestic consumption.</div>
+        
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">US Ethylene contracted price settled up another 2.25 cpp to end April. Ethylene is up 4.5 cpp YTD. US Ethylene spot prices ended the month slightly higher as trade activity ramped up with some market players trying to lock in physical supply before settlement came this week. Price levels continue to receive support from sustained demand and strong export volume, while high cracker utilization rates act as an offset to the otherwise bullish fundamentals. High inventory levels to start the year and a light cracker turnaround schedule has kept ethylene supply ample to meet the stronger demand pull in March and April. Steam cracker operating rates are likely to stay high with producers maintaining strong run rates to capitalize on favorable margins and meet solid downstream demand. Demand for major ethylene derivatives - including polyethylene, ethylene oxide and ethylene glycol - remains firm. Market participants note that this strength is largely export driven rather than reflecting a meaningful improvement in domestic consumption, with international demand continuing to support overall market activity. Higher production costs are impacting the industry and prices of aluminum and steel rise due to higher import tariffs. The automotive outlook for 2026 remains difficult because the level of uncertainty in the middle-east and how that will impact inflation.</div>
+      </div>
+    </div>
+
+    <div class="product-row trend-stable-up" data-trend="stable-up">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">MEK</div>
+        <div class="product-driver">BUTYLENE</div>
+        <div class="product-tags">
+          <span class="product-tag">MEK</span>
+        </div>
+        <div class="row-right"><span class="trend-badge stable-up">↑ Stable to Up</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>MEK continues to be highly volatile globally as supply shortages drive sharply higher prices. Multiple Asian producers remain on force majeure or reduced rates. Formal allocations are not far off — producers are already on unofficial sales control. Customers should be identifying alternative solvents now.</div>
+        
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">The MEK market continues to be volatile globally as supply shortages support much higher prices in April. The continued closure of the Strait of Hormuz has cut off shipments of feedstock and energy from the rest of the world. Several MEK producers in southeast Asia have declared FM or are running on reduced rates because of raw material shortages. This has tightened up supply for the rest of the world. The longer the Strait is closed the harder it will be for the world to manage supply globally. This uncertainty is supporting higher prices across the globe and keeping demand high for exports from Europe to Asia and the US. Formal allocations are not too far off as producers are on unofficial sales control based on historical volumes purchased. Prices have escalated throughout April and will likely continue in May if a peace deal with Iran is not met soon. It would be a good idea if customers had an alternative solvent to buy in place of MEK just in case.</div>
+      </div>
+    </div>
+
+    <div class="product-row trend-stable-up" data-trend="stable-up">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">Glycol Ethers (E-Series)</div>
+        <div class="product-driver">ETHYLENE · ETHYLENE OXIDE</div>
+        <div class="product-tags">
+          <span class="product-tag">EB</span><span class="product-tag">DB</span>
+        </div>
+        <div class="row-right"><span class="trend-badge stable-up">↑ Stable to Up</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>EB and DB saw more price increases in April with some mid-May increases already announced. Driven by domestic production issues, shrinking imports, and surging export demand. Barton remains on Q2 sales allocation for both products. Ethylene supply itself remains stable.</div>
+        
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">Glycol Ether EB and DB saw more price increases in April and some have already announced for mid-May. Much of this is driven by domestic production issues and less imports showing up in the US as well as strong demand for export material going overseas. Export opportunities for glycol ethers have surged amid the middle-east conflict as producers look to make a higher margin on more expensive product overseas. The middle-east supplies large portions of imports to China, southeast Asia, Northeast Asia, Europe and Latin America - gaps that US producers can fill given healthier supply. Barton is on sales allocation for EB and DB in Q2. Ethylene supply remains stable with no disruptions stemming from the US/Iran conflict. US Gulf Coast cracker utilization rates stand just below 90%.</div>
+      </div>
+    </div>
+
+    <div class="product-row trend-stable-up" data-trend="stable-up">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">Ethanolamines</div>
+        <div class="product-driver">ETHYLENE · ETHYLENE OXIDE</div>
+        <div class="product-tags">
+          <span class="product-tag">MEA</span><span class="product-tag">DEA</span><span class="product-tag">TEA</span>
+        </div>
+        <div class="row-right"><span class="trend-badge stable-up">↑ Stable to Up</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>MEA supply continues to be tight going into May on domestic production issues and strong export demand to Europe and Asia. All domestic players announced significant May 1 price increases. Customers are being held to historical volumes. DEA remains less at risk with adequate imports and inventory.</div>
+        
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">MEA 99 supply continues to be tight going into May on production issues domestically and strong demand for export opportunities. Ongoing conflict in the middle-east is causing major disruptions globally with supply and supporting higher prices. Producers are watching sales and keeping customers to historical volumes to manage tighter supply. All the domestic players announced significant price increases for May 1 as export demand to Europe and Asia are strong supporting higher prices. Global supply shortages remain coming from the middle-east for MEA and TEA. While DEA imports and strong inventories make them less at risk for now.</div>
+      </div>
+    </div>
+
+    <div class="product-row trend-stable-up" data-trend="stable-up">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">MEG / DEG / TEG</div>
+        <div class="product-driver">ETHYLENE · EO · SUPPLY &amp; DEMAND</div>
+        <div class="product-tags">
+          <span class="product-tag">Antifreeze</span><span class="product-tag">Heat Transfer Fluids</span><span class="product-tag">Paint &amp; Coatings</span>
+        </div>
+        <div class="row-right"><span class="trend-badge stable-up">↑ Stable to Up</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Another round of MEG price increases for May 1 as export demand stays strong and one domestic producer wraps up a 40-day turnaround. Overall inventory levels are dwindling. A Clear Lake, TX turnaround is pressuring the domestic market. DEG remains soft on weak construction. TEG is stable as natural gas production holds steady.</div>
+        
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">US MEG market had another round of price increases for May 1 on tighter supply as export demand continues to be strong and one domestic producer wraps up their 40 day turnaround. The upstream PET market demand remains lukewarm in early Spring for North America, particularly with the middle-east conflict creating surging inflation for consumer goods. Producers are running at elevated rates, but minor production issues have affected a producer in Mexico following a turnaround and US facilities have also encountered issues attempting to increase operations. Overall inventory levels are dwindling and producers will continue to ramp up rates into the summer months and the peak season. A turnaround at Clear Lake, TX plant is underway and is expected to be back online in mid-May. Strong US production is expected as the middle-east conflict extends allowing US producers to capitalize on opportunities to fill supply gaps in vulnerable regions like Europe and India. Supply-demand balance is tightening as export opportunities increase and the Texas-based producer remains in turnaround.<br><br>DEG demand domestically is still soft across major applications. Both UPR and polyester polyol consumption continue to underperform, driven by ongoing weakness in the construction sector. Construction demand for DEG was expected to begin recovering in the Spring ahead of summer highs, however, high housing prices and interest rates could delay recovery. The Clear Lake turnaround is underway and is putting significant pressure on the domestic market. The DEG supply-demand balance is tightening as export opportunities continue amid middle-east tensions. This gap in production and supply chain is supporting higher prices domestically and across the globe.<br><br>TEG demand domestically remained stable in April as natural gas production was stable. TEG supply remains steady as intentional TEG production continues at consistent levels.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CRUDE OIL -->
+  <div class="section-label">
+    Crude Oil &amp; Energy Derivatives
+    <div class="section-controls">
+      <button class="ctrl-btn" onclick="expandSection(this)">Expand All</button>
+      <button class="ctrl-btn" onclick="collapseSection(this)">Collapse All</button>
+    </div>
+  </div>
+  <div class="table-wrap">
+
+    <div class="product-row trend-volatile" data-trend="volatile">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">Crude Oil</div>
+        <div class="product-driver">DOMESTIC PRODUCTION · GEOPOLITICAL · SPECULATION</div>
+        <div class="product-tags">
+          <span class="product-tag">Aliphatics</span><span class="product-tag">Aromatics</span>
+        </div>
+        <div class="row-right"><span class="trend-badge volatile">⚡ Volatile / Up</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Now in month three of the conflict, crude remains highly volatile. Prices are trending down early in May but traders believe the 2026 highs haven't been reached yet — some speculating $115-130+. Record US oil exports are helping dampen extreme price spikes. Cease fire attempts continue to fail.</div>
+        
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">Crude prices have remained volatile throughout April and entering May with prices trending down early. Prices will continue to be volatile until a peace deal between the US and Iran can be negotiated. Moving into our third month of the conflict, the ongoing functional closure of the Strait of Hormuz is the dominant driver of higher crude prices creating a significant risk premium as roughly 20% of global oil consumption is affected. The recent attempts of a cease fire have fallen short and tensions remain high with ongoing, major blockades leading to a sharp decline in oil passing through the Strait putting upward pressure on prices. To counteract supply fears, US oil exports have reached record highs with many tankers re-routing to the Gulf of Mexico. Many traders believe that the highs for 2026 have not yet been reached with some speculation on prices hitting $115-130+ depending on the severity of the disruptions in the middle-east. However, increased US production and record exports are acting as a significant dampener on extreme price spikes. The situation remains fluid and developments are happening daily.</div>
+      </div>
+    </div>
+
+    <div class="product-row trend-up" data-trend="up">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">Aliphatic Solvents</div>
+        <div class="product-driver">CRUDE OIL · UNL87</div>
+        <div class="product-tags">
+          <span class="product-tag">142 Sol</span><span class="product-tag">VM&amp;P</span><span class="product-tag">Hexane</span><span class="product-tag">Heptane</span>
+        </div>
+        <div class="row-right"><span class="trend-badge up">↑ Up</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Gasoline prices spiked mid-April on Iran tensions. Heptane and VM&P index prices jumped again going into May. Lighter aliphatics continue to be pressured as producers lean toward fuels for better profitability. Even if a cease fire holds, stabilization will take months.</div>
+        
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">UNLD 87 (gasoline) prices spiked mid-April as speculators are feeling uneasy about the ongoing tensions with US and Iran. Index prices for Heptane and VM&P saw another price jump going into May on higher spot prices throughout April. The situation in Iran and the Strait of Hormuz remains fluid as tensions build everyday a peace deal is not met. Even if the cease fire is successful and ships eventually begin to move about, it will take several months before markets to see some stabilization. The lighter aliphatics continue to be pressured by higher energy costs as producers lean to the fuels market for better profitability.</div>
+      </div>
+    </div>
+
+    <div class="product-row trend-up" data-trend="up">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">Aromatic Solvents</div>
+        <div class="product-driver">CRUDE OIL · DIESEL · JET FUEL</div>
+        <div class="product-tags">
+          <span class="product-tag">Mineral Spirits</span><span class="product-tag">D-100</span><span class="product-tag">D-150</span><span class="product-tag">Aromatic 200</span>
+        </div>
+        <div class="row-right"><span class="trend-badge up">↑ Up</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>ULSD and jet fuel remained volatile throughout April — prices peaked early then slid back on cease fire hopes, but are rising again as tensions build into May. Europe is seeing extreme jet fuel shortages. Aromatic prices raised multiple times in April to keep pace with energy costs. D-100 okay; D-150 still snug.</div>
+        
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">Ultra-Low Sulfur Diesel price remained volatile throughout April. Prices peaked early in the month and slid back down on the thoughts a cease fire/peace deal would happen with the US/Iran conflict. However, traders are seeing more tension, which is driving prices back up as we move into May. Jet fuel prices followed a similar path in April finishing with an upward trajectory. Some countries like Europe are seeing extreme jet fuel shortages due to global feedstock tightness with no flow through the Strait. The aromatic market raised prices a few times in April to help keep pace with higher cost energy markets competing for those molecules. As long as ULSD and Jet fuel stay elevated, aromatic and heavier aliphatic prices will continue to stay up. Please remember, producers are making decisions based on trends over the last 60 days and not simply one day to the next. As the world focuses its attention on the middle-east, the Russia/Ukraine war is ongoing adding to the concern of uncertainty in the market. Aromatic supply continues to meet steady to soft demand. Inventories from most domestic producers should be in good shape on 100. Aromatic 150 is still snug, but meeting sluggish demand.</div>
+      </div>
+    </div>
+
+    <div class="product-row trend-up" data-trend="up">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">Toluol &amp; Xylol</div>
+        <div class="product-driver">CRUDE OIL · SEASONAL GASOLINE</div>
+        <div class="product-tags">
+          <span class="product-tag">Toluol</span><span class="product-tag">Xylol</span>
+        </div>
+        <div class="row-right"><span class="trend-badge up">↑ Up</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>T&X rose again in April on strong energy markets and ongoing Iran tensions. No product is flowing through the Strait, creating supply tightness in the US for both. Summer gasoline blending demand is layering on top of conflict-driven pressure. Prices are moving higher with no clear catalyst for relief.</div>
+        
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">Toluol and Xylol prices rose again in April on the backs of strong energy markets from ongoing tension in the middle-east. No product is flowing through the Strait, which is driving up prices and creating supply tightness in the US for both T&X. The demand for exports is supporting higher prices domestically. Additional factors supporting higher prices are summer gasoline blending is in full force grabbing demand for both T&X.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- NATURAL GAS -->
+  <div class="section-label">
+    Natural Gas &amp; Derivatives
+    <div class="section-controls">
+      <button class="ctrl-btn" onclick="expandSection(this)">Expand All</button>
+      <button class="ctrl-btn" onclick="collapseSection(this)">Collapse All</button>
+    </div>
+  </div>
+  <div class="table-wrap">
+
+    <div class="product-row trend-stable-up" data-trend="stable-up">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">Natural Gas</div>
+        <div class="product-driver">DOMESTIC MINING · REFINING · ENERGY USE</div>
+        <div class="product-tags">
+          <span class="product-tag">Methanol</span><span class="product-tag">Ethylene</span><span class="product-tag">Propylene</span>
+        </div>
+        <div class="row-right"><span class="trend-badge stable-up">↑ Stable to Up</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Natural gas futures were slightly down month over month to end April — one of the few areas of relative calm. Abundant supply and easing domestic geopolitical pressure are keeping prices in check. Long-term drivers like LNG exports and data center power needs provide underlying support.</div>
+        
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">US natural gas futures price was slightly down month over month to end April. Driven by abundant supply and easing geopolitical tensions. While long-term demand drivers, including LNG exports and data center power needs provide support, short-term prices are pressured by high storage levels, maintenance-related dips in LNG feed gas and mild weather.</div>
+      </div>
+    </div>
+
+    <div class="product-row trend-stable-up" data-trend="stable-up">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">Methanol</div>
+        <div class="product-driver">NATURAL GAS · CRUDE</div>
+        <div class="product-tags">
+          <span class="product-tag">Bio-Diesel</span><span class="product-tag">Washer Fluid</span><span class="product-tag">Energy</span>
+        </div>
+        <div class="row-right"><span class="trend-badge stable-up">↑ Stable to Up</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Methanol continued to rise sharply in April despite being outside the typical seasonal demand window. Increasing global prices and surging Gulf Coast export opportunities have driven barge methanol prices much higher. No domestic production issues — price is purely export/demand driven.</div>
+        
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">US Methanol pricing has continued to rise sharply in April despite being outside the typical season demand window. Increasing global prices and increasing export opportunities from the Gulf Coast have pushed barge Methanol prices much higher in April. There are no production issues reported in the US.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MISC -->
+  <div class="section-label">
+    Miscellaneous &amp; Specialty
+    <div class="section-controls">
+      <button class="ctrl-btn" onclick="expandSection(this)">Expand All</button>
+      <button class="ctrl-btn" onclick="collapseSection(this)">Collapse All</button>
+    </div>
+  </div>
+  <div class="table-wrap">
+
+    <div class="product-row trend-stable-up" data-trend="stable-up">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">D-Limonene</div>
+        <div class="product-driver">CITRUS HARVEST · WEATHER</div>
+        <div class="product-tags">
+          <span class="product-tag">Citrus Blends</span>
+        </div>
+        <div class="row-right"><span class="trend-badge stable-up">↑ Stable to Up</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Prices have held firm for the last few months but suppliers still believe prices will trend back up based on poor domestic crops. Brazil's latest crop forecast — due this month — will be a key price driver. Supply is tight but meeting demand for now.</div>
+        
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">D-Limonene prices have held firm for the last few months, but participant suppliers still believe prices will trend back up based on the poor crops domestically. More information will be available once Brazil comes out with their latest crop forecast sometime this month. This will likely influence prices based on the health of their yield. Supply is tight, but meeting demand for now.</div>
+      </div>
+    </div>
+
+    <div class="product-row trend-stable-up" data-trend="stable-up">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">Plasticizers</div>
+        <div class="product-driver">2-EH · TMA</div>
+        <div class="product-tags">
+          <span class="product-tag">168 Plasticizer (DOTP)</span><span class="product-tag">DINP</span><span class="product-tag">DIDP</span><span class="product-tag">TOTM</span><span class="product-tag">TEG-EH</span>
+        </div>
+        <div class="row-right"><span class="trend-badge up">↑ Up</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Both domestic plasticizer producers have announced price increases for April and May as feedstock costs rise and import freight gets more expensive going into May. Construction demand remains weak so supply is keeping pace — but if demand picks up that balance could shift quickly.</div>
+        
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">General plasticizer supply and prices have been impacted by the turmoil in the middle-east as feedstock costs rise and supply chain disruptions support higher prices in the US. The import market to the US is volatile as producers overseas are struggling to get feed and shipping freight is more expensive going into May. Both domestic plasticizer producers have announced price increases for April and May. However, building and construction demand continues to be weak in the US and supply is currently keeping pace with sluggish demand.</div>
+      </div>
+    </div>
+
+    <div class="product-row trend-stable" data-trend="stable">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">Ethanol</div>
+        <div class="product-driver">PURE · SDA ALCOHOL</div>
+        <div class="product-tags">
+          <span class="product-tag">SDA</span><span class="product-tag">Gov't Form</span>
+        </div>
+        <div class="row-right"><span class="trend-badge stable">→ Stable</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Ethanol remains one of the few stable products this month. Strong 2025 corn harvest left inventories in good shape for 2026 contracts. Some contracts are seeing slight price reductions. Policy-driven demand from biofuel mandates continues to support steady growth.</div>
+        
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">The US corn harvest for 2025 was strong leaving ethanol inventories in good shape for 2026 contracts. Ethanol prices are relatively stable in the market with some price reductions seen in 2026 contracts. Factors influencing the ethanol price for 2026 will be feedstock costs (corn), energy costs (nat gas/electricity), crude/gasoline, policy & mandates, export demand and market sentiment and oversupply risks. Factors influencing supply are feedstock availability, production capacity, tech advancements, logistical constraints, trade dynamics, competing uses and environmental regulations. The ethanol market in 2026 so far is steady growth with price influenced by stable or slightly lower feedstock costs, fluctuating energy prices and strong policy-driven demand. Supply will be supported by robust production capacity and tech advancements, but may face constraints from weather, logistics and competing feedstock use. The market outlook remains positive with biofuels and sustainability initiatives driving expansion.</div>
+      </div>
+    </div>
+
+    <div class="product-row trend-stable-up" data-trend="stable-up">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">Glycerin</div>
+        <div class="product-driver">BIO-DIESEL · METHANOL</div>
+        <div class="product-tags">
+          <span class="product-tag">Veg Glycerin</span>
+        </div>
+        <div class="row-right"><span class="trend-badge up">↑ Up</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Refined glycerin is sold out for the next two months — the next available spot buy isn't until July. Lyondell's PO force majeure is having a bigger-than-expected ripple effect as some RV antifreeze producers switch to glycerin as their active ingredient. Prices will remain elevated well into summer.</div>
+        
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">Crude glycerin prices have continued to go up on slow imports to the US and very tight propylene glycol supply, which is forcing some RV Antifreeze producers to use glycerin as their active ingredient. The force majeure by Lyondell on their PO plant in Texas has had a bigger impact than expected in this market. The result has tightened up glycerin for the next several months until Lyondell can get back to supporting the market with PO derivatives. Refined glycerin producers are sold out for the next two months. The next available spot buy isn't until July. Our refined glycerin supplier believes prices will remain elevated for at least the next few months even if a cease fire deal is signed today. There's a lot of moving parts in the supply chain that will take time to maneuver before prices will come down according to producers. As a reminder, on March 27, the EPA finalized the RVO for Renewable Biodiesel producers to 5.25 billion gallons annually, which has helped keep refined glycerin prices from sky rocketing. Biofuels are back online to start meeting these requirements, which will help fill the pipeline of glycerin refiners. Crude glycerine continues to be the favorable feedstock for biodiesel production with low cost and is traditionally in good supply.</div>
+      </div>
+    </div>
+
+    <div class="product-row trend-stable-up" data-trend="stable-up">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">Methyl Soyate / Sorbitol / Oleic Acid</div>
+        <div class="product-driver">SOYBEANS · SUGAR ALCOHOL · TALLOW</div>
+        <div class="product-tags">
+          <span class="product-tag">Methyl Soyate</span><span class="product-tag">Sorbitol</span><span class="product-tag">Oleic Acid</span>
+        </div>
+        <div class="row-right"><span class="trend-badge stable-up">↑ Stable to Up</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>All three products are up again in May. Methyl Soyate is up another 10% month over month. Oleic Acid jumps nearly 20 cpp month over month — driven by tallow price increases, the beef packing strike, and fuel surcharges. Sorbitol is stable domestically but import supply remains stalled.</div>
+        
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">Methyl Soyate prices rose again throughout April as soybean oil continues to follow energy prices higher. No supply issues at this time. Prices are also propped up after the EPA announced new RVO policy increasing by 2 billion gallons annually for 2026 and 2027. Prices are up another 10% month over month to begin May. Soybean oil is the primary feedstock for MS. Domestic Sorbitol supply is healthy and contracted pricing for 2026 was a rollover from 2025. Imported prices are stalled due to supply chain disruptions over the past few months, but domestic supply is capable of meeting demand. Oleic Acid supply is tighter than last month and comes with a significant jump in price for May, up almost 20 cpp month over month. Since Feb 28 commodity prices such as tallow have been moving upwards in the US due to military action and supply disruptions here in the US. On March 16 workers from one of the largest beef packing plants in the US went on strike seeking higher wages. Tallow demand was already firming prior to the strike due to increased demand from both the renewable and oleochemical sectors. Logistical fuel surcharges are also having an impact on the oleic acid business with the huge jump in energy charges. The biofuels industry is a major user of tallow in their production, which is now 100% back online.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="section-label">Additional Notes</div>
+  <div class="tariff-note">
+    <strong>⚠ Tariffs</strong>
+    See attached table with information regarding US implemented tariffs and their timeline.
+  </div>
+
+  <div class="disclaimer">
+    DISCLAIMER: The content provided in this document is for discussion purposes only. Barton Solvents does not guarantee the validity or accuracy of the information and is not liable for any decisions made based on the content shared.
+  </div>
+
+</main>
+
+<script>
+  function toggleRow(row) {
+    const detail = row.querySelector('.product-detail');
+    const isClosed = detail.classList.contains('closed');
+    row.classList.toggle('open', isClosed);
+    detail.classList.toggle('closed', !isClosed);
+  }
+
+  function expandSection(btn) {
+    const wrap = btn.closest('.section-label').nextElementSibling;
+    wrap.querySelectorAll('.product-row:not(.hidden)').forEach(row => {
+      row.classList.add('open');
+      row.querySelector('.product-detail').classList.remove('closed');
+    });
+  }
+
+  function collapseSection(btn) {
+    const wrap = btn.closest('.section-label').nextElementSibling;
+    wrap.querySelectorAll('.product-row').forEach(row => {
+      row.classList.remove('open');
+      row.querySelector('.product-detail').classList.add('closed');
+    });
+  }
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      const filter = this.dataset.filter;
+      document.querySelectorAll('.product-row').forEach(row => {
+        if (filter === 'all' || row.dataset.trend === filter) {
+          row.classList.remove('hidden');
+          row.querySelector('.product-detail').classList.remove('closed');
+        } else {
+          row.classList.add('hidden');
+          row.querySelector('.product-detail').classList.add('closed');
+        }
+      });
+    });
+  });
+
+  // All rows open by default — no JS needed, CSS handles it
+</script>
+</body>
+</html>
