@@ -27,7 +27,62 @@
     --volatile: #c471ed;
     --volatile-bg: rgba(196,113,237,0.08);
     --volatile-border: rgba(196,113,237,0.3);
+    --synopsis-text: #ffffff;
+    --detail-text: #b0b8cc;
+    --detail-bg: rgba(0,0,0,0.12);
+    --synopsis-bg: rgba(255,255,255,0.04);
+    --war-bg: rgba(196,113,237,0.06);
+    --war-border: rgba(196,113,237,0.3);
   }
+
+  body.light {
+    --bg: #f4f5f7;
+    --surface: #ffffff;
+    --border: #d8dce8;
+    --text: #1a1e2e;
+    --muted: #6b7494;
+    --up: #c0392b;
+    --up-bg: rgba(192,57,43,0.07);
+    --up-border: rgba(192,57,43,0.3);
+    --stable-up: #a05c00;
+    --stable-up-bg: rgba(160,92,0,0.07);
+    --stable-up-border: rgba(160,92,0,0.3);
+    --stable: #1e7a4a;
+    --stable-bg: rgba(30,122,74,0.07);
+    --stable-border: rgba(30,122,74,0.3);
+    --down: #185FA5;
+    --down-bg: rgba(24,95,165,0.07);
+    --down-border: rgba(24,95,165,0.3);
+    --volatile: #7d3c98;
+    --volatile-bg: rgba(125,60,152,0.07);
+    --volatile-border: rgba(125,60,152,0.3);
+    --synopsis-text: #1a1e2e;
+    --detail-text: #3a4060;
+    --detail-bg: rgba(0,0,0,0.03);
+    --synopsis-bg: rgba(0,0,0,0.04);
+    --war-bg: rgba(125,60,152,0.05);
+    --war-border: rgba(125,60,152,0.3);
+  }
+
+  .theme-toggle {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+
+  .theme-toggle:hover { color: var(--text); border-color: var(--muted); }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -169,8 +224,8 @@
   .ctrl-btn:hover { color: #fff; border-color: #3a4155; }
 
   .war-banner {
-    background: rgba(196,113,237,0.06);
-    border: 1px solid rgba(196,113,237,0.3);
+    background: var(--war-bg);
+    border: 1px solid var(--war-border);
     border-left: 4px solid var(--volatile);
     border-radius: 4px;
     padding: 16px 20px;
@@ -187,7 +242,7 @@
     margin-bottom: 7px;
   }
 
-  .war-banner p { color: #b0b8cc; font-size: 16px; line-height: 1.65; }
+  .war-banner p { color: var(--detail-text); font-size: 16px; line-height: 1.65; }
 
   .table-wrap {
     background: var(--surface);
@@ -293,24 +348,25 @@
   .product-detail {
     display: block;
     padding: 16px 20px 20px;
-    color: #b0b8cc;
+    color: var(--detail-text);
     font-size: 16px;
     line-height: 1.75;
     border-top: 1px solid var(--border);
-    background: rgba(0,0,0,0.12);
+    background: var(--detail-bg);
   }
 
   .product-detail.closed { display: none; }
   .product-detail strong { color: var(--stable-up); }
+  body.light .product-detail strong { color: var(--stable-up); }
 
   .synopsis {
-    background: rgba(255,255,255,0.04);
+    background: var(--synopsis-bg);
     border-left: 3px solid var(--muted);
     border-radius: 0 4px 4px 0;
     padding: 12px 16px;
     margin-bottom: 16px;
     font-size: 16px;
-    color: #ffffff;
+    color: var(--synopsis-text);
     font-style: normal;
     font-weight: 600;
     line-height: 1.6;
@@ -341,7 +397,7 @@
   }
 
   .full-detail-text {
-    color: #b0b8cc;
+    color: var(--detail-text);
     font-size: 15px;
     font-weight: 400;
     line-height: 1.75;
@@ -354,7 +410,7 @@
     padding: 16px 20px;
     margin-top: 8px;
     font-size: 13.5px;
-    color: #b0b8cc;
+    color: var(--detail-text);
     line-height: 1.65;
   }
 
@@ -395,12 +451,15 @@
     <h1>Chemical Market Analysis</h1>
     <div class="subtitle">Barton Solvents &nbsp;|&nbsp; Updated 06 / 04 / 2026 &nbsp;|&nbsp; For Discussion Purposes Only</div>
   </div>
-  <div class="legend">
-    <div class="legend-item"><div class="legend-dot" style="background:var(--up)"></div> Up</div>
-    <div class="legend-item"><div class="legend-dot" style="background:var(--stable-up)"></div> Stable to Up</div>
-    <div class="legend-item"><div class="legend-dot" style="background:var(--stable)"></div> Stable</div>
-    <div class="legend-item"><div class="legend-dot" style="background:var(--down)"></div> Stable to Down</div>
-    <div class="legend-item"><div class="legend-dot" style="background:var(--volatile)"></div> Volatile / Up</div>
+  <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--up)"></div> Up</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--stable-up)"></div> Stable to Up</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--stable)"></div> Stable</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--down)"></div> Stable to Down</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--volatile)"></div> Volatile / Up</div>
+    </div>
+    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">☀ Light Mode</button>
   </div>
 </header>
 
@@ -892,6 +951,23 @@
       row.querySelector('.product-detail').classList.add('closed');
     });
   }
+
+  // Theme toggle
+  function toggleTheme() {
+    const isLight = document.body.classList.toggle('light');
+    document.getElementById('themeToggle').textContent = isLight ? '☾ Dark Mode' : '☀ Light Mode';
+    try { localStorage.setItem('barsol-theme', isLight ? 'light' : 'dark'); } catch(e) {}
+  }
+
+  // Apply saved theme on load
+  (function() {
+    try {
+      if (localStorage.getItem('barsol-theme') === 'light') {
+        document.body.classList.add('light');
+        document.getElementById('themeToggle').textContent = '☾ Dark Mode';
+      }
+    } catch(e) {}
+  })();
 
   document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', function () {
