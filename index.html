@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chemical Market Analysis — June 2026</title>
+<title>Chemical Market Analysis — July 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -64,26 +64,6 @@
     --war-border: rgba(125,60,152,0.3);
   }
 
-  .theme-toggle {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    color: var(--muted);
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    padding: 6px 14px;
-    border-radius: 3px;
-    cursor: pointer;
-    transition: all 0.15s;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    white-space: nowrap;
-  }
-
-  .theme-toggle:hover { color: var(--text); border-color: var(--muted); }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
@@ -126,6 +106,13 @@
     letter-spacing: 0.06em;
   }
 
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
   .legend {
     display: flex;
     gap: 14px;
@@ -145,6 +132,23 @@
   }
 
   .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  .theme-toggle {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .theme-toggle:hover { color: var(--text); border-color: var(--muted); }
 
   .filter-bar {
     padding: 12px 36px;
@@ -357,7 +361,6 @@
 
   .product-detail.closed { display: none; }
   .product-detail strong { color: var(--stable-up); }
-  body.light .product-detail strong { color: var(--stable-up); }
 
   .synopsis {
     background: var(--synopsis-bg);
@@ -449,15 +452,15 @@
 <header>
   <div class="header-left">
     <h1>Chemical Market Analysis</h1>
-    <div class="subtitle">Barton Solvents &nbsp;|&nbsp; Updated 06 / 04 / 2026 &nbsp;|&nbsp; For Discussion Purposes Only</div>
+    <div class="subtitle">Barton Solvents &nbsp;|&nbsp; Updated 07 / 09 / 2026 &nbsp;|&nbsp; For Discussion Purposes Only</div>
   </div>
-  <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+  <div class="header-right">
     <div class="legend">
       <div class="legend-item"><div class="legend-dot" style="background:var(--up)"></div> Up</div>
       <div class="legend-item"><div class="legend-dot" style="background:var(--stable-up)"></div> Stable to Up</div>
       <div class="legend-item"><div class="legend-dot" style="background:var(--stable)"></div> Stable</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--down)"></div> Stable to Down</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--volatile)"></div> Volatile / Up</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--down)"></div> Stable to Down / Down</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--volatile)"></div> Volatile</div>
     </div>
     <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">☀ Light Mode</button>
   </div>
@@ -478,8 +481,8 @@
 
   <div class="section-label">Macro Context</div>
   <div class="war-banner">
-    <h2>⚠ War with Iran — Ongoing</h2>
-    <p>Negotiations (to some degree) continue between the US and Iran for a long-term ceasefire. However, tensions remain high as uncertainty lingers throughout the geopolitical landscape and the threats of ongoing war in the middle-east. The global markets are taking it one day at a time knowing the situation is fluid and can quickly change from one conversation or meeting to another. But after several months of price hikes and global supply chain disruptions, the US is starting to see prices soften in some situations as demand slows and feed costs come down going into June. Please continue to monitor your accounts for competitive activity where needed and communicate with your managers what you are seeing. This information is critical as we discuss market challenges with our channel partners.</p>
+    <h2>⚠ War with Iran — MOU Signed, But Tensions Remain</h2>
+    <p>It appears the Memorandum of Understanding that was signed by the US and Iran on June 17 is now in jeopardy as recent strikes by both countries has dimmed hopes of a permanent peace deal. Commercial vessels flowing through the Strait of Hormuz have recently been struck by Iranian missiles and retaliation strikes by US military soon followed. Markets have reacted with a small spike in energy prices that have started to retreat at the time of this writing. Please keep in mind tensions remain high as uncertainty lingers throughout the geopolitical landscape and the threats of ongoing war in the middle-east. The global markets are fluid and can quickly change from one conversation or meeting to another. Please continue to monitor your accounts for competitive activity where needed and communicate with your managers what you are seeing. This information is critical as we discuss market challenges with our channel partners.</p>
   </div>
 
   <!-- PROPYLENE -->
@@ -492,24 +495,23 @@
   </div>
   <div class="table-wrap">
 
-    <div class="product-row trend-stable-down" data-trend="stable-down">
+    <div class="product-row trend-down" data-trend="down">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Propylene</div>
         <div class="product-driver">CRUDE · PROPANE · NATURAL GAS</div>
         <div class="product-tags">
           <span class="product-tag">Cumene / Acetone</span><span class="product-tag">IPA</span><span class="product-tag">PG</span><span class="product-tag">Butanol</span><span class="product-tag">Butyl Acetate</span><span class="product-tag">P-Series Glycol Ethers</span>
         </div>
-        <div class="row-right"><span class="trend-badge stable-down">↓ Stable to Down</span><i class="toggle-chevron">▼</i></div>
+        <div class="row-right"><span class="trend-badge down">↓ Down</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
-        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>PGP settled down 7 cpp for May — the first decrease in five months. Buying is cautious and need-based only. Spot prices fell ~25% in May and are expected to continue softening into June as demand remains weak, feedstock costs ease, and ceasefire negotiations progress.</div>
-
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>PGP settled down again in June by 8.5 cpp — the second consecutive monthly decrease. The US/Iran Islamabad MOU signed June 17 has unwound the conflict risk premium. Buying is cautious and need-based only. Product availability remains ample with healthy inventories across all three propylene grades. No inventory rebuilding expected near term.</div>
         <span class="full-detail-label">Full Detail</span>
-        <div class="full-detail-text">Polymer Grade Propylene contract price settled down 7 cpp for May, which is the first decrease in last five months. The market response to the US/Iran conflict has moderated slightly with crude oil prices falling below $100 per barrel as of this writing. Buying behavior remains cautious and primarily driven by immediate needs, while spot propylene prices dropped last month, prompting buyers to reassess their short-term outlook. Trading activity was subdued end of May with transactions occurring 10-12 cpp below where it did in April despite stable supply and steam cracker utilization above the ninety percent range. Refinery rates climbed to 94.5% making an increase of 2.9% second half of May indicating stronger processing activity across facilities. Meanwhile, crude oil inventories declined by 3.3 mm barrels over the same period according to data from the EIA (Energy Information Administration). This drawdown was smaller that market analysts had anticipated. The reduction in stockpiles coincided with higher refinery runs as increased throughput contributed to pulling more crude from storage, tightening overall supply levels modestly relative to recent historical averages in sector. US gasoline inventories declined end of May, reflecting sustained strength in demand. According to the EIA, gasoline stocks posted a reduction the last half of May, while product supplied to the market - a key proxy for implied demand - increased over the same period. On a four-week rolling basis, implied demand has returned to levels broadly in line with typical seasonal norms, signaling a stable consumption environment. Although weekly demand remained below the levels observed during the same period in 2025, the overall trend points to a recovery in consumption. The four-week average of gasoline supplied to the market stood at approximately 8.9 mm barrels per day, largely unchanged from the corresponding period last year. In other refined product markets, propane inventories declined end of May as both production and consumption decreased. Meanwhile, jet inventories increased over the same period, supported by higher production levels and a concurrent decline in consumption. US consumer confidence falls on price shocks from middle-east conflict. US consumer sentiment falls for third month on high gasoline prices and inflation fears and US April housing starts fall 2.8% from March while single-family home starts plunge 9%. Colorado State University released its initial 2026 Atlantic hurricane season forecast on April 9. The outlook predicts levels of named storms, hurricanes, major hurricanes and accumulated cyclone energy with updated forecasts scheduled for June 10, July 8 and August 5.</div>
+        <div class="full-detail-text">Polymer Grade Propylene contract price settled down again in June by 8.5 cpp and is the second consecutive monthly decrease YTD. Prices were finalized on the last day of June following extensive negotiations between producers and buyers. Although the 45-day spot market average remained above the final settlement level, both sides ultimately reached an agreement allowing contracts to settle and providing greater pricing certainty for the market. The US and Iran signed the Islamabad Memorandum of Understanding (MOU) to end the conflict. Brokered by Pakistan and signed by President Trump and Iranian president Pezeshkian on June 17, the risk premium that has been for the last several months is now starting to soften. As a result. demand conditions are weighing on buying activity. Most consumers are not actively rebuilding propylene inventories as downstream demand remains subdued across key derivative markets including polypropylene. Purchasing activity has remained measured with buyers generally covering immediate spot requirements. Market participants have reported several production disruptions, including outages at both PDH units and steam crackers. However, these outages have had a limited impact on overall supply conditions. Product availability remains ample, supported by healthy inventories across all three propylene grades. Consequently, the market continues to be well supplied despite ongoing operational issues at select production facilities. Refinery utilization rates increased by .5 percentage points to 96.6% reflecting continued strong operating rates across the refining sector. EIA data also showed that gasoline supplied to the market, a widely used indicator of implied demand, increased at the end of June. While demand continued to recover during the reporting period, it remained below the level recorded during the same period in 2025. Propane inventories increased from the prior week as production rose and consumption also strenghtened. Propane remains the principal feedstock used in propylene production. Meanwhile, jet fuel inventories posted a weekly build at the end of June as both production and consumption declined during the period. US May construction spending was up .1% from April, down 1.5% year on year. US consumer confidence ticks up as lower oil prices ease inflation fears, also US consumer sentiment improves as gasoline prices moderate. US Q1 GDP growth estimate revised from 1.6% to 2.1% annual rate.</div>
       </div>
     </div>
 
-    <div class="product-row trend-stable-down" data-trend="stable-down">
+    <div class="product-row trend-down" data-trend="down">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Propylene Oxide</div>
         <div class="product-driver">PROPYLENE · NATURAL GAS</div>
@@ -519,14 +521,13 @@
         <div class="row-right"><span class="trend-badge down">↓ Down</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
-        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>PO prices plunged the last week of May as upstream spot propylene trended sharply lower. Lyondell's propylene oxide unit status remains unknown — the lack of information continues to worry the market. June saw mostly price rollovers for downstream polyol buyers.</div>
-
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>PO prices followed upstream propylene down in June on lower costs. A major production plant in Port Arthur, TX shut down June 23 but supply overall is ample — prices fell after a brief spike. Downstream polyol buyers saw prices plunge as Lyondell's PO unit has begun to restart, easing the supply constraints that have persisted since the March fire.</div>
         <span class="full-detail-label">Full Detail</span>
-        <div class="full-detail-text">Propylene Oxide prices plunged the last week of May as upstream spot propylene prices trended lower, pressuring contract price settlement. The lack of information on the status of Lyondell's propylene oxide unit continues to worry the market amid limited supply and the first decrease in upstream propylene settlement since November '25. Similarly, the propylene spot price has been trending lower the second half of May reflecting a discount of more than 13 cpp compared to the contract price. While downstream polyol buyers hope for lower prices, June was marked by price rollovers for most cargoes.</div>
+        <div class="full-detail-text">Propylene Oxide prices followed their upstream feed propylene down in June on lower costs. Some participants felt propylene would spike after one major production plant in Port Arthur, TX shutdown on June 23, but after a few higher priced trades to begin the week, prices eventually fell off as supply overall is ample to meet demand. Downstream polyol buyers saw prices plunge as the supply constraints from Lyondell's PO unit started to ease amid the recent restart.</div>
       </div>
     </div>
 
-    <div class="product-row trend-stable-down" data-trend="stable-down">
+    <div class="product-row trend-down" data-trend="down">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Acetone</div>
         <div class="product-driver">PROPYLENE · PHENOL · BENZENE</div>
@@ -536,14 +537,13 @@
         <div class="row-right"><span class="trend-badge down">↓ Down</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
-        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Acetone settled down just over 5 cpp for May — the first contracted price decrease since November 2025. The market is reaching a turning point on lower feed costs, increased imports, lackluster demand, and price fatigue. The import window is opening but global downside risk is making players hesitant to commit.</div>
-
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Large buyer Acetone settled down 7.5 cpp for June — the second consecutive monthly decrease. Prices searching for a floor in Q3. Supply more available with imports visible again. Demand into coatings sluggish. July benzene contract settled down sharply. Watch for Acetone competitives in the market.</div>
         <span class="full-detail-label">Full Detail</span>
-        <div class="full-detail-text">Large buyer Acetone price settled down just over 5 cpp for May. This is the first decrease in contracted price since November 2025. RGP settled flat with no change for May. ICIS assessed US May Gulf Coast and Midwest truck acetone contracts at an increase, but the pace of increases was smaller this month as the market is starting to plateau. The market is already reaching a turning point due to lower feed costs, increased imports, lackluster demand and price fatigue. Participants, however, feel prices will remain above pre-conflict levels for the time being. Spot PGP prices fell by ~25% this month and are facing further downward pressure with news of a tentative US/Iran ceasefire extension. Supply will be more balanced in Q3, but sluggish phenol demand will keep run rates relatively low. Much like we've seen prior to the middle-east issues. Demand remains flat with little optimism for a seasonal increase. Housing and auto are unlikely to recover in the near term as affordability pressures persist. As mentoned above, US consumer sentiment fell for the third straight month in May due to inflation fears, while the resilience of the US economy will be put to the test going into H2 2026. One large buyer is implementing initiatives globally toward restructuring its methyl methacrylate (MMA) and polymethyl methyacrylate (PMMA) business in response to deteriorating market conditions caused by significant capacity expansion in China, according to ICIS. The window for imports is opening, but downside momentum globally is also making players hesitant to buy as there is a risk they could be stuck with high cost product that is delivered in a soft period. US June Benzene contract price is forecasted to settle higher month over month. Trades in final day of contract window weigh 10-day average down and lower energy costs lead to easing prices going into June.</div>
+        <div class="full-detail-text">Large buyer Acetone price settled down 7.5 cpp for June. This was the second consecutive monthly decrease. Players are focusing on the downtrend in price as supply and demand evolve. Supply is more available, especially with imports visible again while demand is steady to soft. The housing and auto segments are being strained by rising material costs, elevated interest rates and ongoing affordability challenges. There is not much optimism for a H2 recovery. If conditions remain stable, an economic recovery could begin and set the stage for growth in 2027, but geopolitical volatility, tariff developments and logistics chaos will continue to add uncertainty to global markets. The US will not renew the US-Mexico-Canada Agreement (USMCA), causing the trade deal to become subject to annual reviews instead of a 16-year extension. The deal provides tariff-free imports for most products. Acetone prices to search for a floor in Q3, demand into coatings to remain sluggish and post-conflict outlook remains cautious and uncertain. RGP settled flat again with no change for June as trades continue to be non-existent since the last one in early April. More challenges were seen in June as feed costs came down again, increased imports and sluggish demand drive prices lower going into July. Supply will be more balanced in Q3 as sluggish phenol demand will keep run rates relatively low. US July Benzene contract price settled down sharply from June as prices were seen as overvalued relative to crude oil futures. Watch for Acetone competitives in the market.</div>
       </div>
     </div>
 
-    <div class="product-row trend-stable-down" data-trend="stable-down">
+    <div class="product-row trend-down" data-trend="down">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">IPA / Alcohol</div>
         <div class="product-driver">PROPYLENE</div>
@@ -553,27 +553,25 @@
         <div class="row-right"><span class="trend-badge down">↓ Down</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
-        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Slowing demand is putting downward pressure on US IPA prices even as global supply remains tight from the Iran conflict. Spot values expected to fall in June as propylene and acetone costs decline. Dow is out of their OXO turnaround and looking to grow business. Supply tightness on Propanol, Propyl Acetate, Butanol, and Butyl Acetate continues through Q2.</div>
-
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>US IPA spot prices fell sharply in June as demand has declined significantly and supply pressure has eased. Feedstock costs dropping, pulling prices further down. Spot IPA expected to see additional downward pressure in July. Butanol supply improving as one major producer returns online. Expect much healthier inventories for Propanol, Propyl Acetate, Butanol, and Butyl Acetate through July. Look for competitive price activity to pick up.</div>
         <span class="full-detail-label">Full Detail</span>
-        <div class="full-detail-text">US/Iran conflict is still having influence on tighter global IPA supply, however, slowing demand in the market is putting downward pressure on US prices. IPA feedstock prices are beginning to fall and are also weighing on IPA spot values to fall. Expect some price pressure from producers to sell at lower prices in June as demand remains stagnant. US IPA spot prices increased slightly in May when geopolitical tensions in the middle-east and supply pressure remained high. However, propylene and acetone costs are beginning to decline so some participants are anticipating a downward trend in spot IPA values for June. Market discussions were largely centered on US IPA as global availability from other regional producers has remained limited due to force majeures. Though demand is relatively flat, supply tightness has kept IPA spot values elevated even in the face of declining feedstock costs. That being said, most believe IPA spot valuations will be pressured to move down in June on lower feed costs from propylene and acetone. Oxo alcohol June contracts have yet to materialize. May contract prices increased due to tightening US supply, global supply disruptions and ongoing domestic supply chain issues continue to affect the market. On a positive note, Dow recently announced they've successfully come out of their OXO turnaround and are looking to grow business. However, US buyers continue to face elevated prices and supply constraints as US Butanol production remains tight while inventories of OXO products get back to healthy levels domestically. Producer partners are telling Barton, expect supply tightness through Q2 on Propanol, Propyl Acetate, Butanol and Butyl Acetate.</div>
+        <div class="full-detail-text">Unlike previous months, June saw US IPA spot prices fall sharply as demand has declined significantly and supply pressure has eased. Feedstock (propylene and acetone) costs are dropping, which is placing further downward pressure on prices. Participants are largely anticipating a downward trend in spot IPA values for July. Market discussions are mainly centered on US IPA, but global availability from other regional producers has improved month on month. Restocking demand has fallen as IPA is more readily available on the spot market than it was in the last few months. Declining feedstock costs have also contributed to the availability of IPA. Look for spot IPA values to experience downward pressure in July on slower to sluggish demand. Buyers are changing purchasing behavior based on current market conditions and only buying what they need. Oxo alcohol prices have seen downward pressure as feed costs come down and demand softens on limited buying. Butanol supply should start to improve as one major producer is back online after being down for several months. Buyers are back to buying only what they need to meet operational output. Based on producer operations domestically, the market expects to see much healthier inventories for Propanol, Propyl Acetate, Butanol and Butyl Acetate as we move through July. Look for competitive price activity to pick up this month with IPA and OXO alcohols.</div>
       </div>
     </div>
 
-    <div class="product-row trend-stable" data-trend="stable">
+    <div class="product-row trend-stable-down" data-trend="stable-down">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Propylene Glycols</div>
         <div class="product-driver">PROPYLENE · SUPPLY &amp; DEMAND</div>
         <div class="product-tags">
           <span class="product-tag">PGI</span><span class="product-tag">PG USP</span><span class="product-tag">DPG</span><span class="product-tag">PG-based HTF</span>
         </div>
-        <div class="row-right"><span class="trend-badge stable">→ Stable</span><i class="toggle-chevron">▼</i></div>
+        <div class="row-right"><span class="trend-badge stable-down">↓ Stable to Down</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
-        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>PG market appears to be coming off its peak as importers start lowering prices after supply caught up with demand. All producers remain on sales control for PGI and PG USP through Q2, with tightness estimated to last into July. Barton monitoring allocations closely. DPG still tight. Lyondell's Pasadena, TX plant status remains unknown.</div>
-
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Domestic PG remains on allocation through July. USP supply tighter than industrial as producers prioritize higher-margin pharma grades. Lyondell's PG production experienced hiccups after their restart in June — expect supply to remain tight another month or so. Import pricing is advantaged but can't support the full portfolio. Prices expected to stay elevated at least through mid-Q3. DPG still tight. No supply issues with Dow's HTF entering Q3.</div>
         <span class="full-detail-label">Full Detail</span>
-        <div class="full-detail-text">The PG market (all grades) continues to battle supply issues going into June, but the market appears to be coming off its peak as importers are starting to lower prices after supply caught up with demand as more material hit the US shores. Product tightness domestically is estimated to last through Q2 and into July. Allocations from all domestic producers are pushing buyers to fill in the gaps using brokered and/or imported material. Import prices are not carrying the same premium they did in March and April, but still remain elevated. Barton is monitoring allocations with customers very closely to insure supply availability is honored to the best of our ability. It still remains, all producers are on sales control for both PGI and PG USP through Q2. There is still little information being communicated to the public about Lyondell's operational progress to their Pasadena, TX plant after the March fire that triggered a FM. This plant shutdown continues to cause significant supply shortages domestically and has influenced higher prices and longer lead-times in the market. Expect the ongoing supply depression to support higher prices well into Q2. DPG continues to be tight with less PG production so expect supply issues here as well. Demand for higher value propylene based HTF needs will take precedent over basic PG demand as it carries a better margin and more profitability.</div>
+        <div class="full-detail-text">The domestic PG market (all grades) continues to be on allocation through July. Domestic industrial grade supply appears to be in better shape than USP, based on market data. Producers are choosing higher USP margins over industrial, which is keeping pharma supply more tight. Lyondell's PG production has experienced a few hiccups after their restart in June. Participants anticipate this disruption to set the market supply tight for another month or so. Supply from imports is keeping the domestic prices at bay as they are heavily advantaged. However, imports cannot support our entire portfolio so we need to keep our domestic producer partnerships aligned with what we are seeing in the market for competitive prices. Prices have taken a step backward since a few months ago, but expet prices to stay elevated at least through mid-Q3 until Lyondell can get inventories back to healthy levels. Barton is monitoring allocations with customers very closely to insure supply availability is honored to the best of our ability. DPG continues to be tight with less PG production so expect supply issues here as well. Demand for higher value propylene based HTF needs will take precedent over basic PG demand as it carries a better margin and more profitabilty. No supply issues with Dow's HTF as we enter Q3.</div>
       </div>
     </div>
 
@@ -587,10 +585,9 @@
         <div class="row-right"><span class="trend-badge stable-down">↓ Stable to Down</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
-        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Only one producer announced a price increase in early May. Domestic market quiet on pricing through May. PM Acetate and DPM Acetate supply remain tight but sluggish demand is keeping pace. Import lead-times running ~8–10 weeks. As feed costs come down in June, expect some softening heading into Q3.</div>
-
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>P-Series supply keeping up with softer demand. Look for competitive activity this month as feed costs settled down in June and demand remains stale. PM Acetate, DPM and DPM Acetate still tight domestically. Import market advantaged on price but 8–10 week lead-times remain. Global supply improving as Strait of Hormuz traffic moves more freely since the June 17 MOU.</div>
         <span class="full-detail-label">Full Detail</span>
-        <div class="full-detail-text">P-Series saw only one producer announce price increases in early May and that was matching what had already been announced by the competition in April. Otherwise, the domestic market has been quiet regarding prices in May. Domestic PM Acetate and DPM Acetate supply continue to be tight in the market, however, sluggish demand is hanging with the tighter supply for all P-Series products. Global supply shortages continue, but not to the degree we once did over the last 70 days. Lead-times for imported material are running ~8-10 weeks on average. Despite global challenges in supply, Import material continues to be available with slightly longer lead-times. As feed costs come down in June, there will be downward pressure on producers to lower prices based on supply/demand dynamics. Expect prices to remain elevated, but don't be surprised if you see some softening as we move closer to Q3.</div>
+        <div class="full-detail-text">P-Series supply is keeping up with softer demand. Prices should see downward pressure as feed costs settled down in June and demand continues to be stale so please look for competitive activity in the market this month. Domestic PM Acetate, DPM and DPM Acetate supply continue to be tight in the market, however, sluggish demand is hanging with the tighter supply for all P-Series products. The import market is advantaged on price, however, longer lead-times make it difficult to support all our needs. Domestic partnerships are offering one-time deals to help narrow the gap where they can. Global supply is improving and will continue to do so as traffic in the Strait of Hormuz is moving more freely since the June 17 memorandum was signed between the US and Iran. Lead-times for imported material continue to run about 8-10 weeks on average.</div>
       </div>
     </div>
 
@@ -606,24 +603,23 @@
   </div>
   <div class="table-wrap">
 
-    <div class="product-row trend-stable-down" data-trend="stable-down">
+    <div class="product-row trend-down" data-trend="down">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Ethylene</div>
         <div class="product-driver">CRUDE · NATURAL GAS · ETHANE</div>
         <div class="product-tags">
           <span class="product-tag">MEG</span><span class="product-tag">PEGs</span><span class="product-tag">Ethanolamines</span><span class="product-tag">Linear Alcohols</span><span class="product-tag">Polyethylene</span>
         </div>
-        <div class="row-right"><span class="trend-badge stable-down">↓ Stable to Down</span><i class="toggle-chevron">▼</i></div>
+        <div class="row-right"><span class="trend-badge down">↓ Down</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
-        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Ethylene settled up just 0.0075 cpp for May — essentially flat — and the near-term outlook is bearish heading into Q3. Strong supply is meeting sluggish demand with spot prices falling below producer comfort levels at end of May. Look for lower prices on downstream ethylene derivatives.</div>
-
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Ethylene settled down 3.5 cpp for June — the first decrease since January. June spot average closed down 31% from May. Domestic and export demand both lower vs. earlier in the year. Supply disruptions at steam crackers had minimal price impact, reflecting a prevalent sense of oversupply. Strong supply is meeting sluggish demand. Look for lower prices on downstream derivatives.</div>
         <span class="full-detail-label">Full Detail</span>
-        <div class="full-detail-text">US Ethylene contracted price settled up slightly .0075 cpp in May. Ethylene is up 5.25 cpp YTD. The market response to the US/Iran conflict has begun to moderate, with crude oil retreating below $100/bbl and strength in downstream ethylene derivatives beginning to fade following the recent rally. Buying activity remains cautious and largely need-based while spot ethylene prices fell below the comfortability spectrum of producers at the end of May, has further pressured sentiment and reinforced a more bearish near-term market outlook. US Ethylene spot trading activity was quiet end of May as prices fall on less interest in the market compared to the beginning of the month. There have been no material disruptions to ethylene supply this month. Steam cracker utilization rates remain elevated in the low 90% range, though some pullback in downstream derivative demand could curtail rates in Q3. Strong ethylene demand has cooled somewhat in Q2 with polyethylene and ethylene glycol domestic consumption and export volumes declining from Q1 highs. US Q1 GDP growth was slower than initially expected due to lower than forecasted investment and consumer spending, according to the Bureau of Economic Analysis in late May. The BEA revised its estimate for Q1 GDP growth to a 1.6% annual rate, down from its initial 2% estimate. Ethylene supply length weighs on June price expectations and Q2 export volume offers little offset to record inventory levels. Strong supply is meeting sluggish demand. Look for lower prices on downstream derivatives.</div>
+        <div class="full-detail-text">US Ethylene contracted price settled down 3.5 cpp for June and the first decrease since January. The contracted price decline was in part impacted by the steep fall in spot prices throughout June. The June spot average closed the month down 31% from May. Demand for ethylene remained soft at the end of Q2 with both domestic and export demand seen lower across ethylene and derivatives compared to levels seen earlier in the year. Domestic consumption remains subdued as converters continue to cover minimum volume purchases while exports of ethylene are reported to slow in late May and June. Also, expectations for exporting ethylene in Q3 are also discussed lower than recent levels. On the supply side, there were a number of temporary production disruptions at various steam crackers in the US. However, there was very little reaction in the spot prices as news of outages were discussed among market participants. This reflects a prevalent sense of oversupply in the market. Two confirmed turnarounds at steam crackers in Iowa and Louisiana during Q3 are not expected to impact overall pricing for ethylene during that period. In addition, the price spread between TX and Louisiana was reduced to zero in recent weeks as both regions saw no significant issues sourcing ethylene. Strong supply is meeting sluggish demand. Look for lower prices on downstream derivatives.</div>
       </div>
     </div>
 
-    <div class="product-row trend-stable-down" data-trend="stable-down">
+    <div class="product-row trend-down" data-trend="down">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">MEK</div>
         <div class="product-driver">BUTYLENE</div>
@@ -633,10 +629,9 @@
         <div class="row-right"><span class="trend-badge down">↓ Down</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
-        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>MEK pricing is sliding backwards from its peak in May. Europe slowed first and the US is now experiencing the same demand slowdown. Chinese imports offering significantly lower prices mid-May onward are applying additional downward pressure. Participants expect continued softening but not a return to pre-conflict lows while Strait traffic remains light.</div>
-
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>MEK pricing continues to drop heading into July. Supply is now long globally on sluggish demand. Major producers dropping prices faster than they'd like to manage inventories. Europe ahead of US in getting prices down. Asian producers will have raw materials again as Strait flows recover — more supply globally will push prices further down. Continue to look for competitive activity in the MEK market.</div>
         <span class="full-detail-label">Full Detail</span>
-        <div class="full-detail-text">MEK pricing is sliding backwards from its peak in May. Supply/demand dynamics have shifted back the other direction causing the market to lower prices on softer demand. Europe has already seen a slow down in demand and prices have been coming down most of May and now the US is starting to experience the same slow down in demand with better than anticipated supply. As the US and Iran continue their peace talks to extend the ceasefire, Chinese imports have proven to be a notable competitor on MEK and offering significantly lower prices to the US. These offers began in mid-May and keeping downward pressure on the market as well as Europe. Participants are expecting prices to continue softening domestically, but not to the extreme they were pre-conflict as the Strait of Hormuz traffic is still very light. The market remains very fluid due to the uncertainty of the middle-east issue, so expect the unexpected while ceasefire negotiations continue between the US and Iran. Markets can change quickly if war breaks out again.</div>
+        <div class="full-detail-text">MEK pricing continues to drop as we move into July. Supply is now long on MEK globably on sluggish demand. Major producers are dropping prices faster than they'd like, to manage inventories in the US. Europe is ahead of us getting prices down, which has left our market in a long position. Now that raw materials are starting to flow through the Strait of Hormuz, Asian producers will have what they need to be operational. More material in the market will only drive prices further down globally. It is no surprise that Chinese imports have lead the charge with lower prices into the US, keeping US headquartered producers in line with where the market truly is. Participants are expecting prices to continue softening domestically in July. Please continue to look for competitive activity in the MEK market.</div>
       </div>
     </div>
 
@@ -650,27 +645,25 @@
         <div class="row-right"><span class="trend-badge stable-down">↓ Stable to Down</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
-        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>E-Series demand was subdued in May with a challenging outlook for 2026. Only one Barton channel partner raised prices effective June 1 — no other announcements. Butanol FM may be lifting this month, which would support better production levels and lower prices. Barton remains on Q2 sales allocation for EB and DB.</div>
-
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>EB and DB demand flat month over month in June. One major domestic producer officially terminated their Force Majeure on EB and DB in June — additional lbs returning to market in Q3 will support lower prices. Competitives already being discussed in our region. Dow still tight on both products, slowing downward price pressure somewhat. Barton remains on sales allocation with Eastman for EB and DB into Q3.</div>
         <span class="full-detail-label">Full Detail</span>
-        <div class="full-detail-text">Glycol Ether EB and DB demand in May was subdued compared to previous months with a challenging outlook for 2026. Large buyers of products such as the automotive industry have forecasted weaker demand driven by price pressure of product, persistently high interest rates and low consumer confidence. The middle-east conflict is increasing prices for necessary supply chain products, which may further affect consumer prices and lower automotive demand estimates for 2026. Currently glycol ether E-Series demand appears flat. One Barton channel partner did raise prices effective June 1. As of today no other announcements have been made for further price hikes. Production remained steady during May as Butanol constraints continue in the US. Participants have reported signs that the Butanol producer FM could be lifted this month, though no confirmation has been heard. An improvement in Butanol constraints next month should support better glycol ether production levels and provide some relief on prices as a result of lower production costs. Export opportunities for glycol ethers have been steady, but started to show signs of softening as demand needs slow in May. The middle-east supplies large portions of imports to China, southeast Asia, Northeast Asia, Europe and Latin America - gaps that US producers can fill given healthier supply. Barton continues to be on sales allocation for EB and DB in Q2. Ethylene supply remains stable with no disruptions stemming from the US/Iran conflict. US Gulf Coast cracker utilization rates stand just above 90%.</div>
+        <div class="full-detail-text">Glycol Ether EB and DB demand in June remained flat month over month with little change going into July. Slow demand in the automotive industry due to ongoing affordability challenges, higher interest rates and low consumer confidence have become the norm this year. Participants are expecting Glycol Ether demand to remain stable to down for 2026. One major domestic producer has officially announced termination of their Force Majeure in June on EB and DB. This announcement will support lower prices as additional lbs are introduced back into the market in Q3. Competitives are already being discussed within our region. Please monitor competitive prices at customers as challenges are ahead for EB and DB. Dow has indicated they are still tight on both products, which has likely slowed the downward price pressure on each product. Dow is shipping EB and DB overseas to fulfill contract obligations left behind by the temporarily closed Sadara plant. Needless to say, Dow's tight supply has not impacted the market enough, leaving prices vulnerable to come down. An improvement in Butanol constraints should support better glycol ether production levels and provide some relief on prices as a result of lower production costs. Export opportunities for glycol ethers have been steady in June. The middle-east supplies large portions of imports to China, southeast Asia, Northeast Asia, Europe and Latin America - gaps that US producers can fill given healthier supply. Barton continues to be on sales allocation with Eastman for EB and DB going into Q3.</div>
       </div>
     </div>
 
-    <div class="product-row trend-up" data-trend="up">
+    <div class="product-row trend-stable-down" data-trend="stable-down">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Ethanolamines</div>
         <div class="product-driver">ETHYLENE · ETHYLENE OXIDE</div>
         <div class="product-tags">
           <span class="product-tag">MEA</span><span class="product-tag">DEA</span><span class="product-tag">TEA</span>
         </div>
-        <div class="row-right"><span class="trend-badge up">↑ Up</span><i class="toggle-chevron">▼</i></div>
+        <div class="row-right"><span class="trend-badge stable-down">↓ Stable to Down</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
-        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>MEA 99 supply is tight going into June. Dow is expected to enter a turnaround at their Plaquemine facility in coming weeks — additional tightening impact on an already tight EOA market. All domestic producers announced significant June 1 price increases. Customers held to historical volumes. DEA is the most stable of the three.</div>
-
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>MEA supply will start to improve going into July. One major producer officially terminated their FM on EODs including MEA in June and lowered their price by 10 cpp for July — forcing other domestic players to follow soon. US/Iran MOU has softened appetite for US MEA export volumes. TEA exports remained strong. DEA demand steady for agricultural segment. Customers held to historical volumes for now, but that is ending as supply grows.</div>
         <span class="full-detail-label">Full Detail</span>
-        <div class="full-detail-text">MEA 99 supply continues to be tight as we begin June on production issues domestically and strong demand for export opportunities continues. Dow is expected to enter a turnaround at their Plaquemine facility in the coming weeks, which will have additional impact on a tight EOA market. Overall EOA demand was soft in May, but export opportunities continue as challenged middle-east producers are not able to supply historical business in Asia and Europe. Ongoing conflict in the middle-east is causing major disruptions globally with supply and supporting higher prices. Producers are watching sales and keeping customers to historical volumes to manage tighter supply. All the domestic players announced another significant price increases for June 1 as export demand to Europe and Asia are still strong. As of today, US producers have been supporting Europe and Canada with MEA and Europe with TEA. Global supply shortages coming from the middle-east are with MEA and TEA. DEA supply in the US appears to be the most stable across the three products.</div>
+        <div class="full-detail-text">MEA 99 supply will start to improve going into July. One major producer officially announced terminating their FM on EODs including MEA in June and subsequently lowered their price by 10 cpp for July. This move will force other domestic players to reduce prices sooner than later. US production remained strong during June with a brief disruption in Louisiana due to a turnaround at the Dow site. With the middle-east conflict supposedly coming to an end, the appetite for US MEA volumes appeared to soften through June. TEA exports remained strong, however. Producers are still watching sales and keeping customers to historical volumes, but this will be ending soon as supply grows and middle-east export demand dries up. DEA demand remains steady for the agricultural segment as weather conditions remain variable, while TEA demand domestically continues to be depressed as the construction market remains weak.</div>
       </div>
     </div>
 
@@ -684,10 +677,9 @@
         <div class="row-right"><span class="trend-badge stable-down">↓ Stable to Down</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
-        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>MEG prices rolling or softening for June 1. Two key supply restarts improving the picture: Point Comfort, TX MEG unit restarted and Indorama's Clear Lake, TX turnaround essentially complete. Bottle maker demand expected to pick up as the World Cup starts. Antifreeze entering seasonal demand decline. TEG prices up slightly for June 1 with higher inquiry activity noted late May.</div>
-
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>MEG export demand from US cooling as middle-east needs slow with Strait reopening. Domestic demand weak on downstream derivatives. Prices for July rolled or came down. Antifreeze demand slowed way down heading into summer. Expect prices to soften throughout Q3 on lower feedstock costs and softer demand. DEG demand weak on construction softness. TX turnaround pressuring DEG market with restart expected July. TEG inquiries steady despite seasonal low demand period; prices trending slightly up.</div>
         <span class="full-detail-label">Full Detail</span>
-        <div class="full-detail-text">US MEG market is seeing some softening on prices for June 1. Demand domestically has slowed, but exports remain strong. Prices for June either rolled or came down from domestic producers. Participants are hopeful domestic demand will pick up from bottle makers as the World Cup starts in just a few weeks. Supply across North America remains tight with reports of buyers purchasing off-spec material where end-use products can utilize lower quality material. Antifreeze demand has begun its expected seasonal decline in NA as temperatures rise heading into summer. Participants confirmed the restart of a MEG unit in Point Comfort, TX that has been shutdown since late 2025. And Indorama's Clear Lake, TX turnaround is all but completed. They are working on replenishing inventories now. Strong US production is expected as the middle-east conflict extends allowing producers to capitalize on opportunities to fill supply gaps in vulnerable regions like Europe and India. The supply/demand balance is tightening as domestic demand recovers, export opportunities increase and supply contraints continue. DEG demand in the US remains weak across major applications like construction due to high housing prices, interest rates and inflation could delay recovery. Higher TEG inquiries have been reported in late May, even though demand is moving out of season. TEG supply remains steady as intentional TEG production continues at consistent levels. Prices have increased slightly for June 1.</div>
+        <div class="full-detail-text">US MEG market has seen export demand from the US cool off in June as middle-eastern needs are slowing due to the Strait of Hormuz opening back up. Domestic demand in the US is also weak on downstream derivatives. Prices for July either rolled or came down some from domestic producers. Antifreeze demand has slowed way down as temperatures rise moving through summer. Supply is ample and meeting demand in the domestic market. Expect prices to soften throughtout Q3 on lower feedstock costs and softer demand. The supply/demand balance is softening amid lower export opportunities. DEG demand in the US remains weak across major applications like construction due to high housing prices, interest rates and inflation could delay recovery. However, a turnaround going on in TX is putting significant pressure on the domestic market with the expectations of a restart in July. The DEG balance remains tight as export opportunities persist amid middle-east tensions. Steady TEG inquiries have been reported in June even though a period of low seasonal demand lies ahead. Supply remains stable with prices trending slightly up.</div>
       </div>
     </div>
 
@@ -710,64 +702,60 @@
         <div class="product-tags">
           <span class="product-tag">Aliphatics</span><span class="product-tag">Aromatics</span>
         </div>
-        <div class="row-right"><span class="trend-badge volatile">⚡ Volatile / Up</span><i class="toggle-chevron">▼</i></div>
+        <div class="row-right"><span class="trend-badge volatile">⚡ Volatile</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
-        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Crude prices finished down to end May but new US/Iran attacks in June have propped prices back up again. The sixth consecutive week of US crude inventory declines was reported. Safely reopening the Strait of Hormuz with a long-term peace agreement is the key to sustainably lowering crude prices. Many traders still believe 2026 highs have not been reached — $115–130+ speculation persists.</div>
-
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Crude trended down through June, falling close to pre-conflict levels as the Iran risk premium unwound following the June 17 MOU. Market appears materially looser than previously expected. Strait of Hormuz reopening underway but normalization takes time. OPEC+ agreed to boost production in August to recover lost revenues. Recent missile strikes between US and Iran in early July have re-introduced volatility — traders uncertain about permanence of peace deal.</div>
         <span class="full-detail-label">Full Detail</span>
-        <div class="full-detail-text">Crude prices continue to see volatile activity throughout May and now into June as US/Iran peace negotiations remain tense. Crude futures finished down to end May, however, new attacks in June between the US and Iran has propped up prices once again. This rally is driven by heightened geopolitical risks following renewed hostilities in the middle-east, ongoing uncertainty surrounding US-Iran peace negotiations and a reported drawdown in US crude inventories, which will mark the sixth consecutive week of inventory declines. Safely reopening the Strait of Hormuz with a long-term peace agreement in place will be a key factor to sustainably lowering crude prices. Until then, participants and military experts expect prices in the energy markets to stay elevated for the foreseeable future. Many traders still believe that the highs for 2026 have not yet been reached with some speculation on prices hitting $115-130+ depending on the severity of the disruptions in the middle-east. However, increased US production and record exports are acting as a significant dampner on extreme price spikes. The situation remains fluid and developments are happening daily.</div>
+        <div class="full-detail-text">Crude prices trended down through June and fell close to pre-conflict levels. Over the past four months oil outlook was shaped by a sizable middle-east risk premium. With that premium now largely unwound, the market appears materially looser than previously expected. Both geopolitical risks and underlying fundamentals have shifted in the same direction, leading to a more pronounced downward revision in how the market is forecasting prices. A key factor is the gradual reopening of the Strait of Hormuz. Following the US/Iran memorandum of understanding on June 17, shipping activity has begun to recover and vessels are once again transiting the waterway. While recent strikes have put a long-term peace deal in question, most participants feel negotiations are heading in the right direction based on where energy prices are today and the risk of a prolonged closure has eased significantly. Although normalization will take more time due to mine clearance, vessel repositioning and logistical adjustments, the overall impact is bearish for prices. In addition, OPEC+ has agreed to boost production in August to help make up for three months or more of lost export revenues.</div>
       </div>
     </div>
 
-    <div class="product-row trend-stable-up" data-trend="stable-up">
+    <div class="product-row trend-down" data-trend="down">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Aliphatic Solvents</div>
         <div class="product-driver">CRUDE OIL · UNL87</div>
         <div class="product-tags">
           <span class="product-tag">142 Sol</span><span class="product-tag">VM&amp;P</span><span class="product-tag">Hexane</span><span class="product-tag">Heptane</span>
         </div>
-        <div class="row-right"><span class="trend-badge stable-up">↑ Stable to Up</span><i class="toggle-chevron">▼</i></div>
+        <div class="row-right"><span class="trend-badge down">↓ Down</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
-        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Gasoline spiked mid-May then pulled back month-over-month, but new Iran attacks in June have pushed prices up again. Heptane and VM&amp;P index prices jumped going into June on higher May spot prices. Lighter aliphatics remain pressured upward by higher energy costs. Even if a ceasefire holds, stabilization will take several months.</div>
-
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Gasoline prices volatile through June but finished the month down month over month. Producers began lowering prices at end of June / early July as feed costs fell and middle-east conflict moved to a more manageable position. Heptane and VM&amp;P index prices saw a healthy decrease going into July. As energy prices fall, the alternative value proposition for producers loses profitability — look for competitive activity to pick up.</div>
         <span class="full-detail-label">Full Detail</span>
-        <div class="full-detail-text">UNLD 87 (gasoline) prices spiked mid-May, but ended the month with prices coming down month over month. However, gasoline followed crude as new attacks this week between US-Iran pushed prices up again only to settle back as of this writing. Now that summer driving season is in full swing, prices have historically been propped up by higher demand. But with prices being at a much higher price than in years past, the EIA has reported demand to not be as strong. Some consumers are not willing to pay the price and staying home. Index prices for Heptane and VM&amp;P saw another price jump going into June on higher spot prices throughout May. The situation in Iran and the Strait of Hormuz remains fluid as tensions build everyday a peace deal is not met. Even if the cease fire is successful and ships eventually begin to move about, it will take several months before markets to see some stabilization. The lighter aliphatics continue to be pressured by higher energy costs as producers lean to the fuels market for better profitability.</div>
+        <div class="full-detail-text">UNLD 87 (gasoline) prices were volatile throughout June, but ultimately finished the month down month over month. With feed costs coming down again and the middle-east conflict in a more manageable position, producers began lowering prices at the end of June and early July. Index prices for Heptane and VM&P saw a healthy price decrease going into July on lower average gasoline costs in June. As energy prices start to fall the alternative value proposition for producers loses it's profitability factor and supports lower prices as we are experiencing right now. Look for competitive activity to pick up in the market.</div>
       </div>
     </div>
 
-    <div class="product-row trend-stable-down" data-trend="stable-down">
+    <div class="product-row trend-down" data-trend="down">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Aromatic Solvents</div>
         <div class="product-driver">CRUDE OIL · DIESEL · JET FUEL</div>
         <div class="product-tags">
           <span class="product-tag">Mineral Spirits</span><span class="product-tag">D-100</span><span class="product-tag">D-150</span><span class="product-tag">Aromatic 200</span>
         </div>
-        <div class="row-right"><span class="trend-badge stable-down">↓ Stable to Down</span><i class="toggle-chevron">▼</i></div>
+        <div class="row-right"><span class="trend-badge down">↓ Down</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
-        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>D-100 demand softening led producers to lower prices end of May / beginning of June. D-150 also saw prices reduced but not as much — 150 supply is tight and demand starting to slow in June. Aromatic prices still above pre-war levels as ULSD and jet fuel alternative values continue to set the floor. Russia/Ukraine war adding to market uncertainty.</div>
-
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>ULSD trended down in June then shot back up in early July on new US/Iran tensions. Mineral Spirits, D-100, and D-150 all saw price decreases to begin July. D-150 supply now in much better shape than the last few months — prices trending down as a result. Aromatic supply healthy and meeting soft demand. As energy prices soften so will heavy aromatics.</div>
         <span class="full-detail-label">Full Detail</span>
-        <div class="full-detail-text">Like gasoline, Ultra-Low Sulfur Diesel price remained volatile throughout May. Prices peaked most of the month before falling off in the last week as traders felt a longer term ceasefire deal was close between US-Iran. However, new attacks this week have traders more uncertain, driving prices back up as we begin June. Jet fuel prices followed a similar path in May sliding down end of the month. The heavy aromatic market is seeing some softening with demand on D-100 that has led producers to lower prices end of May beginning of June. D-150 also saw prices reduced, but not as much. 150 supply is tight, but demand is starting to slow in June. Aromatic prices are still being influenced by the higher cost alternative values of ULSD and Jet Fuel so look for prices to stay above pre-war levels tensions remain in the middle-east. Please remember, producers are making decisions based on trends over the last 60 days and not simply one day to the next. As the world focuses its attention on the middle-east, the Russia/Ukraine war is ongoing adding to the concen of uncertainty in the market. Aromatic supply continues to meet steady to soft demand. Inventories from most domestic producers should be in good shape on 100. Aromatic 150 is still snug, but meeting sluggish demand.</div>
+        <div class="full-detail-text">Ultra-Low Sulfur Diesel price trended down in June, but has since shot back up in early July with additional tension between US and Iran. Jet fuel dipped as well with an uptick so far this month. The uncertainty in the middle-east has traders concerned of a resurgence of war activity after missle strikes were exchanged the first week of July. Prior to the latest news, energy prices fell last month forcing aromatic producers to lower prices at the end of June. Mineral Spirits, D-100 and D-150 blends all saw a decrease in price to begin July. D-150 supply is in much better shape than the last few months and prices are trending down as a result. Aromatic supply is healthy and meeting soft demand. Inventories from most domestic producer on 100 and now 150 are good and meeting soft demand. As energy prices soften so will heavy aromatics.</div>
       </div>
     </div>
 
-    <div class="product-row trend-up" data-trend="up">
+    <div class="product-row trend-down" data-trend="down">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Toluol &amp; Xylol</div>
         <div class="product-driver">CRUDE OIL · SEASONAL GASOLINE</div>
         <div class="product-tags">
           <span class="product-tag">Toluol</span><span class="product-tag">Xylol</span>
         </div>
-        <div class="row-right"><span class="trend-badge up">↑ Up</span><i class="toggle-chevron">▼</i></div>
+        <div class="row-right"><span class="trend-badge down">↓ Down</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
-        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>T&amp;X continued their upward trend through May driven by strong energy markets and Octane demand for summer driving season. Values remain firm despite softer energy prices at end of May. Supply for both T&amp;X remains snug as the 10% US tariff keeps imports minimal. US export pace starting to slow as Europe and Asia needs have started to slow.</div>
-
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>T&amp;X prices trended down in June as energy prices fell, leaving alternative values less attractive. Plenty of supply to meet demand — Xylol sitting a bit better than Toluol. Stronger octane demand helping to slow Toluol's decline vs. Xylol. Summer gasoline demand below normal averages as pump prices remain elevated. US exports to Europe and Asia slowing on softer demand. Middle-east remains volatile.</div>
         <span class="full-detail-label">Full Detail</span>
-        <div class="full-detail-text">Toluol and Xylol prices continued their upward trend in May, driven by strong energy markets throughout the first three weeks of the month. Despite softer energy prices end of May, T&amp;X values have remained firm as strong Octane demand is driving these markets for summer driving season. However, reports are showing the demand is slow to gain momentum due to much higher prices at the pump. Still no consistent flow of traffic through the Strait of Hormuz is keeping energy prices propped up for the foreseeable future. Supply for both T&amp;X remain snug as the 10% US tariff is keeping imports to a minimum. However, exports from the US has started to slow as Europe and Asia's needs have started to slow.</div>
+        <div class="full-detail-text">Toluol and Xylol prices trended down in June as energy prices started to fall. This drop in energy has left alternative values less attractive and not supporting higher prices from the previous few months. Plenty of supply to meet demand with Xylol sitting a little better than Toluol. Stronger Octane demand is helping to keep Toluol prices from falling as quickly as Xylol. Look for supply to meet current demand. Summer demand for gasoline is below normal averages as prices still remain elevated at the pump. The middle-east conflict remains volatile and easily influenced by geopolitical behaviors as we've been experiencing the last few months. Exports from the US have slowed into Europe and Asia on softer demand.</div>
       </div>
     </div>
 
@@ -793,10 +781,9 @@
         <div class="row-right"><span class="trend-badge stable">→ Stable</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
-        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Near-record US natural gas production and comfortable storage continue to weigh on domestic prices despite strong summer power generation demand. LNG feedgas flows dipped to a four-month low on seasonal maintenance, temporarily freeing up additional supply for domestic storage.</div>
-
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Natural gas prices are up on higher demand for cooling from mid-summer heat, a slight production dip, and renewed geopolitical tensions near the Strait of Hormuz pushing international buyers toward US LNG. Prices held in check by strong inventories vs. historical averages.</div>
         <span class="full-detail-label">Full Detail</span>
-        <div class="full-detail-text">US natural gas is seeing near-record production and comfortable storage levels, which continue to weigh on domestic prices, despite strong summer power generation demand that's picked up in the last month. Above-normal temperatures across the lower 48 states are heavily driving electricity demand, supporting prices despite seasonal lulls in LNG exports. Feedgas flows to major US liquefied natural gas export terminals recently dipped to a four-month low due to seasonal maintenance, which has temporarily freed up more supply for domestic storage.</div>
+        <div class="full-detail-text">US natural gas prices are up on higher demand for cooling due to mid-summer heat, slight production dip and geopolitical tensions. Renewed conflicts in the middle-east - including US/Iran skimishes near the Strait of Hormuz affecting cargo flows - have elevated global gas prices and pushed international buyers to secure more US LNG. Prices are being balanced by strong inventories compared to historical averages.</div>
       </div>
     </div>
 
@@ -810,10 +797,9 @@
         <div class="row-right"><span class="trend-badge stable-down">↓ Stable to Down</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
-        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>US methanol pricing lowered slightly in May from recent highs, but remains significantly above prior months' spot averages. Export demand from countries normally supplied by Iran has slowed as current needs are being met. If the Strait of Hormuz continues to be "closed," demand could return by next month. No recent production issues reported in the US.</div>
-
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>US methanol prices declined in June as spot buying activity remained limited. Export demand from Gulf Coast subdued as Strait of Hormuz shipping conditions continue to improve. Very little buying interest in June. No US production issues reported to begin Q3. Supply currently meeting demand.</div>
         <span class="full-detail-label">Full Detail</span>
-        <div class="full-detail-text">US Methanol pricing lowered slightly in May from recent highs, however, prices remain significantly above last months spot average. Demand for export material from the US Gulf Coast to countries normally supplied by Iran has slowed due to current needs being met by end-users. That being said, if the Strait of Hormuz continues to be "closed", demand could return by next month. No recent production issues have been reported in the US. Supply is currently meeting demand.</div>
+        <div class="full-detail-text">US Methanol prices declined in June as buying activity in the spot market has been limited. Export demand from the Gulf Coast remains subdued as shipping conditions through the Strait of Hormuz continue to improve. Very little buying interest in June and no US production issues have been reported to begin Q3. US Supply is currently meeting demand.</div>
       </div>
     </div>
 
@@ -839,10 +825,9 @@
         <div class="row-right"><span class="trend-badge stable-up">↑ Stable to Up</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
-        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Prices steady on snug supply. Brazil's 2026 harvest is down 13% from last year but has yet to move pricing. Lower crop numbers domestically and in Brazil are expected to eventually push prices higher — likely later in Q2 or early Q3. Supply is tight but meeting demand for now.</div>
-
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Prices steady on snug supply. US Trade Representative has proposed an additional 25% Section 301 tariff on most goods from Brazil after July 15 — on top of the existing 10% tariff — stemming from an investigation into Brazil's trade policies. Brazil's new season product available September onwards but processing delayed 2 months due to the weak juice market. Rain forecast concerns for 2027/28 crop too early to confirm. Pricing should remain firm with upward pressure.</div>
         <span class="full-detail-label">Full Detail</span>
-        <div class="full-detail-text">D-Limonene prices continue to be steady on snug supply. Brazil's harvest numbers for 2026 were down 13% from last year, but have yet to move pricing. Participants have to believe the lower crop numbers domestically and in Brazil will eventually have an impact on raising prices, maybe that will be later in Q2 or early Q3. Supply is tight, but meeting demand for now.</div>
+        <div class="full-detail-text">D-Limonene prices continue to be steady on snug supply. The US Trade Representative has proposed an additional 25% Section 301 tariff on most goods imported from Brazil after July 15. This action stems from an investigation into Brazil's trade policies regarding digital trade, intellectual property, ethanol market access and preferential tariffs. This will be an add-on to the already 10% tariff . Product from Brazil's new seaon will be available September onwards. Brazil delayed processing 2 months this season due to the weak juice market. Participants are concerned of rain in the forecast - too much could impact blooming and potentially hurt 27/28 crop. However, it is too early to confirm. Pricing should remain firm with upward pressure.</div>
       </div>
     </div>
 
@@ -856,10 +841,9 @@
         <div class="row-right"><span class="trend-badge stable-up">↑ Stable to Up</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
-        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>One domestic producer announced 2–5 cpp increase on DOTP, DOA, and TOTM for June 1. Soft building and construction demand continues to keep a lid on pricing. Participants feel the market may be in for a correction on soft demand. Import supply remains volatile and inconsistent. Barton focused on maintaining supply reliability for customers.</div>
-
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>General plasticizer prices appear to have peaked as we move into July. Most producers rolled prices month over month going into Q3 as global supply chains begin to rebuild. Soft demand in building and housing sector putting downward pressure on prices once again. Import supply still volatile and inconsistent. Supply is meeting sluggish demand.</div>
         <span class="full-detail-label">Full Detail</span>
-        <div class="full-detail-text">General plasticizers are continuing to see price movement up for June 1 on higher feed costs and supply chain disruptions globally. One domestic producer announced 2-5 cpp increase on DOTP, DOA, and TOTM. Prices have been kept at bay due to overall soft demand in the building and construction sectors. Participants feel the market is softening after the run up in prices over the last few months and the market might be in for a correction on soft demand. The import market to the US is volatile and consistency of supply will vary. Barton's focus ever since the middle-east issue arose was to maintain supply for our customers. Imports will remain a gamble until supply chain disruptions overseas become more predictable. As mentioned before, building and construction demand continues to be weak in the US and supply is currently keeping pace with sluggish demand.</div>
+        <div class="full-detail-text">General plasticizers prices have appeared to peak as we move into July. Most producers rolled prices month over month going into Q3 as global supply chains begin to rebuild. The overall soft demand in the building and housing sector are putting downward pressure on prices once again. The import market to the US is still volatile and consistency of supply will vary. Barton's focus ever since the middle-east issue arose was to maintain supply for our customers. Imports will remain a gamble until supply chain disruptions overseas become more predictable. Supply is meeting sluggish demand.</div>
       </div>
     </div>
 
@@ -873,44 +857,41 @@
         <div class="row-right"><span class="trend-badge stable">→ Stable</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
-        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>It is very early yet, but the 2027 outlook for industrial (non-fuel) ethanol remains steady with modest demand growth expected. Key risk: higher returns on fuel-grade ethanol may lead plants to prioritize denatured/fuel-spec product over industrial grades when capacity is tight, potentially tightening industrial supply or supporting firmer pricing for non-fuel volumes.</div>
-
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>2027 outlook for industrial ethanol remains steady with modest demand growth expected. Key risk: higher fuel-grade ethanol returns may incentivize plants to prioritize denatured/fuel-spec over industrial grades when capacity is tight, tightening industrial supply or supporting firmer non-fuel pricing. Market outlook remains positive with biofuels and sustainability initiatives driving expansion.</div>
         <span class="full-detail-label">Full Detail</span>
         <div class="full-detail-text">It is very early yet, but the 2027 outlook for industrial (non-fuel) ethanol remains steady and demand should see modest growth with various government policy incentives supporting fuel ethanol and affecting overall ethanol availability. It is possible that higher returns on fuel-grade ethanol may lead plants to prioritize denatured/fuel-spec product over industrial grades when capacity is tight. This could tighten industrial supply or support firmer pricing for non-fuel volumes, depending on demand. Factors influencing the ethanol price for 2026 will be feedstock costs (corn), energy costs (nat gas/electricity), crude/gasoline, policy &amp; mandates, export demand and market sentiment and oversupply risks. Factors influencing supply are feedstock availability, production capacity, tech advancements, logistical constraints, trade dynamics, competing uses and environmental regulations. The ethanol market in 2026 so far is steady growth with price influenced by stable or slightly lower feedstock costs, fluctuating energy prices and strong policy-driven demand. Supply will be supported by robust production capacity and tech advancements, but may face contraints from weather, logistics and competing feedstock use. The market outlook remains positive with biofuels and sustainability initiatives driving expansion.</div>
       </div>
     </div>
 
-    <div class="product-row trend-up" data-trend="up">
+    <div class="product-row trend-stable-up" data-trend="stable-up">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Glycerin</div>
         <div class="product-driver">BIO-DIESEL · METHANOL</div>
         <div class="product-tags">
           <span class="product-tag">Veg Glycerin</span>
         </div>
-        <div class="row-right"><span class="trend-badge up">↑ Up</span><i class="toggle-chevron">▼</i></div>
+        <div class="row-right"><span class="trend-badge stable-up">↑ Stable to Up</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
-        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Crude glycerin supply very tight — prices expected to stay elevated through August. A large buyer is purchasing at greater-than-normal levels to manage bio-based PG production given the Lyondell gap. Supply relief expected in August or September once Lyondell reestablishes healthy PG inventories. EPA's biodiesel RVO at 5.25 billion gallons annually helping keep prices from skyrocketing.</div>
-
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Crude glycerin supply continues on the same tight path. Prices expected to stay elevated through August on feed source disruptions and slow/inconsistent import traffic. Large bio-based PG producer still purchasing CG at elevated levels to cover the Lyondell gap. Supply relief expected August/September once Lyondell is fully operational and PG inventories normalize. EPA biodiesel RVO at 5.25B gallons annually keeping refined glycerin production strong.</div>
         <span class="full-detail-label">Full Detail</span>
-        <div class="full-detail-text">Crude glycerin supply continues to be very tight in the market supporting higher prices. Market participants believe prices will stay elevated through August on feed source disruptions and slow import traffic as a result of the middle-east conflict. A large buyer of CG continues to purchase at greater levels than normal to manage their bio-based PG production. This is causing supply tightness in the US. Market participants feel once Lyondell gets back on line, this will help relieve stressed PG producers (both bio-based and petroleum based) with additional volume that has been missing the last several months. Participants believe supply relief could come in August or September once Lyondell has reestablished healthy PG inventories. As a reminder, on March 27, the EPA finalized the RVO for Renewable Biodiesel producers to 5.25 billion gallons annually, which has helped keep refined glycerin production strong and prices from sky rocketing. Bio-fuels producers are investing in new strategies to meet these updated requirements. Crude glycerine continues to be the favorable feedstock for biodiesel production with low cost and is traditionally in good supply.</div>
+        <div class="full-detail-text">Crude glycerin supply continues on the same path it's been the last few months. Availability is still tight in the market supporting higher prices. Market participants believe prices will stay elevated through August on feed source disruptions and slow to inconsistent import traffic as a result of the middle-east conflict. A large buyer of CG continues to purchase at greater levels than normal to manage their bio-based PG production. This is causing supply tightness in the US. Market participants feel once Lyondell is fully operational, this will help relieve stressed PG producers (both bio-based and petroleum based) with additional volume that has been missing the last several months. Participants believe supply relief could come in August or September once Lyondell has reestablished healthy PG inventories. As a reminder, on March 27, the EPA finalized the RVO for Renewable Biodiesel producers to 5.25 billion gallons annually, which has helped keep refined glycerin production strong and prices from sky rocketing. Bio-fuels producers are investing in new strategies to meet these updated requirements. Crude glycerine continues to be the favorable feedstock for biodiesel production with low cost and is traditionally in good supply.</div>
       </div>
     </div>
 
-    <div class="product-row trend-up" data-trend="up">
+    <div class="product-row trend-stable-up" data-trend="stable-up">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Methyl Soyate / Sorbitol / Oleic Acid</div>
         <div class="product-driver">SOYBEANS · SUGAR ALCOHOL · TALLOW</div>
         <div class="product-tags">
           <span class="product-tag">Methyl Soyate</span><span class="product-tag">Sorbitol</span><span class="product-tag">Oleic Acid</span>
         </div>
-        <div class="row-right"><span class="trend-badge up">↑ Up</span><i class="toggle-chevron">▼</i></div>
+        <div class="row-right"><span class="trend-badge stable-up">↑ Stable to Up</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
-        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Methyl Soyate up 7% to start June supported by bullish RVO policy. Oleic Acid prices rose again for June, up over 10%, on tight tallow supply from both bio-fuel demand and reduced beef availability. Domestic Sorbitol supply healthy; contracted pricing 2026 was a rollover from 2025. Barton's channel partner introducing a veg-based oleic acid — Barton to test; if successful, price savings expected.</div>
-
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Methyl Soyate prices elevated but flat month over month into July as lower energy costs offset RVO policy support. Methyl ester demand into bio-diesel seasonally very strong and expected to stay that way through 2026. Sorbitol domestic supply healthy; imports stalled. Oleic Acid starting to loosen on slower demand — prices up slightly for July but producers expect relief in August on both tallow and veg-based oleic acid as demand slows.</div>
         <span class="full-detail-label">Full Detail</span>
-        <div class="full-detail-text">Methyl Soyate prices continue to be supported by bullish RVO policy and higher energy prices. Prices were up 7% to start June. Supply remains in good standing as we near the back half of Q2. Soybean oil is the primary feedstock for MS. Domestic Sorbitol supply is healthy and contracted pricing for 2026 was a rollover from 2025. Imported prices are stalled due to supply chain disruptions over the past few months, but domestic supply is capable of meeting demand. Oleic Acid supply continues to be tight and prices rose again for June, up over 10%. The feedstock tallow is seeing strong demand in the production of bio-fuels as they gear up to meet additional RVO policy for 2026. In addition, there is less beef in the market where tallow is sourced. There is a lot tugging on tallow right now, which is supporting the price hikes in the market. Logistical fuel surcharges are also having an impact on oleic acid business with the huge jump in energy charges. Our main channel partner is introducing a veg-based oleic acid that Barton is going to test. If successful, there will be a price savings to tallow based.</div>
+        <div class="full-detail-text">Methyl Soyate prices have remained elavated supported by bullish RVO policy, however lower energy costs have kept prices flat month over month going into July. Supply is tight as Methyl ester demand into the bio-diesel industry is seasonally very strong right now. Participants expect this will be the case for the remainder of 2026. Soybean oil is the primary feedstock for MS. Domestic Sorbitol supply is healthy and contracted pricing for 2026 was a rollover from 2025. Imported prices are stalled due to supply chain disruptions over the past few months, but domestic supply is capable of meeting demand. Oleic Acid supply is starting to loosen up on slower demand, but is still considered tight. Prices are up slightly for July, however producers are expecting some price relief for August on both tallow and veg based oleic acid as demand slows on renewable producers turnarounds for maintenance due to lower energy prices. Strong tallow demand into the bio-fuels market is stabilizing bringing average costs down in July. This will support lower prices in August.</div>
       </div>
     </div>
 
@@ -929,6 +910,21 @@
 </main>
 
 <script>
+  function toggleTheme() {
+    const isLight = document.body.classList.toggle('light');
+    document.getElementById('themeToggle').textContent = isLight ? '☾ Dark Mode' : '☀ Light Mode';
+    try { localStorage.setItem('barsol-theme', isLight ? 'light' : 'dark'); } catch(e) {}
+  }
+
+  (function() {
+    try {
+      if (localStorage.getItem('barsol-theme') === 'light') {
+        document.body.classList.add('light');
+        document.getElementById('themeToggle').textContent = '☾ Dark Mode';
+      }
+    } catch(e) {}
+  })();
+
   function toggleRow(row) {
     const detail = row.querySelector('.product-detail');
     const isClosed = detail.classList.contains('closed');
@@ -951,23 +947,6 @@
       row.querySelector('.product-detail').classList.add('closed');
     });
   }
-
-  // Theme toggle
-  function toggleTheme() {
-    const isLight = document.body.classList.toggle('light');
-    document.getElementById('themeToggle').textContent = isLight ? '☾ Dark Mode' : '☀ Light Mode';
-    try { localStorage.setItem('barsol-theme', isLight ? 'light' : 'dark'); } catch(e) {}
-  }
-
-  // Apply saved theme on load
-  (function() {
-    try {
-      if (localStorage.getItem('barsol-theme') === 'light') {
-        document.body.classList.add('light');
-        document.getElementById('themeToggle').textContent = '☾ Dark Mode';
-      }
-    } catch(e) {}
-  })();
 
   document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', function () {
