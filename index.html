@@ -113,26 +113,6 @@
     flex-wrap: wrap;
   }
 
-  .legend {
-    display: flex;
-    gap: 14px;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-
-  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
-
   .theme-toggle {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -151,18 +131,22 @@
   .theme-toggle:hover { color: var(--text); border-color: var(--muted); }
 
   .filter-bar {
-    padding: 12px 36px;
-    background: var(--bg);
+    padding: 10px 36px;
+    background: var(--surface);
     border-bottom: 1px solid var(--border);
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
     align-items: center;
+    position: sticky;
+    z-index: 99;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
   }
 
   .filter-label {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 10px;
+    font-weight: 600;
     color: var(--muted);
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -170,23 +154,43 @@
   }
 
   .filter-btn {
-    background: var(--surface);
+    background: var(--bg);
     border: 1px solid var(--border);
     color: var(--muted);
     font-family: 'IBM Plex Mono', monospace;
     font-size: 10px;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    padding: 5px 12px;
-    border-radius: 3px;
+    padding: 5px 12px 5px 8px;
+    border-radius: 12px;
     cursor: pointer;
     transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
   }
 
-  .filter-btn:hover, .filter-btn.active {
+  .filter-btn .filter-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .filter-btn:hover {
     color: var(--text);
-    border-color: var(--up);
-    background: rgba(255,77,77,0.1);
+    border-color: var(--muted);
+  }
+
+  .filter-btn.active {
+    color: var(--fc, var(--text));
+    border-color: var(--fc, var(--muted));
+    background: var(--synopsis-bg);
+    font-weight: 600;
+  }
+
+  .filter-btn.active .filter-dot {
+    box-shadow: 0 0 0 2px var(--surface), 0 0 0 2px var(--fc, var(--muted));
   }
 
   main {
@@ -257,6 +261,18 @@
     margin-bottom: 8px;
   }
 
+  .macro-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+    margin-bottom: 10px;
+  }
+
+  .macro-overview.collapsed .macro-header { margin-bottom: 0; }
+
   .macro-overview h2 {
     font-family: 'Barlow Condensed', sans-serif;
     font-size: 18px;
@@ -264,8 +280,21 @@
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--text);
-    margin-bottom: 10px;
   }
+
+  .macro-chevron {
+    font-size: 12px;
+    color: var(--muted);
+    transition: transform 0.2s;
+    font-style: normal;
+    flex-shrink: 0;
+    transform: rotate(180deg);
+  }
+
+  .macro-overview.collapsed .macro-chevron { transform: rotate(0deg); }
+
+  .macro-body { display: block; }
+  .macro-overview.collapsed .macro-body { display: none; }
 
   .macro-overview p {
     color: var(--detail-text);
@@ -431,7 +460,7 @@
   .full-detail-text {
     color: var(--detail-text);
     font-size: 15px;
-    font-weight: 400;
+    font-weight: 500;
     line-height: 1.75;
   }
 
@@ -484,38 +513,36 @@
     <div class="subtitle">Barton Solvents &nbsp;|&nbsp; Updated 07 / 09 / 2026 &nbsp;|&nbsp; For Discussion Purposes Only</div>
   </div>
   <div class="header-right">
-    <div class="legend">
-      <div class="legend-item"><div class="legend-dot" style="background:var(--up)"></div> Up</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--stable-up)"></div> Stable to Up</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--stable)"></div> Stable</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--down)"></div> Stable to Down / Down</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--volatile)"></div> Volatile</div>
-    </div>
     <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">☀ Light Mode</button>
   </div>
 </header>
 
-<div class="filter-bar">
-  <span class="filter-label">Filter:</span>
-  <button class="filter-btn active" data-filter="all">All</button>
-  <button class="filter-btn" data-filter="up">↑ Up</button>
-  <button class="filter-btn" data-filter="stable-up">↑ Stable to Up</button>
-  <button class="filter-btn" data-filter="stable">→ Stable</button>
-  <button class="filter-btn" data-filter="stable-down">↓ Stable to Down</button>
-  <button class="filter-btn" data-filter="down">↓ Down</button>
-  <button class="filter-btn" data-filter="volatile">⚡ Volatile</button>
+<div class="filter-bar" id="filterBar">
+  <span class="filter-label">Filter by trend:</span>
+  <button class="filter-btn active" data-filter="all" title="Show all products"><span class="filter-dot" style="background:var(--muted)"></span>All</button>
+  <button class="filter-btn" data-filter="up" style="--fc:var(--up)" title="Filter: Up"><span class="filter-dot" style="background:var(--up)"></span>Up</button>
+  <button class="filter-btn" data-filter="stable-up" style="--fc:var(--stable-up)" title="Filter: Stable to Up"><span class="filter-dot" style="background:var(--stable-up)"></span>Stable to Up</button>
+  <button class="filter-btn" data-filter="stable" style="--fc:var(--stable)" title="Filter: Stable"><span class="filter-dot" style="background:var(--stable)"></span>Stable</button>
+  <button class="filter-btn" data-filter="stable-down" style="--fc:var(--down)" title="Filter: Stable to Down"><span class="filter-dot" style="background:var(--down)"></span>Stable to Down</button>
+  <button class="filter-btn" data-filter="down" style="--fc:var(--down)" title="Filter: Down"><span class="filter-dot" style="background:var(--down)"></span>Down</button>
+  <button class="filter-btn" data-filter="volatile" style="--fc:var(--volatile)" title="Filter: Volatile"><span class="filter-dot" style="background:var(--volatile)"></span>Volatile</button>
 </div>
 
 <main>
 
   <div class="section-label">Macro Context</div>
-  <div class="macro-overview">
-    <h2>June 2026 Market Overview</h2>
-    <p>The dominant story this month is the unwinding of the Iran conflict risk premium following the Islamabad MOU signed June 17. After four months of price spikes, supply disruptions, and force majeures, markets are broadly moving lower as feedstock costs fall, supply chains recover, and buying behavior shifts back to need-based purchasing only.</p>
-    <p><strong>Prices broadly falling:</strong> Propylene settled down 8.5 cpp (second consecutive monthly decrease), Ethylene down 3.5 cpp (first decrease since January, spot prices down 31% from May), Acetone down 7.5 cpp (second consecutive decrease), IPA spot prices fell sharply. MEK supply is now long globally with producers dropping prices faster than they'd like. Aliphatics, Aromatics, Toluol &amp; Xylol, and Methanol all down. OPEC+ agreed to boost production in August to recover lost revenues, adding further downward pressure on crude.</p>
-    <p><strong>Still tight / stable to up:</strong> Propylene Glycols remain on allocation through July (Lyondell's restart experienced hiccups). Glycerin stays elevated through August. D-Limonene facing upward pressure from a proposed additional 25% US tariff on Brazilian goods on top of the existing 10%. Methyl Soyate / Oleic Acid stable to up on strong bio-diesel seasonal demand.</p>
-    <p><strong>Watch list:</strong> The MOU is already under threat — missile strikes were exchanged in early July, re-introducing volatility in crude and energy markets. DEA and E-Series glycol ethers seeing Force Majeure terminations as supply normalizes. Competitive activity expected to pick up across IPA, MEK, OXO alcohols, aromatics, and aliphatics. Look for competitive pricing opportunities this month.</p>
-    <p><strong>Economy:</strong> US Q1 GDP revised up from 1.6% to 2.1%. Consumer confidence and sentiment both ticking up as gasoline prices moderate and inflation fears ease. Construction spending up slightly month over month but still down 1.5% year on year. Housing and auto demand remain strained by elevated interest rates and affordability challenges with limited H2 recovery expected.</p>
+  <div class="macro-overview" id="macroOverview">
+    <div class="macro-header" onclick="toggleMacro()">
+      <h2>June 2026 Market Overview</h2>
+      <i class="macro-chevron">▼</i>
+    </div>
+    <div class="macro-body">
+      <p>The dominant story this month is the unwinding of the Iran conflict risk premium following the Islamabad MOU signed June 17. After four months of price spikes, supply disruptions, and force majeures, markets are broadly moving lower as feedstock costs fall, supply chains recover, and buying behavior shifts back to need-based purchasing only.</p>
+      <p><strong>Prices broadly falling:</strong> Propylene settled down 8.5 cpp (second consecutive monthly decrease), Ethylene down 3.5 cpp (first decrease since January, spot prices down 31% from May), Acetone down 7.5 cpp (second consecutive decrease), IPA spot prices fell sharply. MEK supply is now long globally with producers dropping prices faster than they'd like. Aliphatics, Aromatics, Toluol &amp; Xylol, and Methanol all down. OPEC+ agreed to boost production in August to recover lost revenues, adding further downward pressure on crude.</p>
+      <p><strong>Still tight / stable to up:</strong> Propylene Glycols remain on allocation through July (Lyondell's restart experienced hiccups). Glycerin stays elevated through August. D-Limonene facing upward pressure from a proposed additional 25% US tariff on Brazilian goods on top of the existing 10%. Methyl Soyate / Oleic Acid stable to up on strong bio-diesel seasonal demand.</p>
+      <p><strong>Watch list:</strong> The MOU is already under threat — missile strikes were exchanged in early July, re-introducing volatility in crude and energy markets. DEA and E-Series glycol ethers seeing Force Majeure terminations as supply normalizes. Competitive activity expected to pick up across IPA, MEK, OXO alcohols, aromatics, and aliphatics. Look for competitive pricing opportunities this month.</p>
+      <p><strong>Economy:</strong> US Q1 GDP revised up from 1.6% to 2.1%. Consumer confidence and sentiment both ticking up as gasoline prices moderate and inflation fears ease. Construction spending up slightly month over month but still down 1.5% year on year. Housing and auto demand remain strained by elevated interest rates and affordability challenges with limited H2 recovery expected.</p>
+    </div>
   </div>
 
   <!-- PROPYLENE -->
@@ -961,6 +988,19 @@
       }
     } catch(e) {}
   })();
+
+  function toggleMacro() {
+    document.getElementById('macroOverview').classList.toggle('collapsed');
+  }
+
+  function positionFilterBar() {
+    const header = document.querySelector('header');
+    const bar = document.getElementById('filterBar');
+    if (header && bar) { bar.style.top = header.offsetHeight + 'px'; }
+  }
+  window.addEventListener('resize', positionFilterBar);
+  window.addEventListener('load', positionFilterBar);
+  positionFilterBar();
 
   function toggleRow(row) {
     const detail = row.querySelector('.product-detail');
