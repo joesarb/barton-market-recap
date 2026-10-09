@@ -207,6 +207,9 @@
     flex: 1 1 auto;
   }
   .filter-bar.min .filter-chips { display: none; }
+  .filter-toggle { display: inline-flex; align-items: center; gap: 6px; }
+  .filter-toggle .filter-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--fc, var(--muted)); flex-shrink: 0; }
+  .filter-toggle.filtered, .filter-bar .filter-toggle.filtered:hover { color: var(--fc); border-color: var(--fc); background: var(--synopsis-bg); font-weight: 600; }
   .filter-tools { display: flex; gap: 8px; align-items: center; margin-left: auto; }
   .filter-bar .ctrl-btn { font-size: 10px; padding: 5px 12px; }
   .filter-bar .ctrl-btn:hover { border-color: var(--muted); }
@@ -587,7 +590,7 @@
 </header>
 
 <div class="filter-bar" id="filterBar">
-  <button class="ctrl-btn filter-toggle" id="filterToggle" onclick="toggleFilterBar()" title="Show or hide trend filters">Filter: <span id="filterCurrent">All</span> ▾</button>
+  <button class="ctrl-btn filter-toggle" id="filterToggle" onclick="toggleFilterBar()" title="Show or hide trend filters"><span class="filter-dot" id="filterDot"></span>Filter: <span id="filterCurrent">All</span> ▾</button>
   <div class="filter-chips">
   <span class="filter-label">Filter by trend:</span>
   <button class="filter-btn active" data-filter="all" title="Show all products"><span class="filter-dot" style="background:var(--muted)"></span>All</button>
@@ -1303,6 +1306,10 @@
       this.classList.add('active');
       const filter = this.dataset.filter;
       document.getElementById('filterCurrent').textContent = this.textContent.trim();
+      const tg = document.getElementById('filterToggle');
+      const fc = this.style.getPropertyValue('--fc');
+      if (fc) tg.style.setProperty('--fc', fc); else tg.style.removeProperty('--fc');
+      tg.classList.toggle('filtered', filter !== 'all');
       if (isMobile()) { setFilterMin(true); store('barsol-filter-min', '1'); }
       document.querySelectorAll('.product-row').forEach(row => {
         if (filter === 'all' || row.dataset.trend === filter) {
