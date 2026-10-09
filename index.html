@@ -34,8 +34,9 @@
     --detail-text: #b0b8cc;
     --detail-bg: rgba(0,0,0,0.12);
     --synopsis-bg: rgba(255,255,255,0.04);
-    --war-bg: rgba(196,113,237,0.06);
-    --war-border: rgba(196,113,237,0.3);
+    --war: #ff5fa8;
+    --war-bg: rgba(255,95,168,0.07);
+    --war-border: rgba(255,95,168,0.35);
   }
 
   body.light {
@@ -66,8 +67,9 @@
     --detail-text: #3a4060;
     --detail-bg: rgba(0,0,0,0.03);
     --synopsis-bg: rgba(0,0,0,0.04);
-    --war-bg: rgba(125,60,152,0.05);
-    --war-border: rgba(125,60,152,0.3);
+    --war: #b8266b;
+    --war-bg: rgba(184,38,107,0.06);
+    --war-border: rgba(184,38,107,0.3);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -294,7 +296,7 @@
   .war-banner {
     background: var(--war-bg);
     border: 1px solid var(--war-border);
-    border-left: 4px solid var(--volatile);
+    border-left: 4px solid var(--war);
     border-radius: 4px;
     padding: 16px 20px;
     margin-bottom: 8px;
@@ -306,7 +308,7 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: var(--volatile);
+    color: var(--war);
     margin-bottom: 7px;
   }
 
