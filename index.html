@@ -1312,11 +1312,11 @@
       tg.classList.toggle('filtered', filter !== 'all');
       if (isMobile()) { setFilterMin(true); store('barsol-filter-min', '1'); }
       document.querySelectorAll('.product-row[data-trend]').forEach(row => {
-        if (filter === 'all' || row.dataset.trend === filter) {
-          row.classList.remove('hidden');
-          row.querySelector('.product-detail').classList.remove('closed');
-        } else {
-          row.classList.add('hidden');
+        const show = filter === 'all' || row.dataset.trend === filter;
+        row.classList.toggle('hidden', !show);
+        if (filter !== 'all') {
+          // filtered results start collapsed
+          row.classList.remove('open');
           row.querySelector('.product-detail').classList.add('closed');
         }
       });
