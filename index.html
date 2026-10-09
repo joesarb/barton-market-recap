@@ -305,11 +305,6 @@
   }
 
   .war-banner p { color: var(--detail-text); font-size: 16px; line-height: 1.65; }
-  .war-banner h2 { cursor: pointer; user-select: none; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-  .war-banner h2 .macro-chevron { color: var(--volatile); }
-  .war-banner.collapsed h2 { margin-bottom: 0; }
-  .war-banner.collapsed h2 .macro-chevron { transform: rotate(0deg); }
-  .war-banner.collapsed p { display: none; }
 
   .macro-overview {
     background: var(--surface);
@@ -1048,8 +1043,8 @@
   </div>
 
   <div class="section-label">Additional Notes</div>
-  <div class="war-banner" id="warBanner" style="margin-bottom:8px;">
-    <h2 onclick="document.getElementById('warBanner').classList.toggle('collapsed')"><span>⚠ War with Iran — Past Six Months, Hormuz Reopening Talks Continue</span><i class="macro-chevron">▼</i></h2>
+  <div class="war-banner" style="margin-bottom:8px;">
+    <h2>⚠ War with Iran — Past Six Months, Hormuz Reopening Talks Continue</h2>
     <p>The war in the middle-east has now passed six months and remains volatile. US and Iranian negotiators are exploring a phased reopening of the Strait of Hormuz, but traders are skeptical anything will get done soon, and Houthi strikes on Saudi energy continue to keep supply risks high. The Strait and the Red Sea are now considered security choke points, driving freight costs and import delays. The global markets are fluid and can quickly change from one conversation or meeting to another. Please continue to monitor your accounts for competitive activity where needed and communicate with your managers what you are seeing. This information is critical as we discuss market challenges with our channel partners.</p>
   </div>
 
@@ -1218,7 +1213,6 @@
 
   function expandAll() {
     document.getElementById('macroOverview').classList.remove('collapsed');
-    document.getElementById('warBanner').classList.remove('collapsed');
     document.querySelectorAll('.product-row:not(.hidden)').forEach(row => {
       row.classList.add('open');
       row.querySelector('.product-detail').classList.remove('closed');
@@ -1226,7 +1220,6 @@
   }
   function collapseAll() {
     document.getElementById('macroOverview').classList.add('collapsed');
-    document.getElementById('warBanner').classList.add('collapsed');
     document.querySelectorAll('.product-row').forEach(row => {
       row.classList.remove('open');
       row.querySelector('.product-detail').classList.add('closed');
@@ -1318,19 +1311,12 @@
       if (fc) tg.style.setProperty('--fc', fc); else tg.style.removeProperty('--fc');
       tg.classList.toggle('filtered', filter !== 'all');
       if (isMobile()) { setFilterMin(true); store('barsol-filter-min', '1'); }
-      if (filter !== 'all') {
-        document.getElementById('warBanner').classList.add('collapsed');
-        document.querySelectorAll('.trend-tariff').forEach(row => {
-          row.classList.remove('open');
-          row.querySelector('.product-detail').classList.add('closed');
-        });
-      }
       document.querySelectorAll('.product-row[data-trend]').forEach(row => {
-        if (filter === 'all' || row.dataset.trend === filter) {
-          row.classList.remove('hidden');
-          row.querySelector('.product-detail').classList.remove('closed');
-        } else {
-          row.classList.add('hidden');
+        const show = filter === 'all' || row.dataset.trend === filter;
+        row.classList.toggle('hidden', !show);
+        if (filter !== 'all') {
+          // filtered results start collapsed
+          row.classList.remove('open');
           row.querySelector('.product-detail').classList.add('closed');
         }
       });
