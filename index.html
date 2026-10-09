@@ -1311,7 +1311,7 @@
       if (fc) tg.style.setProperty('--fc', fc); else tg.style.removeProperty('--fc');
       tg.classList.toggle('filtered', filter !== 'all');
       if (isMobile()) { setFilterMin(true); store('barsol-filter-min', '1'); }
-      document.querySelectorAll('.product-row').forEach(row => {
+      document.querySelectorAll('.product-row[data-trend]').forEach(row => {
         if (filter === 'all' || row.dataset.trend === filter) {
           row.classList.remove('hidden');
           row.querySelector('.product-detail').classList.remove('closed');
