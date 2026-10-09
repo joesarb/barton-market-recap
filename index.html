@@ -21,6 +21,9 @@
     --stable: #4caf82;
     --stable-bg: rgba(76,175,130,0.08);
     --stable-border: rgba(76,175,130,0.3);
+    --stable-down: #2ec4d6;
+    --stable-down-bg: rgba(46,196,214,0.08);
+    --stable-down-border: rgba(46,196,214,0.3);
     --down: #4c9fff;
     --down-bg: rgba(76,159,255,0.08);
     --down-border: rgba(76,159,255,0.25);
@@ -50,6 +53,9 @@
     --stable: #1e7a4a;
     --stable-bg: rgba(30,122,74,0.07);
     --stable-border: rgba(30,122,74,0.3);
+    --stable-down: #0e7c8a;
+    --stable-down-bg: rgba(14,124,138,0.07);
+    --stable-down-border: rgba(14,124,138,0.3);
     --down: #185FA5;
     --down-bg: rgba(24,95,165,0.07);
     --down-border: rgba(24,95,165,0.3);
@@ -375,7 +381,7 @@
   .product-row.trend-up { border-left: 3px solid var(--up); }
   .product-row.trend-stable-up { border-left: 3px solid var(--stable-up); }
   .product-row.trend-stable { border-left: 3px solid var(--stable); }
-  .product-row.trend-stable-down { border-left: 3px solid var(--down); }
+  .product-row.trend-stable-down { border-left: 3px solid var(--stable-down); }
   .product-row.trend-down { border-left: 3px solid var(--down); }
   .product-row.trend-volatile { border-left: 3px solid var(--volatile); }
 
@@ -446,7 +452,7 @@
   .trend-badge.up { background: var(--up-bg); color: var(--up); border: 1px solid var(--up-border); }
   .trend-badge.stable-up { background: var(--stable-up-bg); color: var(--stable-up); border: 1px solid var(--stable-up-border); }
   .trend-badge.stable { background: var(--stable-bg); color: var(--stable); border: 1px solid var(--stable-border); }
-  .trend-badge.stable-down { background: var(--down-bg); color: var(--down); border: 1px solid var(--down-border); }
+  .trend-badge.stable-down { background: var(--stable-down-bg); color: var(--stable-down); border: 1px solid var(--stable-down-border); }
   .trend-badge.down { background: var(--down-bg); color: var(--down); border: 1px solid var(--down-border); }
   .trend-badge.volatile { background: var(--volatile-bg); color: var(--volatile); border: 1px solid var(--volatile-border); }
 
@@ -459,7 +465,7 @@
     transform: rotate(180deg);
   }
 
-  .product-row.closed .toggle-chevron { transform: rotate(0deg); }
+  .product-row:has(> .product-detail.closed) .toggle-chevron { transform: rotate(0deg); }
 
   .product-detail {
     display: block;
@@ -645,7 +651,7 @@
   <button class="filter-btn" data-filter="up" style="--fc:var(--up)" title="Filter: Up"><span class="filter-dot" style="background:var(--up)"></span>Up</button>
   <button class="filter-btn" data-filter="stable-up" style="--fc:var(--stable-up)" title="Filter: Stable to Up"><span class="filter-dot" style="background:var(--stable-up)"></span>Stable to Up</button>
   <button class="filter-btn" data-filter="stable" style="--fc:var(--stable)" title="Filter: Stable"><span class="filter-dot" style="background:var(--stable)"></span>Stable</button>
-  <button class="filter-btn" data-filter="stable-down" style="--fc:var(--down)" title="Filter: Stable to Down"><span class="filter-dot" style="background:var(--down)"></span>Stable to Down</button>
+  <button class="filter-btn" data-filter="stable-down" style="--fc:var(--stable-down)" title="Filter: Stable to Down"><span class="filter-dot" style="background:var(--stable-down)"></span>Stable to Down</button>
   <button class="filter-btn" data-filter="down" style="--fc:var(--down)" title="Filter: Down"><span class="filter-dot" style="background:var(--down)"></span>Down</button>
   <button class="filter-btn" data-filter="volatile" style="--fc:var(--volatile)" title="Filter: Volatile"><span class="filter-dot" style="background:var(--volatile)"></span>Volatile</button>
   </div>
