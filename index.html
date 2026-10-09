@@ -1275,8 +1275,14 @@
     detail.classList.toggle('closed', !isClosed);
   }
 
+  function sectionWrap(btn) {
+    let el = btn.closest('.section-label').nextElementSibling;
+    while (el && !el.classList.contains('table-wrap')) el = el.nextElementSibling;
+    return el;
+  }
+
   function expandSection(btn) {
-    const wrap = btn.closest('.section-label').nextElementSibling;
+    const wrap = sectionWrap(btn);
     wrap.querySelectorAll('.product-row:not(.hidden)').forEach(row => {
       row.classList.add('open');
       row.querySelector('.product-detail').classList.remove('closed');
@@ -1284,7 +1290,7 @@
   }
 
   function collapseSection(btn) {
-    const wrap = btn.closest('.section-label').nextElementSibling;
+    const wrap = sectionWrap(btn);
     wrap.querySelectorAll('.product-row').forEach(row => {
       row.classList.remove('open');
       row.querySelector('.product-detail').classList.add('closed');
