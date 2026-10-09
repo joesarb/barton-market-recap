@@ -193,6 +193,55 @@
     box-shadow: 0 0 0 2px var(--surface), 0 0 0 2px var(--fc, var(--muted));
   }
 
+  /* Minimizable header + filter bar */
+  header.min { padding: 8px 36px; align-items: center; gap: 8px; }
+  header.min .header-left h1 { font-size: 18px; }
+  header.min .header-left .subtitle,
+  header.min #themeToggle { display: none; }
+
+  .filter-chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+    flex: 1 1 auto;
+  }
+  .filter-bar.min .filter-chips { display: none; }
+  .filter-tools { display: flex; gap: 8px; align-items: center; margin-left: auto; }
+  .filter-bar .ctrl-btn { font-size: 10px; padding: 5px 12px; }
+  .filter-bar .ctrl-btn:hover { border-color: var(--muted); }
+
+  /* Floating navigation */
+  .float-nav {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 120;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(8px);
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .float-nav.show { opacity: 1; pointer-events: auto; transform: none; }
+  .float-nav button {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 9px 14px;
+    border-radius: 3px;
+    cursor: pointer;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+  }
+  .float-nav button:hover { border-color: var(--muted); }
+
   main {
     max-width: 1200px;
     margin: 0 auto;
@@ -211,9 +260,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
   }
 
-  .section-controls { display: flex; gap: 8px; }
+  .section-controls { display: flex; gap: 8px; flex-wrap: wrap; }
 
   .ctrl-btn {
     font-family: 'IBM Plex Mono', monospace;
@@ -500,6 +551,12 @@
 
   @media (max-width: 800px) {
     header, .filter-bar, main { padding-left: 16px; padding-right: 16px; }
+    header.min { padding: 6px 16px; }
+    .filter-bar { padding-top: 6px; padding-bottom: 6px; }
+    .filter-chips { flex-basis: 100%; order: 3; }
+    .float-nav { right: 0; left: 0; bottom: 12px; flex-direction: row; justify-content: center; gap: 6px; padding: 0 12px; }
+    .float-nav button { padding: 10px 12px; }
+    .lbl-long { display: none; }
     .product-row-header { grid-template-columns: 1fr 140px; }
     .product-driver, .product-tags { display: none; }
   }
@@ -514,10 +571,13 @@
   </div>
   <div class="header-right">
     <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">☀ Light Mode</button>
+    <button class="theme-toggle header-toggle" id="headerToggle" onclick="toggleHeader()" title="Minimize or expand the header">▲ Minimize</button>
   </div>
 </header>
 
 <div class="filter-bar" id="filterBar">
+  <button class="ctrl-btn filter-toggle" id="filterToggle" onclick="toggleFilterBar()" title="Show or hide trend filters">Filter: <span id="filterCurrent">All</span> ▾</button>
+  <div class="filter-chips">
   <span class="filter-label">Filter by trend:</span>
   <button class="filter-btn active" data-filter="all" title="Show all products"><span class="filter-dot" style="background:var(--muted)"></span>All</button>
   <button class="filter-btn" data-filter="up" style="--fc:var(--up)" title="Filter: Up"><span class="filter-dot" style="background:var(--up)"></span>Up</button>
@@ -526,6 +586,17 @@
   <button class="filter-btn" data-filter="stable-down" style="--fc:var(--down)" title="Filter: Stable to Down"><span class="filter-dot" style="background:var(--down)"></span>Stable to Down</button>
   <button class="filter-btn" data-filter="down" style="--fc:var(--down)" title="Filter: Down"><span class="filter-dot" style="background:var(--down)"></span>Down</button>
   <button class="filter-btn" data-filter="volatile" style="--fc:var(--volatile)" title="Filter: Volatile"><span class="filter-dot" style="background:var(--volatile)"></span>Volatile</button>
+  </div>
+  <div class="filter-tools">
+    <button class="ctrl-btn" onclick="expandAll()">Expand All</button>
+    <button class="ctrl-btn" onclick="collapseAll()">Collapse All</button>
+  </div>
+</div>
+
+<div class="float-nav" id="floatNav">
+  <button onclick="jumpTop()" title="Jump to top">↑ Top</button>
+  <button onclick="jumpCategory(-1)" title="Previous category">← Prev<span class="lbl-long"> category</span></button>
+  <button onclick="jumpCategory(1)" title="Next category">Next<span class="lbl-long"> category</span> →</button>
 </div>
 
 <main>
@@ -549,8 +620,8 @@
   <div class="section-label">
     Propylene &amp; Derivatives
     <div class="section-controls">
-      <button class="ctrl-btn" onclick="expandSection(this)">Expand All</button>
-      <button class="ctrl-btn" onclick="collapseSection(this)">Collapse All</button>
+      <button class="ctrl-btn" onclick="expandSection(this)">Expand this category</button>
+      <button class="ctrl-btn" onclick="collapseSection(this)">Collapse this category</button>
     </div>
   </div>
   <div class="table-wrap">
@@ -657,8 +728,8 @@
   <div class="section-label">
     Ethylene &amp; Derivatives
     <div class="section-controls">
-      <button class="ctrl-btn" onclick="expandSection(this)">Expand All</button>
-      <button class="ctrl-btn" onclick="collapseSection(this)">Collapse All</button>
+      <button class="ctrl-btn" onclick="expandSection(this)">Expand this category</button>
+      <button class="ctrl-btn" onclick="collapseSection(this)">Collapse this category</button>
     </div>
   </div>
   <div class="table-wrap">
@@ -749,8 +820,8 @@
   <div class="section-label">
     Crude Oil &amp; Energy Derivatives
     <div class="section-controls">
-      <button class="ctrl-btn" onclick="expandSection(this)">Expand All</button>
-      <button class="ctrl-btn" onclick="collapseSection(this)">Collapse All</button>
+      <button class="ctrl-btn" onclick="expandSection(this)">Expand this category</button>
+      <button class="ctrl-btn" onclick="collapseSection(this)">Collapse this category</button>
     </div>
   </div>
   <div class="table-wrap">
@@ -825,8 +896,8 @@
   <div class="section-label">
     Natural Gas &amp; Derivatives
     <div class="section-controls">
-      <button class="ctrl-btn" onclick="expandSection(this)">Expand All</button>
-      <button class="ctrl-btn" onclick="collapseSection(this)">Collapse All</button>
+      <button class="ctrl-btn" onclick="expandSection(this)">Expand this category</button>
+      <button class="ctrl-btn" onclick="collapseSection(this)">Collapse this category</button>
     </div>
   </div>
   <div class="table-wrap">
@@ -869,8 +940,8 @@
   <div class="section-label">
     Miscellaneous &amp; Specialty
     <div class="section-controls">
-      <button class="ctrl-btn" onclick="expandSection(this)">Expand All</button>
-      <button class="ctrl-btn" onclick="collapseSection(this)">Collapse All</button>
+      <button class="ctrl-btn" onclick="expandSection(this)">Expand this category</button>
+      <button class="ctrl-btn" onclick="collapseSection(this)">Collapse this category</button>
     </div>
   </div>
   <div class="table-wrap">
@@ -989,6 +1060,70 @@
     } catch(e) {}
   })();
 
+  function store(k, v) { try { localStorage.setItem(k, v); } catch(e) {} }
+  function load(k) { try { return localStorage.getItem(k); } catch(e) { return null; } }
+  const isMobile = () => window.matchMedia('(max-width: 800px)').matches;
+
+  function setHeaderMin(min) {
+    document.querySelector('header').classList.toggle('min', min);
+    document.getElementById('headerToggle').textContent = min ? '▼ Expand' : '▲ Minimize';
+    positionFilterBar();
+  }
+  function toggleHeader() {
+    const min = !document.querySelector('header').classList.contains('min');
+    setHeaderMin(min);
+    store('barsol-header-min', min ? '1' : '0');
+  }
+  function setFilterMin(min) {
+    document.getElementById('filterBar').classList.toggle('min', min);
+    positionFilterBar();
+  }
+  function toggleFilterBar() {
+    const min = !document.getElementById('filterBar').classList.contains('min');
+    setFilterMin(min);
+    store('barsol-filter-min', min ? '1' : '0');
+  }
+
+  function expandAll() {
+    document.getElementById('macroOverview').classList.remove('collapsed');
+    document.querySelectorAll('.product-row:not(.hidden)').forEach(row => {
+      row.classList.add('open');
+      row.querySelector('.product-detail').classList.remove('closed');
+    });
+  }
+  function collapseAll() {
+    document.getElementById('macroOverview').classList.add('collapsed');
+    document.querySelectorAll('.product-row').forEach(row => {
+      row.classList.remove('open');
+      row.querySelector('.product-detail').classList.add('closed');
+    });
+  }
+
+  // Floating navigation
+  function stickyOffset() {
+    const bar = document.getElementById('filterBar');
+    return bar.getBoundingClientRect().bottom + 4;
+  }
+  function jumpTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+  function jumpCategory(dir) {
+    const labels = Array.from(document.querySelectorAll('.section-label'));
+    const off = stickyOffset();
+    let target = null;
+    if (dir > 0) {
+      target = labels.find(l => l.getBoundingClientRect().top > off + 8);
+    } else {
+      target = labels.slice().reverse().find(l => l.getBoundingClientRect().top < off - 8);
+    }
+    if (!target) { if (dir > 0) return; return jumpTop(); }
+    const y = target.getBoundingClientRect().top + window.pageYOffset - off;
+    window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+  }
+  function updateFloatNav() {
+    document.getElementById('floatNav').classList.toggle('show', window.pageYOffset > 120);
+  }
+  window.addEventListener('scroll', updateFloatNav, { passive: true });
+  window.addEventListener('load', updateFloatNav);
+
   function toggleMacro() {
     document.getElementById('macroOverview').classList.toggle('collapsed');
   }
@@ -1001,6 +1136,13 @@
   window.addEventListener('resize', positionFilterBar);
   window.addEventListener('load', positionFilterBar);
   positionFilterBar();
+
+  (function initChrome() {
+    const h = load('barsol-header-min'), f = load('barsol-filter-min');
+    setHeaderMin(h === null ? isMobile() : h === '1');
+    setFilterMin(f === null ? isMobile() : f === '1');
+    updateFloatNav();
+  })();
 
   function toggleRow(row) {
     const detail = row.querySelector('.product-detail');
@@ -1030,6 +1172,8 @@
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
       this.classList.add('active');
       const filter = this.dataset.filter;
+      document.getElementById('filterCurrent').textContent = this.textContent.trim();
+      if (isMobile()) { setFilterMin(true); store('barsol-filter-min', '1'); }
       document.querySelectorAll('.product-row').forEach(row => {
         if (filter === 'all' || row.dataset.trend === filter) {
           row.classList.remove('hidden');
