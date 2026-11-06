@@ -12,11 +12,14 @@ Run each month AFTER index.html is updated:
   python3 tools/make_briefing.py --model kokoro-v1.0.int8.onnx --voices voices-v1.0.bin
 
 Writes audio/ in the repo root:
-  briefing.mp3          each product + its trend + the one-line takeaway, in page order (marks are in manifest.json)
+  list-brief.mp3        BRIEF: each product + its trend only, in page order
+  list-short.mp3        SHORT: each product + trend + the one-line takeaway
+  list-full.mp3         FULL: each product + trend + its full detail
+                        (the three list files also carry per-product marks in manifest.json for highlight/skip)
   overview.mp3          the full market overview
   bl/<slug>.mp3         each product's Bottom Line
   fd/<slug>.mp3         each product's Full Detail
-  manifest.json         file names, durations, briefing marks (the page reads this)
+  manifest.json         file names, durations, list marks (the page reads this)
 """
 import argparse, html, json, os, re, subprocess, sys, tempfile, datetime
 import numpy as np, soundfile as sf
@@ -103,9 +106,9 @@ def main():
     ap.add_argument('--model', required=True); ap.add_argument('--voices', required=True)
     ap.add_argument('--voice', default=VOICE)
     ap.add_argument('--speed', type=float, default=1.05); ap.add_argument('--out', default=os.path.join(ROOT, 'audio'))
-    ap.add_argument('--only', help='comma list of: briefing,overview,bl,fd (default: all)')
+    ap.add_argument('--only', help='comma list of: lists,overview,bl,fd (default: all)')
     a = ap.parse_args()
-    parts_wanted = set((a.only or 'briefing,overview,bl,fd').split(','))
+    parts_wanted = set((a.only or 'lists,overview,bl,fd').split(','))
     src = open(os.path.join(ROOT, 'index.html'), encoding='utf-8').read()
     rows, overview = parse_page(src)
     assert len(rows) == 22 and all(r['bl'] and r['fd'] for r in rows), 'could not parse every product'
@@ -135,29 +138,47 @@ def main():
     manifest = json.load(open(mf_path)) if os.path.exists(mf_path) else {}
     manifest.update({'voice': a.voice, 'generated': datetime.date.today().isoformat()})
 
-    if 'briefing' in parts_wanted:
+    want = lambda k: k in parts_wanted
+    sp_head, sp_short, sp_bl, sp_fd = {}, {}, {}, {}
+    for r in rows:
+        lead = f"{r['name']}, {TREND_SAY[r['trend']]}."
+        if want('lists'):
+            sp_head[r['name']] = speak(lead)
+            sp_short[r['name']] = speak(f"{lead} {r['line']}.")
+        if want('bl'):
+            sp_bl[r['name']] = speak(f"{lead} {r['bl']}")
+        if want('fd') or want('lists'):
+            sp_fd[r['name']] = speak(f"{lead} {r['fd']}")
+        print(f'rendered {r["name"]}', file=sys.stderr, flush=True)
+
+    def build_list(kind, by_name, pad_sec):
         pieces, marks, t = [], [], 0.0
         for r in rows:
-            sp = speak(f"{r['name']}, {TREND_SAY[r['trend']]}. {r['line']}.")
+            sp = by_name[r['name']]
             marks.append({'key': 'b:i:' + r['name'], 'start': round(t, 2), 'end': round(t + len(sp) / SR, 2)})
-            pad = silence(0.45); pieces += [sp, pad]; t += (len(sp) + len(pad)) / SR
-            print(f'briefing {t:6.1f}s {r["name"]}', file=sys.stderr, flush=True)
-        dur = write(np.concatenate(pieces), 'briefing.mp3')
-        manifest['briefing'] = {'file': 'briefing.mp3', 'duration': dur, 'marks': marks}
-    if 'overview' in parts_wanted:
+            pad = silence(pad_sec); pieces += [sp, pad]; t += (len(sp) + len(pad)) / SR
+        dur = write(np.concatenate(pieces), f'list-{kind}.mp3')
+        manifest.setdefault('lists', {})[kind] = {'file': f'list-{kind}.mp3', 'duration': dur, 'marks': marks}
+        print(f'list {kind}: {dur:.0f}s', file=sys.stderr, flush=True)
+
+    if want('lists'):
+        build_list('brief', sp_head, 0.35)
+        build_list('short', sp_short, 0.45)
+        build_list('full', sp_fd, 1.0)
+    if want('overview'):
         pieces = [speak(overview['title'] + '.'), silence(0.6)]
         for ptxt in overview['paragraphs']:
             pieces += [speak(ptxt), silence(0.6)]
         dur = write(np.concatenate(pieces), 'overview.mp3')
         manifest['overview'] = {'file': 'overview.mp3', 'duration': dur}
         print(f'overview {dur}s', file=sys.stderr, flush=True)
-    for kind, field in (('bl', 'bl'), ('fd', 'fd')):
-        if kind not in parts_wanted: continue
+    for kind, store in (('bl', sp_bl), ('fd', sp_fd)):
+        if not want(kind): continue
         manifest[kind] = {}
         for r in rows:
-            dur = write(np.concatenate([speak(f"{r['name']}, {TREND_SAY[r['trend']]}. {r[field]}")]), f'{kind}/{slug(r["name"])}.mp3')
+            dur = write(store[r['name']], f'{kind}/{slug(r["name"])}.mp3')
             manifest[kind][r['name']] = {'file': f'{kind}/{slug(r["name"])}.mp3', 'duration': dur}
-            print(f'{kind} {dur:6.1f}s {r["name"]}', file=sys.stderr, flush=True)
+    manifest.pop('briefing', None)
     json.dump(manifest, open(mf_path, 'w'), indent=1)
     print('done', file=sys.stderr, flush=True)
 
