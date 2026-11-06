@@ -8,6 +8,7 @@ Barton Solvents Monthly Market Recap
    (fills each product's "Trend history" from the archived months; the current month is added by the page)
 - Header date, `<title>`, and the "Market Overview" paragraph block
 - Each product row: trend badge/class, `data-trend`, Bottom Line, Full Detail
+  - Trend badges use these emoji arrows: Up ⬆️, Stable to Up ↗️, Stable ➡️, Stable to Down ↘️, Down ⬇️, Volatile ⚡ (the page's JS uses the same set)
 - Each product row also carries two fields used by the Quick view and Listen:
   - `data-line` - the one-line takeaway shown on the quick card (and read aloud)
   - `data-prev` - last month's trend, so a "NEW TREND" tag appears when it changed
