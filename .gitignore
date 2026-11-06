@@ -1,0 +1,9 @@
+# Python bytecode (created when running tools/make_briefing.py)
+__pycache__/
+*.pyc
+
+# Kokoro voice model files are downloaded locally, not committed (see README)
+kokoro-*.onnx
+voices-*.bin
+
+.DS_Store
