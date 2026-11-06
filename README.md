@@ -24,11 +24,15 @@ rebuilt every month, otherwise they will describe last month's data:
     #   https://github.com/thewh1teagle/kokoro-onnx/releases/tag/model-files-v1.0
     python3 tools/make_briefing.py --model kokoro-v1.0.int8.onnx --voices voices-v1.0.bin
 
-This writes `audio/` (about 17 MB, ~12 minutes to build):
-- `briefing.mp3` - each product + trend + one-line takeaway, in page order (highlight marks are in `manifest.json`)
+This writes `audio/` (about 30 MB, ~15 minutes to build):
+- `list-brief.mp3` - BRIEF: each product + trend only, in page order
+- `list-short.mp3` - SHORT: each product + trend + the one-line takeaway
+- `list-full.mp3` - FULL: each product + trend + its full detail (about 28 minutes)
+  (the three list files carry per-product marks in `manifest.json` for the highlight and Skip button)
 - `overview.mp3` - the full market overview
 - `bl/<product>.mp3` - each Bottom Line, `fd/<product>.mp3` - each Full Detail
 - `manifest.json` - file names and lengths (the page reads this)
 
 Each file ends with a short silent tail and plays to its natural end. If the files are missing the page falls back to
-the phone's built-in voice. Listen buttons are on each block's heading line (Bottom Line, Full Detail, Market Overview).
+the phone's built-in voice. The top "Listen to the briefing" button opens the Brief / Short / Full menu; the other Listen buttons are on each block's
+heading line (Bottom Line, Full Detail, Market Overview).

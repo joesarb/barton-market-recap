@@ -687,6 +687,11 @@
   /* ===== Listen ===== */
   .listen-row { margin-bottom: 14px; }
   .listen-btn { width: 100%; font: inherit; font-size: 18px; font-weight: 700; padding: 14px; border-radius: 12px; border: 2px solid var(--text); background: var(--surface); color: var(--text); cursor: pointer; }
+  .listen-menu { display: grid; gap: 8px; margin-top: 8px; }
+  .listen-menu[hidden] { display: none; }
+  .listen-menu button { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; text-align: left; font: inherit; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; }
+  .listen-menu button b { font-size: 18px; }
+  .listen-menu button span { font-size: 14px; color: var(--muted); }
   .listen-btn small { display: block; font-size: 13px; font-weight: 500; color: var(--muted); }
   .voice-pick { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 14px; color: var(--muted); }
   .voice-pick button { flex: 1; font: inherit; font-size: 15px; border: 1px solid var(--border); background: none; color: var(--text); border-radius: 10px; padding: 9px 6px; cursor: pointer; }
@@ -1550,7 +1555,7 @@
   // and stops by itself. If the audio files can't be loaded, the phone's built-in voice reads the same text instead.
   const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
   const AUD = { el: new Audio(), manifest: null, ready: false, active: false, kind: null, marks: null, cur: null, rate: 1, rates: [1, 1.25, 1.5] };
-  const CUR = { id: null };           // which section is playing right now, e.g. 'bl:Acetone', 'fd:Acetone', 'overview:', 'briefing:all'
+  const CUR = { id: null };           // which section is playing right now, e.g. 'bl:Acetone', 'fd:Acetone', 'overview:', 'list:brief'
   AUD.el.preload = 'none';
   const ttsOK = () => 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
   const canListen = () => AUD.ready || ttsOK();
@@ -1567,7 +1572,8 @@
   function clipFor(kind, name) {
     const m = AUD.manifest;
     if (!m) return null;
-    if (kind === 'overview' || kind === 'briefing') return m[kind] || null;
+    if (kind === 'overview') return m.overview || null;
+    if (kind === 'list') return (m.lists && m.lists[name]) || null;
     return (m[kind] && m[kind][name]) || null;
   }
 
@@ -1590,22 +1596,40 @@
       b.textContent = playing ? '■ Stop' : b.dataset.label;
     });
     const top = document.getElementById('listenBtn');
-    if (top) top.firstChild.textContent = (live && CUR.id === 'briefing:all') ? '■ Stop the briefing' : '🔊 Listen to the briefing';
+    if (top) top.firstChild.textContent = (live && /^list:/.test(CUR.id || '')) ? '■ Stop' : '🔊 Listen to the briefing ▾';
+    const menu = document.getElementById('listenMenu');
+    if (menu && live) menu.hidden = true;
+  }
+  const LIST_OPTS = [
+    ['brief', 'Brief', 'Each product and its trend only', 1],
+    ['short', 'Short', 'Plus the one-line takeaway', 2],
+    ['full', 'Full', 'Plus the full detail for each product', 28]
+  ];
+  const LIST_NAME = { brief: 'Brief briefing', short: 'Short briefing', full: 'Full briefing' };
+  function listMinutes(kind, guess) {
+    const l = AUD.ready && AUD.manifest.lists && AUD.manifest.lists[kind];
+    const m = l ? l.duration / 60 : guess;
+    return m < 1.5 ? 'about 1 min' : 'about ' + Math.round(m) + ' min';
   }
   function buildListenUI() {
     const host = document.getElementById('snapListen');
     if (!canListen()) { host.innerHTML = ''; return; }
-    const note = AUD.ready ? 'About ' + Math.max(1, Math.round(AUD.manifest.briefing.duration / 60)) + ' min · plays like a podcast, with lock-screen and car controls'
-                           : 'About 2 min · uses your phone\'s built-in voice';
-    host.innerHTML = '<button type="button" class="listen-btn" id="listenBtn">🔊 Listen to the briefing<small>' + note + '</small></button>';
-    document.getElementById('listenBtn').onclick = listenBriefing;
+    const note = AUD.ready ? 'Brief, Short or Full · plays like a podcast, with lock-screen and car controls' : 'Brief, Short or Full · uses your phone\'s built-in voice';
+    host.innerHTML = '<button type="button" class="listen-btn" id="listenBtn">🔊 Listen to the briefing ▾<small>' + note + '</small></button>' +
+      '<div class="listen-menu" id="listenMenu" hidden>' + LIST_OPTS.map(o =>
+        '<button type="button" data-k="' + o[0] + '"><b>' + o[1] + '</b><span>' + o[2] + ' · ' + listMinutes(o[0], o[3]) + '</span></button>').join('') + '</div>';
+    document.getElementById('listenBtn').onclick = () => {
+      if ((AUD.active || L.on) && /^list:/.test(CUR.id || '')) return listenStop();
+      const m = document.getElementById('listenMenu'); m.hidden = !m.hidden;
+    };
+    host.querySelectorAll('#listenMenu button').forEach(b => b.onclick = () => { document.getElementById('listenMenu').hidden = true; listenList(b.dataset.k); });
     refreshListenButtons();
   }
   function decorateMacro() {
     const body = document.querySelector('.macro-body');
     const wrap = document.createElement('div');
     wrap.className = 'macro-listen';
-    wrap.appendChild(makeListenBtn('overview', '', 'Listen to the market overview', '🔊 Listen to the overview'));
+    wrap.appendChild(makeListenBtn('overview', '', 'Listen to the market overview', '🔊 Listen to the market overview'));
     body.insertBefore(wrap, body.firstChild);
   }
 
@@ -1647,11 +1671,12 @@
     if (clip) playClip(id, clip.file, sectionLabel(kind, name), sectionTarget(kind, name), false, () => speechSection(kind, name));
     else speechSection(kind, name);
   }
-  function listenBriefing() {
-    if (CUR.id === 'briefing:all' && (AUD.active || L.on)) return listenStop();
-    const clip = AUD.ready ? clipFor('briefing') : null;
-    if (clip) { playClip('briefing:all', clip.file, 'Market briefing', null, true, speechBriefing); AUD.marks = AUD.manifest.briefing.marks; }
-    else speechBriefing();
+  function listenList(kind) {
+    const id = 'list:' + kind;
+    if (CUR.id === id && (AUD.active || L.on)) return listenStop();
+    const clip = AUD.ready ? clipFor('list', kind) : null;
+    if (clip) { playClip(id, clip.file, LIST_NAME[kind], null, true, () => speechList(kind)); AUD.marks = clip.marks; }
+    else speechList(kind);
   }
 
   // ---- audio engine: one file per section, plays to its natural end
@@ -1688,12 +1713,12 @@
     if (!AUD.active || !AUD.marks) return;
     const t = AUD.el.currentTime;
     const prev = AUD.marks.filter(m => m.start < t - 2).pop();
-    AUD.el.currentTime = prev ? prev.start : 0;
+    AUD.el.currentTime = prev ? Math.max(0, prev.start - 0.25) : 0;
   }
   AUD.el.addEventListener('timeupdate', () => {
     if (!AUD.active || !AUD.marks) return;                       // only the briefing has per-product marks
     const t = AUD.el.currentTime;
-    const m = AUD.marks.filter(x => x.start <= t + 0.05).pop();
+    const m = AUD.marks.filter(x => x.start <= t + 0.3).pop();
     if (m && m !== AUD.cur) {
       AUD.cur = m;
       listenMark(markTarget(m.key), true);
@@ -1726,9 +1751,16 @@
   const L = { items: [], idx: 0, on: false, paused: false, rate: 1, token: 0, rates: [1, 1.25, 1.5, 0.85] };
   const chunkSentences = t => (t.match(/[^.!?]+[.!?]+(?:\s|$)|[^.!?]+$/g) || [t]).map(x => x.trim()).filter(Boolean);
 
-  function speechBriefing() {
-    CUR.id = 'briefing:all';
-    listenStart(productRows().map(r => ({ text: rowName(r) + ', ' + TREND_SAY[r.dataset.trend] + '. ' + (r.dataset.line || '') + '.', el: r, scroll: true })));
+  function speechList(kind) {
+    CUR.id = 'list:' + kind;
+    const items = [];
+    productRows().forEach(r => {
+      const lead = rowName(r) + ', ' + TREND_SAY[r.dataset.trend] + '.';
+      if (kind === 'brief') items.push({ text: lead, el: r, scroll: true });
+      else if (kind === 'short') items.push({ text: lead + ' ' + (r.dataset.line || '') + '.', el: r, scroll: true });
+      else chunkSentences(lead + ' ' + r.querySelector('.full-detail-text').textContent.trim()).forEach((t, i) => items.push({ text: t, el: r, scroll: i === 0 }));
+    });
+    listenStart(items);
   }
   function speechSection(kind, name) {
     CUR.id = kind + ':' + name;
@@ -1770,7 +1802,7 @@
     const mp = document.getElementById('miniPlayer');
     const live = AUD.active || L.on;
     mp.hidden = !live;
-    mp.classList.toggle('no-skip', AUD.active && AUD.kind !== 'briefing');
+    mp.classList.toggle('no-skip', AUD.active && AUD.kind !== 'list');
     if (!live) return;
     const paused = AUD.active ? AUD.el.paused : L.paused;
     const rate = AUD.active ? AUD.rate : L.rate;
@@ -1790,9 +1822,9 @@
   }
   function listenSkip() {
     if (AUD.active) {
-      const n = AUD.marks ? (AUD.marks.find(m => m.start > AUD.el.currentTime + 0.3) || {}).start : null;
+      const n = AUD.marks ? (AUD.marks.find(m => m.start > AUD.el.currentTime + 0.4) || {}).start : null;
       if (n == null) return listenStop();
-      AUD.el.currentTime = n; return;
+      AUD.el.currentTime = Math.max(0, n - 0.25); return;
     }
     if (!L.on) return;
     L.token++; speechSynthesis.cancel(); L.paused = false; L.idx++; speechSpeak();
