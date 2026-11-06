@@ -65,7 +65,7 @@ def render(k, voice, speed, when, war_short, cats, out):
         nonlocal t
         samples, rate = k.create(speakable(text), voice=voice, speed=speed, lang='en-us')
         assert rate == sr
-        marks.append({'key': key, 'start': round(t, 2)})
+        marks.append({'key': key, 'start': round(t, 2), 'end': round(t + len(samples) / sr, 2)})  # end = speech only, before the pad
         pad = np.zeros(int(sr * gap), dtype=np.float32)
         parts.extend([samples.astype(np.float32), pad]); t += (len(samples) + len(pad)) / sr
         print(f'[{voice}] {t:7.1f}s  {key}', file=sys.stderr, flush=True)
@@ -73,7 +73,7 @@ def render(k, voice, speed, when, war_short, cats, out):
     # Briefing = just each product, its trend, and the one-line takeaway, in page order.
     for r in rows:
         add('b:i:' + r['name'], f"{r['name']}, {TREND_SAY[r['trend']]}. {r['line']}.", 0.45)
-    briefing_end = round(t, 2)
+    briefing_end = round(marks[-1]['end'], 2)  # end of the last briefing clip's speech
     parts.append(np.zeros(int(sr * 1.0), dtype=np.float32)); t += 1.0
     for r in rows:
         add('d:' + r['name'], f"{r['name']}, {TREND_SAY[r['trend']]}. {r['bl']}", 0.8)

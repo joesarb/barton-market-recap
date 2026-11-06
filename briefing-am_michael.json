@@ -1,184 +1,228 @@
 {
  "voice": "am_michael",
  "generated": "2026-11-06",
- "briefingEnd": 140.42,
+ "briefingEnd": 139.97,
  "duration": 750.41,
  "marks": [
   {
    "key": "b:i:Propylene",
-   "start": 0.0
+   "start": 0.0,
+   "end": 5.85
   },
   {
    "key": "b:i:Propylene Oxide",
-   "start": 6.3
+   "start": 6.3,
+   "end": 11.24
   },
   {
    "key": "b:i:Acetone",
-   "start": 11.69
+   "start": 11.69,
+   "end": 17.67
   },
   {
    "key": "b:i:IPA / Alcohol",
-   "start": 18.12
+   "start": 18.12,
+   "end": 24.09
   },
   {
    "key": "b:i:Propylene Glycols",
-   "start": 24.54
+   "start": 24.54,
+   "end": 29.32
   },
   {
    "key": "b:i:Glycol Ethers (P-Series)",
-   "start": 29.77
+   "start": 29.77,
+   "end": 36.19
   },
   {
    "key": "b:i:Ethylene",
-   "start": 36.64
+   "start": 36.64,
+   "end": 43.32
   },
   {
    "key": "b:i:MEK",
-   "start": 43.77
+   "start": 43.77,
+   "end": 50.13
   },
   {
    "key": "b:i:Glycol Ethers (E-Series)",
-   "start": 50.58
+   "start": 50.58,
+   "end": 60.13
   },
   {
    "key": "b:i:Ethanolamines",
-   "start": 60.58
+   "start": 60.58,
+   "end": 65.92
   },
   {
    "key": "b:i:MEG / DEG / TEG",
-   "start": 66.37
+   "start": 66.37,
+   "end": 73.6
   },
   {
    "key": "b:i:Crude Oil",
-   "start": 74.05
+   "start": 74.05,
+   "end": 78.42
   },
   {
    "key": "b:i:Aliphatic Solvents",
-   "start": 78.87
+   "start": 78.87,
+   "end": 84.48
   },
   {
    "key": "b:i:Aromatic Solvents",
-   "start": 84.93
+   "start": 84.93,
+   "end": 91.23
   },
   {
    "key": "b:i:Toluol & Xylol",
-   "start": 91.68
+   "start": 91.68,
+   "end": 98.59
   },
   {
    "key": "b:i:Natural Gas",
-   "start": 99.04
+   "start": 99.04,
+   "end": 104.76
   },
   {
    "key": "b:i:Methanol",
-   "start": 105.21
+   "start": 105.21,
+   "end": 110.11
   },
   {
    "key": "b:i:D-Limonene",
-   "start": 110.56
+   "start": 110.56,
+   "end": 115.3
   },
   {
    "key": "b:i:Plasticizers",
-   "start": 115.75
+   "start": 115.75,
+   "end": 120.38
   },
   {
    "key": "b:i:Ethanol",
-   "start": 120.83
+   "start": 120.83,
+   "end": 126.37
   },
   {
    "key": "b:i:Glycerin",
-   "start": 126.82
+   "start": 126.82,
+   "end": 132.41
   },
   {
    "key": "b:i:Methyl Soyate / Sorbitol / Oleic Acid",
-   "start": 132.86
+   "start": 132.86,
+   "end": 139.97
   },
   {
    "key": "d:Propylene",
-   "start": 141.42
+   "start": 141.42,
+   "end": 168.47
   },
   {
    "key": "d:Propylene Oxide",
-   "start": 169.27
+   "start": 169.27,
+   "end": 195.87
   },
   {
    "key": "d:Acetone",
-   "start": 196.67
+   "start": 196.67,
+   "end": 223.23
   },
   {
    "key": "d:IPA / Alcohol",
-   "start": 224.03
+   "start": 224.03,
+   "end": 252.13
   },
   {
    "key": "d:Propylene Glycols",
-   "start": 252.93
+   "start": 252.93,
+   "end": 281.88
   },
   {
    "key": "d:Glycol Ethers (P-Series)",
-   "start": 282.68
+   "start": 282.68,
+   "end": 312.16
   },
   {
    "key": "d:Ethylene",
-   "start": 312.96
+   "start": 312.96,
+   "end": 337.13
   },
   {
    "key": "d:MEK",
-   "start": 337.93
+   "start": 337.93,
+   "end": 364.02
   },
   {
    "key": "d:Glycol Ethers (E-Series)",
-   "start": 364.82
+   "start": 364.82,
+   "end": 398.58
   },
   {
    "key": "d:Ethanolamines",
-   "start": 399.38
+   "start": 399.38,
+   "end": 421.32
   },
   {
    "key": "d:MEG / DEG / TEG",
-   "start": 422.12
+   "start": 422.12,
+   "end": 456.61
   },
   {
    "key": "d:Crude Oil",
-   "start": 457.41
+   "start": 457.41,
+   "end": 482.0
   },
   {
    "key": "d:Aliphatic Solvents",
-   "start": 482.8
+   "start": 482.8,
+   "end": 509.58
   },
   {
    "key": "d:Aromatic Solvents",
-   "start": 510.38
+   "start": 510.38,
+   "end": 539.5
   },
   {
    "key": "d:Toluol & Xylol",
-   "start": 540.3
+   "start": 540.3,
+   "end": 567.39
   },
   {
    "key": "d:Natural Gas",
-   "start": 568.19
+   "start": 568.19,
+   "end": 585.36
   },
   {
    "key": "d:Methanol",
-   "start": 586.16
+   "start": 586.16,
+   "end": 611.4
   },
   {
    "key": "d:D-Limonene",
-   "start": 612.2
+   "start": 612.2,
+   "end": 637.91
   },
   {
    "key": "d:Plasticizers",
-   "start": 638.71
+   "start": 638.71,
+   "end": 664.63
   },
   {
    "key": "d:Ethanol",
-   "start": 665.43
+   "start": 665.43,
+   "end": 690.51
   },
   {
    "key": "d:Glycerin",
-   "start": 691.31
+   "start": 691.31,
+   "end": 718.19
   },
   {
    "key": "d:Methyl Soyate / Sorbitol / Oleic Acid",
-   "start": 718.99
+   "start": 718.99,
+   "end": 749.61
   }
  ]
 }

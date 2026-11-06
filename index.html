@@ -1577,11 +1577,12 @@
     if (p && p.catch) p.catch(() => { AUD.active = false; AUD.ready = false; listenUI(); buildListenUI(); fail(); });
     listenUI();
   }
-  function audioBriefing() { audioPlayFrom(0, AUD.meta.briefingEnd, 'b:', speechBriefing); }
+  function audioBriefing() { audioPlayFrom(0, AUD.meta.briefingEnd + 0.1, 'b:', speechBriefing); }
   function audioItem(row) {
     const m = AUD.meta.marks.find(x => x.key === 'd:' + rowName(row));
     if (!m) return speechItem(row);
-    const end = nextMarkStart('d:', m.start) || AUD.meta.duration;
+    // m.end = where this clip's speech ends; a silent pad follows, so a small overshoot is inaudible
+    const end = (m.end != null ? m.end : (nextMarkStart('d:', m.start) || AUD.meta.duration) - 0.8) + 0.1;
     audioPlayFrom(m.start, end, 'd:', () => speechItem(row));
   }
   function audioBack() {
@@ -1590,10 +1591,17 @@
     const prev = AUD.meta.marks.filter(m => m.key.startsWith('b:') && m.start < t - 2).pop();
     AUD.el.currentTime = prev ? prev.start : 0;
   }
+  let stopTimer = null;
+  function armStop() {
+    clearTimeout(stopTimer); stopTimer = null;
+    if (!AUD.active || AUD.stopAt == null || AUD.el.paused) return;
+    const ms = Math.max(0, (AUD.stopAt - AUD.el.currentTime) * 1000 / (AUD.el.playbackRate || 1));
+    stopTimer = setTimeout(() => { if (AUD.active && AUD.stopAt != null) listenStop(); }, ms);
+  }
   AUD.el.addEventListener('timeupdate', () => {
     if (!AUD.active || !AUD.meta) return;
     const t = AUD.el.currentTime;
-    if (AUD.stopAt != null && t >= AUD.stopAt - 0.05) return listenStop();
+    if (AUD.stopAt != null && t >= AUD.stopAt) return listenStop();
     const m = markAt(AUD.mode, t);
     if (m && m !== AUD.cur) {
       AUD.cur = m;
@@ -1604,8 +1612,9 @@
     }
   });
   AUD.el.addEventListener('ended', () => listenStop());
-  AUD.el.addEventListener('pause', () => { if (AUD.active) listenUI(); });
+  AUD.el.addEventListener('pause', () => { clearTimeout(stopTimer); stopTimer = null; if (AUD.active) listenUI(); });
   AUD.el.addEventListener('play', () => { if (AUD.active) listenUI(); });
+  ['playing', 'seeked', 'ratechange'].forEach(ev => AUD.el.addEventListener(ev, armStop));
 
   // ---- built-in speech fallback
   function speakable(t) {
@@ -1702,6 +1711,7 @@
     if (L.on && !L.paused) { L.token++; speechSynthesis.cancel(); speechSpeak(); } else listenUI();
   }
   function listenStop() {
+    clearTimeout(stopTimer); stopTimer = null;
     if (AUD.active) {
       AUD.active = false; AUD.el.pause(); AUD.el.muted = false;
       if ('mediaSession' in navigator) { try { navigator.mediaSession.playbackState = 'none'; } catch (e) {} }
