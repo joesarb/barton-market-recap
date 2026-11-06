@@ -1612,12 +1612,14 @@
     if (p && p.catch) p.catch(() => { AUD.active = false; AUD.ready = false; listenUI(); buildListenUI(); fail(); });
     listenUI();
   }
-  function audioBriefing() { audioPlayFrom(0, AUD.meta.briefingEnd + 0.1, 'b:', speechBriefing); }
+  // Stop a little AFTER the speech ends: phones (esp. Bluetooth/CarPlay) play audio a fraction of a second behind the
+  // reported position, and a hard stop at the exact end clips the last word. The silent pad after each clip is 0.45-0.8s.
+  function audioBriefing() { audioPlayFrom(0, AUD.meta.briefingEnd + 0.5, 'b:', speechBriefing); }
   function audioItem(row) {
     const m = AUD.meta.marks.find(x => x.key === 'd:' + rowName(row));
     if (!m) return speechItem(row);
     // m.end = where this clip's speech ends; a silent pad follows, so a small overshoot is inaudible
-    const end = (m.end != null ? m.end : (nextMarkStart('d:', m.start) || AUD.meta.duration) - 0.8) + 0.1;
+    const end = (m.end != null ? m.end : (nextMarkStart('d:', m.start) || AUD.meta.duration) - 0.8) + 0.45;
     audioPlayFrom(m.start, end, 'd:', () => speechItem(row));
   }
   function audioBack() {
@@ -1665,7 +1667,7 @@
       .replace(/\bthru\b/gi, 'through')
       .replace(/\bEOY\b/g, 'end of year').replace(/\bFM\b/g, 'force majeure').replace(/\bavg\b/gi, 'average')
       .replace(/\bQ(\d)\b/g, 'Q $1')
-      .replace(/\b([A-Z])-(Series)\b/g, '$1. $2')
+      .replace(/[()]/g, ' ')
       .replace(/(?<![A-Za-z])[A-Z]{2,5}(?![a-z])/g, w => (w in SAY_WORD ? SAY_WORD[w] : w in SAY_AS ? SAY_AS[w] : w.split('').map(c => c + '.').join('') + ' '))
       .replace(/\s+([,;:])/g, '$1').replace(/\.\s+\./g, '.').replace(/\s+/g, ' ').trim();
   }
