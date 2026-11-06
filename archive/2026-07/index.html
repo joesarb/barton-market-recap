@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Archive - Chemical Market Analysis — July 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #181c25;
+    --border: #252a36;
+    --text: #dde3f0;
+    --muted: #7a8299;
+    --up: #ff4d4d;
+    --up-bg: rgba(255,77,77,0.08);
+    --up-border: rgba(255,77,77,0.3);
+    --stable-up: #f5a623;
+    --stable-up-bg: rgba(245,166,35,0.08);
+    --stable-up-border: rgba(245,166,35,0.3);
+    --stable: #4caf82;
+    --stable-bg: rgba(76,175,130,0.08);
+    --stable-border: rgba(76,175,130,0.3);
+    --down: #4c9fff;
+    --down-bg: rgba(76,159,255,0.08);
+    --down-border: rgba(76,159,255,0.25);
+    --volatile: #c471ed;
+    --volatile-bg: rgba(196,113,237,0.08);
+    --volatile-border: rgba(196,113,237,0.3);
+    --synopsis-text: #ffffff;
+    --detail-text: #b0b8cc;
+    --detail-bg: rgba(0,0,0,0.12);
+    --synopsis-bg: rgba(255,255,255,0.04);
+    --war-bg: rgba(196,113,237,0.06);
+    --war-border: rgba(196,113,237,0.3);
+  }
+
+  body.light {
+    --bg: #f4f5f7;
+    --surface: #ffffff;
+    --border: #d8dce8;
+    --text: #1a1e2e;
+    --muted: #6b7494;
+    --up: #c0392b;
+    --up-bg: rgba(192,57,43,0.07);
+    --up-border: rgba(192,57,43,0.3);
+    --stable-up: #a05c00;
+    --stable-up-bg: rgba(160,92,0,0.07);
+    --stable-up-border: rgba(160,92,0,0.3);
+    --stable: #1e7a4a;
+    --stable-bg: rgba(30,122,74,0.07);
+    --stable-border: rgba(30,122,74,0.3);
+    --down: #185FA5;
+    --down-bg: rgba(24,95,165,0.07);
+    --down-border: rgba(24,95,165,0.3);
+    --volatile: #7d3c98;
+    --volatile-bg: rgba(125,60,152,0.07);
+    --volatile-border: rgba(125,60,152,0.3);
+    --synopsis-text: #1a1e2e;
+    --detail-text: #3a4060;
+    --detail-bg: rgba(0,0,0,0.03);
+    --synopsis-bg: rgba(0,0,0,0.04);
+    --war-bg: rgba(125,60,152,0.05);
+    --war-border: rgba(125,60,152,0.3);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-size: 17px;
+    line-height: 1.6;
+  }
+
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 24px 36px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-left h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  .header-left .subtitle {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 5px;
+    letter-spacing: 0.06em;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .theme-toggle {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .theme-toggle:hover { color: var(--text); border-color: var(--muted); }
+
+  .filter-bar {
+    padding: 10px 36px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+    position: sticky;
+    z-index: 99;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+
+  .filter-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-right: 4px;
+  }
+
+  .filter-btn {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 5px 12px 5px 8px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .filter-btn .filter-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .filter-btn:hover {
+    color: var(--text);
+    border-color: var(--muted);
+  }
+
+  .filter-btn.active {
+    color: var(--fc, var(--text));
+    border-color: var(--fc, var(--muted));
+    background: var(--synopsis-bg);
+    font-weight: 600;
+  }
+
+  .filter-btn.active .filter-dot {
+    box-shadow: 0 0 0 2px var(--surface), 0 0 0 2px var(--fc, var(--muted));
+  }
+
+  main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 36px 60px;
+  }
+
+  .section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 36px 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .section-controls { display: flex; gap: 8px; }
+
+  .ctrl-btn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 3px 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .ctrl-btn:hover { color: var(--text); border-color: var(--border); }
+
+  .war-banner {
+    background: var(--war-bg);
+    border: 1px solid var(--war-border);
+    border-left: 4px solid var(--volatile);
+    border-radius: 4px;
+    padding: 16px 20px;
+    margin-bottom: 8px;
+  }
+
+  .war-banner h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--volatile);
+    margin-bottom: 7px;
+  }
+
+  .war-banner p { color: var(--detail-text); font-size: 16px; line-height: 1.65; }
+
+  .macro-overview {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--muted);
+    border-radius: 4px;
+    padding: 16px 20px;
+    margin-bottom: 8px;
+  }
+
+  .macro-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+    margin-bottom: 10px;
+  }
+
+  .macro-overview.collapsed .macro-header { margin-bottom: 0; }
+
+  .macro-overview h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text);
+  }
+
+  .macro-chevron {
+    font-size: 12px;
+    color: var(--muted);
+    transition: transform 0.2s;
+    font-style: normal;
+    flex-shrink: 0;
+    transform: rotate(180deg);
+  }
+
+  .macro-overview.collapsed .macro-chevron { transform: rotate(0deg); }
+
+  .macro-body { display: block; }
+  .macro-overview.collapsed .macro-body { display: none; }
+
+  .macro-overview p {
+    color: var(--detail-text);
+    font-size: 15px;
+    line-height: 1.7;
+    margin-bottom: 8px;
+  }
+
+  .macro-overview p:last-child { margin-bottom: 0; }
+  .macro-overview strong { color: var(--text); }
+
+  .table-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+
+  .product-row { border-bottom: 1px solid var(--border); }
+  .product-row:last-child { border-bottom: none; }
+  .product-row.hidden { display: none; }
+
+  .product-row.trend-up { border-left: 3px solid var(--up); }
+  .product-row.trend-stable-up { border-left: 3px solid var(--stable-up); }
+  .product-row.trend-stable { border-left: 3px solid var(--stable); }
+  .product-row.trend-stable-down { border-left: 3px solid var(--down); }
+  .product-row.trend-down { border-left: 3px solid var(--down); }
+  .product-row.trend-volatile { border-left: 3px solid var(--volatile); }
+
+  .product-row-header {
+    display: grid;
+    grid-template-columns: 200px 180px 1fr 150px;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 20px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.12s;
+  }
+
+  .product-row-header:hover { background: rgba(255,255,255,0.02); }
+  .product-row.open .product-row-header { background: rgba(255,255,255,0.025); }
+
+  .product-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text);
+  }
+
+  .product-driver {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    line-height: 1.5;
+  }
+
+  .product-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+
+  .product-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    padding: 2px 7px;
+    border-radius: 2px;
+  }
+
+  .row-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
+  .trend-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+
+  .trend-badge.up { background: var(--up-bg); color: var(--up); border: 1px solid var(--up-border); }
+  .trend-badge.stable-up { background: var(--stable-up-bg); color: var(--stable-up); border: 1px solid var(--stable-up-border); }
+  .trend-badge.stable { background: var(--stable-bg); color: var(--stable); border: 1px solid var(--stable-border); }
+  .trend-badge.stable-down { background: var(--down-bg); color: var(--down); border: 1px solid var(--down-border); }
+  .trend-badge.down { background: var(--down-bg); color: var(--down); border: 1px solid var(--down-border); }
+  .trend-badge.volatile { background: var(--volatile-bg); color: var(--volatile); border: 1px solid var(--volatile-border); }
+
+  .toggle-chevron {
+    font-size: 11px;
+    color: var(--muted);
+    transition: transform 0.2s;
+    font-style: normal;
+    flex-shrink: 0;
+    transform: rotate(180deg);
+  }
+
+  .product-row.closed .toggle-chevron { transform: rotate(0deg); }
+
+  .product-detail {
+    display: block;
+    padding: 16px 20px 20px;
+    color: var(--detail-text);
+    font-size: 16px;
+    line-height: 1.75;
+    border-top: 1px solid var(--border);
+    background: var(--detail-bg);
+  }
+
+  .product-detail.closed { display: none; }
+  .product-detail strong { color: var(--stable-up); }
+
+  .synopsis {
+    background: var(--synopsis-bg);
+    border-left: 3px solid var(--muted);
+    border-radius: 0 4px 4px 0;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    font-size: 16px;
+    color: var(--synopsis-text);
+    font-style: normal;
+    font-weight: 600;
+    line-height: 1.6;
+  }
+
+  .synopsis-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 5px;
+    font-style: normal;
+    display: block;
+  }
+
+  .full-detail-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    display: block;
+  }
+
+  .full-detail-text {
+    color: var(--detail-text);
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.75;
+  }
+
+  .tariff-note {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin-top: 8px;
+    font-size: 13.5px;
+    color: var(--detail-text);
+    line-height: 1.65;
+  }
+
+  .tariff-note strong {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--stable-up);
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .disclaimer {
+    margin-top: 36px;
+    padding: 14px 20px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  @media (max-width: 800px) {
+    header, .filter-bar, main { padding-left: 16px; padding-right: 16px; }
+    .product-row-header { grid-template-columns: 1fr 140px; }
+    .product-driver, .product-tags { display: none; }
+  }
+</style>
+<style id="archiveStyle">#archiveSelect,.listen-row,.mini-player{display:none !important}</style></head>
+<body><div id="archiveBanner" style="background:#1f2a44;color:#fff;padding:12px 16px;font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;text-align:center">&#128193; Archived: <b>July 2026</b> (updated 7/9/2026). Numbers here are from that month. <a href="../../" style="color:#ffd27a;font-weight:700;white-space:nowrap">View current &rarr;</a></div>
+
+<header>
+  <div class="header-left">
+    <h1>Chemical Market Analysis</h1>
+    <div class="subtitle">Barton Solvents &nbsp;|&nbsp; Updated 07 / 09 / 2026 &nbsp;|&nbsp; For Discussion Purposes Only</div>
+  </div>
+  <div class="header-right">
+    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">☀ Light Mode</button>
+  </div>
+</header>
+
+<div class="filter-bar" id="filterBar">
+  <span class="filter-label">Filter by trend:</span>
+  <button class="filter-btn active" data-filter="all" title="Show all products"><span class="filter-dot" style="background:var(--muted)"></span>All</button>
+  <button class="filter-btn" data-filter="up" style="--fc:var(--up)" title="Filter: Up"><span class="filter-dot" style="background:var(--up)"></span>Up</button>
+  <button class="filter-btn" data-filter="stable-up" style="--fc:var(--stable-up)" title="Filter: Stable to Up"><span class="filter-dot" style="background:var(--stable-up)"></span>Stable to Up</button>
+  <button class="filter-btn" data-filter="stable" style="--fc:var(--stable)" title="Filter: Stable"><span class="filter-dot" style="background:var(--stable)"></span>Stable</button>
+  <button class="filter-btn" data-filter="stable-down" style="--fc:var(--down)" title="Filter: Stable to Down"><span class="filter-dot" style="background:var(--down)"></span>Stable to Down</button>
+  <button class="filter-btn" data-filter="down" style="--fc:var(--down)" title="Filter: Down"><span class="filter-dot" style="background:var(--down)"></span>Down</button>
+  <button class="filter-btn" data-filter="volatile" style="--fc:var(--volatile)" title="Filter: Volatile"><span class="filter-dot" style="background:var(--volatile)"></span>Volatile</button>
+</div>
+
+<main>
+
+  <div class="section-label">Macro Context</div>
+  <div class="macro-overview" id="macroOverview">
+    <div class="macro-header" onclick="toggleMacro()">
+      <h2>June 2026 Market Overview</h2>
+      <i class="macro-chevron">▼</i>
+    </div>
+    <div class="macro-body">
+      <p>The dominant story this month is the unwinding of the Iran conflict risk premium following the Islamabad MOU signed June 17. After four months of price spikes, supply disruptions, and force majeures, markets are broadly moving lower as feedstock costs fall, supply chains recover, and buying behavior shifts back to need-based purchasing only.</p>
+      <p><strong>Prices broadly falling:</strong> Propylene settled down 8.5 cpp (second consecutive monthly decrease), Ethylene down 3.5 cpp (first decrease since January, spot prices down 31% from May), Acetone down 7.5 cpp (second consecutive decrease), IPA spot prices fell sharply. MEK supply is now long globally with producers dropping prices faster than they'd like. Aliphatics, Aromatics, Toluol &amp; Xylol, and Methanol all down. OPEC+ agreed to boost production in August to recover lost revenues, adding further downward pressure on crude.</p>
+      <p><strong>Still tight / stable to up:</strong> Propylene Glycols remain on allocation through July (Lyondell's restart experienced hiccups). Glycerin stays elevated through August. D-Limonene facing upward pressure from a proposed additional 25% US tariff on Brazilian goods on top of the existing 10%. Methyl Soyate / Oleic Acid stable to up on strong bio-diesel seasonal demand.</p>
+      <p><strong>Watch list:</strong> The MOU is already under threat — missile strikes were exchanged in early July, re-introducing volatility in crude and energy markets. DEA and E-Series glycol ethers seeing Force Majeure terminations as supply normalizes. Competitive activity expected to pick up across IPA, MEK, OXO alcohols, aromatics, and aliphatics. Look for competitive pricing opportunities this month.</p>
+      <p><strong>Economy:</strong> US Q1 GDP revised up from 1.6% to 2.1%. Consumer confidence and sentiment both ticking up as gasoline prices moderate and inflation fears ease. Construction spending up slightly month over month but still down 1.5% year on year. Housing and auto demand remain strained by elevated interest rates and affordability challenges with limited H2 recovery expected.</p>
+    </div>
+  </div>
+
+  <!-- PROPYLENE -->
+  <div class="section-label">
+    Propylene &amp; Derivatives
+    <div class="section-controls">
+      <button class="ctrl-btn" onclick="expandSection(this)">Expand All</button>
+      <button class="ctrl-btn" onclick="collapseSection(this)">Collapse All</button>
+    </div>
+  </div>
+  <div class="table-wrap">
+
+    <div class="product-row trend-down" data-trend="down">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">Propylene</div>
+        <div class="product-driver">CRUDE · PROPANE · NATURAL GAS</div>
+        <div class="product-tags">
+          <span class="product-tag">Cumene / Acetone</span><span class="product-tag">IPA</span><span class="product-tag">PG</span><span class="product-tag">Butanol</span><span class="product-tag">Butyl Acetate</span><span class="product-tag">P-Series Glycol Ethers</span>
+        </div>
+        <div class="row-right"><span class="trend-badge down">↓ Down</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>PGP settled down again in June by 8.5 cpp — the second consecutive monthly decrease. The US/Iran Islamabad MOU signed June 17 has unwound the conflict risk premium. Buying is cautious and need-based only. Product availability remains ample with healthy inventories across all three propylene grades. No inventory rebuilding expected near term.</div>
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">Polymer Grade Propylene contract price settled down again in June by 8.5 cpp and is the second consecutive monthly decrease YTD. Prices were finalized on the last day of June following extensive negotiations between producers and buyers. Although the 45-day spot market average remained above the final settlement level, both sides ultimately reached an agreement allowing contracts to settle and providing greater pricing certainty for the market. The US and Iran signed the Islamabad Memorandum of Understanding (MOU) to end the conflict. Brokered by Pakistan and signed by President Trump and Iranian president Pezeshkian on June 17, the risk premium that has been for the last several months is now starting to soften. As a result. demand conditions are weighing on buying activity. Most consumers are not actively rebuilding propylene inventories as downstream demand remains subdued across key derivative markets including polypropylene. Purchasing activity has remained measured with buyers generally covering immediate spot requirements. Market participants have reported several production disruptions, including outages at both PDH units and steam crackers. However, these outages have had a limited impact on overall supply conditions. Product availability remains ample, supported by healthy inventories across all three propylene grades. Consequently, the market continues to be well supplied despite ongoing operational issues at select production facilities. Refinery utilization rates increased by .5 percentage points to 96.6% reflecting continued strong operating rates across the refining sector. EIA data also showed that gasoline supplied to the market, a widely used indicator of implied demand, increased at the end of June. While demand continued to recover during the reporting period, it remained below the level recorded during the same period in 2025. Propane inventories increased from the prior week as production rose and consumption also strenghtened. Propane remains the principal feedstock used in propylene production. Meanwhile, jet fuel inventories posted a weekly build at the end of June as both production and consumption declined during the period. US May construction spending was up .1% from April, down 1.5% year on year. US consumer confidence ticks up as lower oil prices ease inflation fears, also US consumer sentiment improves as gasoline prices moderate. US Q1 GDP growth estimate revised from 1.6% to 2.1% annual rate.</div>
+      </div>
+    </div>
+
+    <div class="product-row trend-down" data-trend="down">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">Propylene Oxide</div>
+        <div class="product-driver">PROPYLENE · NATURAL GAS</div>
+        <div class="product-tags">
+          <span class="product-tag">Propylene Glycol</span><span class="product-tag">P-Series Glycol Ethers</span>
+        </div>
+        <div class="row-right"><span class="trend-badge down">↓ Down</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>PO prices followed upstream propylene down in June on lower costs. A major production plant in Port Arthur, TX shut down June 23 but supply overall is ample — prices fell after a brief spike. Downstream polyol buyers saw prices plunge as Lyondell's PO unit has begun to restart, easing the supply constraints that have persisted since the March fire.</div>
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">Propylene Oxide prices followed their upstream feed propylene down in June on lower costs. Some participants felt propylene would spike after one major production plant in Port Arthur, TX shutdown on June 23, but after a few higher priced trades to begin the week, prices eventually fell off as supply overall is ample to meet demand. Downstream polyol buyers saw prices plunge as the supply constraints from Lyondell's PO unit started to ease amid the recent restart.</div>
+      </div>
+    </div>
+
+    <div class="product-row trend-down" data-trend="down">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">Acetone</div>
+        <div class="product-driver">PROPYLENE · PHENOL · BENZENE</div>
+        <div class="product-tags">
+          <span class="product-tag">Acetone</span><span class="product-tag">IPA</span>
+        </div>
+        <div class="row-right"><span class="trend-badge down">↓ Down</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Large buyer Acetone settled down 7.5 cpp for June — the second consecutive monthly decrease. Prices searching for a floor in Q3. Supply more available with imports visible again. Demand into coatings sluggish. July benzene contract settled down sharply. Watch for Acetone competitives in the market.</div>
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">Large buyer Acetone price settled down 7.5 cpp for June. This was the second consecutive monthly decrease. Players are focusing on the downtrend in price as supply and demand evolve. Supply is more available, especially with imports visible again while demand is steady to soft. The housing and auto segments are being strained by rising material costs, elevated interest rates and ongoing affordability challenges. There is not much optimism for a H2 recovery. If conditions remain stable, an economic recovery could begin and set the stage for growth in 2027, but geopolitical volatility, tariff developments and logistics chaos will continue to add uncertainty to global markets. The US will not renew the US-Mexico-Canada Agreement (USMCA), causing the trade deal to become subject to annual reviews instead of a 16-year extension. The deal provides tariff-free imports for most products. Acetone prices to search for a floor in Q3, demand into coatings to remain sluggish and post-conflict outlook remains cautious and uncertain. RGP settled flat again with no change for June as trades continue to be non-existent since the last one in early April. More challenges were seen in June as feed costs came down again, increased imports and sluggish demand drive prices lower going into July. Supply will be more balanced in Q3 as sluggish phenol demand will keep run rates relatively low. US July Benzene contract price settled down sharply from June as prices were seen as overvalued relative to crude oil futures. Watch for Acetone competitives in the market.</div>
+      </div>
+    </div>
+
+    <div class="product-row trend-down" data-trend="down">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">IPA / Alcohol</div>
+        <div class="product-driver">PROPYLENE</div>
+        <div class="product-tags">
+          <span class="product-tag">IPA</span><span class="product-tag">Butanol</span><span class="product-tag">Propanol</span>
+        </div>
+        <div class="row-right"><span class="trend-badge down">↓ Down</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>US IPA spot prices fell sharply in June as demand has declined significantly and supply pressure has eased. Feedstock costs dropping, pulling prices further down. Spot IPA expected to see additional downward pressure in July. Butanol supply improving as one major producer returns online. Expect much healthier inventories for Propanol, Propyl Acetate, Butanol, and Butyl Acetate through July. Look for competitive price activity to pick up.</div>
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">Unlike previous months, June saw US IPA spot prices fall sharply as demand has declined significantly and supply pressure has eased. Feedstock (propylene and acetone) costs are dropping, which is placing further downward pressure on prices. Participants are largely anticipating a downward trend in spot IPA values for July. Market discussions are mainly centered on US IPA, but global availability from other regional producers has improved month on month. Restocking demand has fallen as IPA is more readily available on the spot market than it was in the last few months. Declining feedstock costs have also contributed to the availability of IPA. Look for spot IPA values to experience downward pressure in July on slower to sluggish demand. Buyers are changing purchasing behavior based on current market conditions and only buying what they need. Oxo alcohol prices have seen downward pressure as feed costs come down and demand softens on limited buying. Butanol supply should start to improve as one major producer is back online after being down for several months. Buyers are back to buying only what they need to meet operational output. Based on producer operations domestically, the market expects to see much healthier inventories for Propanol, Propyl Acetate, Butanol and Butyl Acetate as we move through July. Look for competitive price activity to pick up this month with IPA and OXO alcohols.</div>
+      </div>
+    </div>
+
+    <div class="product-row trend-stable-down" data-trend="stable-down">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">Propylene Glycols</div>
+        <div class="product-driver">PROPYLENE · SUPPLY &amp; DEMAND</div>
+        <div class="product-tags">
+          <span class="product-tag">PGI</span><span class="product-tag">PG USP</span><span class="product-tag">DPG</span><span class="product-tag">PG-based HTF</span>
+        </div>
+        <div class="row-right"><span class="trend-badge stable-down">↓ Stable to Down</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Domestic PG remains on allocation through July. USP supply tighter than industrial as producers prioritize higher-margin pharma grades. Lyondell's PG production experienced hiccups after their restart in June — expect supply to remain tight another month or so. Import pricing is advantaged but can't support the full portfolio. Prices expected to stay elevated at least through mid-Q3. DPG still tight. No supply issues with Dow's HTF entering Q3.</div>
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">The domestic PG market (all grades) continues to be on allocation through July. Domestic industrial grade supply appears to be in better shape than USP, based on market data. Producers are choosing higher USP margins over industrial, which is keeping pharma supply more tight. Lyondell's PG production has experienced a few hiccups after their restart in June. Participants anticipate this disruption to set the market supply tight for another month or so. Supply from imports is keeping the domestic prices at bay as they are heavily advantaged. However, imports cannot support our entire portfolio so we need to keep our domestic producer partnerships aligned with what we are seeing in the market for competitive prices. Prices have taken a step backward since a few months ago, but expet prices to stay elevated at least through mid-Q3 until Lyondell can get inventories back to healthy levels. Barton is monitoring allocations with customers very closely to insure supply availability is honored to the best of our ability. DPG continues to be tight with less PG production so expect supply issues here as well. Demand for higher value propylene based HTF needs will take precedent over basic PG demand as it carries a better margin and more profitabilty. No supply issues with Dow's HTF as we enter Q3.</div>
+      </div>
+    </div>
+
+    <div class="product-row trend-stable-down" data-trend="stable-down">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">Glycol Ethers (P-Series)</div>
+        <div class="product-driver">PROPYLENE</div>
+        <div class="product-tags">
+          <span class="product-tag">PM</span><span class="product-tag">DPM</span><span class="product-tag">PM Acetate</span>
+        </div>
+        <div class="row-right"><span class="trend-badge stable-down">↓ Stable to Down</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>P-Series supply keeping up with softer demand. Look for competitive activity this month as feed costs settled down in June and demand remains stale. PM Acetate, DPM and DPM Acetate still tight domestically. Import market advantaged on price but 8–10 week lead-times remain. Global supply improving as Strait of Hormuz traffic moves more freely since the June 17 MOU.</div>
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">P-Series supply is keeping up with softer demand. Prices should see downward pressure as feed costs settled down in June and demand continues to be stale so please look for competitive activity in the market this month. Domestic PM Acetate, DPM and DPM Acetate supply continue to be tight in the market, however, sluggish demand is hanging with the tighter supply for all P-Series products. The import market is advantaged on price, however, longer lead-times make it difficult to support all our needs. Domestic partnerships are offering one-time deals to help narrow the gap where they can. Global supply is improving and will continue to do so as traffic in the Strait of Hormuz is moving more freely since the June 17 memorandum was signed between the US and Iran. Lead-times for imported material continue to run about 8-10 weeks on average.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ETHYLENE -->
+  <div class="section-label">
+    Ethylene &amp; Derivatives
+    <div class="section-controls">
+      <button class="ctrl-btn" onclick="expandSection(this)">Expand All</button>
+      <button class="ctrl-btn" onclick="collapseSection(this)">Collapse All</button>
+    </div>
+  </div>
+  <div class="table-wrap">
+
+    <div class="product-row trend-down" data-trend="down">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">Ethylene</div>
+        <div class="product-driver">CRUDE · NATURAL GAS · ETHANE</div>
+        <div class="product-tags">
+          <span class="product-tag">MEG</span><span class="product-tag">PEGs</span><span class="product-tag">Ethanolamines</span><span class="product-tag">Linear Alcohols</span><span class="product-tag">Polyethylene</span>
+        </div>
+        <div class="row-right"><span class="trend-badge down">↓ Down</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Ethylene settled down 3.5 cpp for June — the first decrease since January. June spot average closed down 31% from May. Domestic and export demand both lower vs. earlier in the year. Supply disruptions at steam crackers had minimal price impact, reflecting a prevalent sense of oversupply. Strong supply is meeting sluggish demand. Look for lower prices on downstream derivatives.</div>
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">US Ethylene contracted price settled down 3.5 cpp for June and the first decrease since January. The contracted price decline was in part impacted by the steep fall in spot prices throughout June. The June spot average closed the month down 31% from May. Demand for ethylene remained soft at the end of Q2 with both domestic and export demand seen lower across ethylene and derivatives compared to levels seen earlier in the year. Domestic consumption remains subdued as converters continue to cover minimum volume purchases while exports of ethylene are reported to slow in late May and June. Also, expectations for exporting ethylene in Q3 are also discussed lower than recent levels. On the supply side, there were a number of temporary production disruptions at various steam crackers in the US. However, there was very little reaction in the spot prices as news of outages were discussed among market participants. This reflects a prevalent sense of oversupply in the market. Two confirmed turnarounds at steam crackers in Iowa and Louisiana during Q3 are not expected to impact overall pricing for ethylene during that period. In addition, the price spread between TX and Louisiana was reduced to zero in recent weeks as both regions saw no significant issues sourcing ethylene. Strong supply is meeting sluggish demand. Look for lower prices on downstream derivatives.</div>
+      </div>
+    </div>
+
+    <div class="product-row trend-down" data-trend="down">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">MEK</div>
+        <div class="product-driver">BUTYLENE</div>
+        <div class="product-tags">
+          <span class="product-tag">MEK</span>
+        </div>
+        <div class="row-right"><span class="trend-badge down">↓ Down</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>MEK pricing continues to drop heading into July. Supply is now long globally on sluggish demand. Major producers dropping prices faster than they'd like to manage inventories. Europe ahead of US in getting prices down. Asian producers will have raw materials again as Strait flows recover — more supply globally will push prices further down. Continue to look for competitive activity in the MEK market.</div>
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">MEK pricing continues to drop as we move into July. Supply is now long on MEK globably on sluggish demand. Major producers are dropping prices faster than they'd like, to manage inventories in the US. Europe is ahead of us getting prices down, which has left our market in a long position. Now that raw materials are starting to flow through the Strait of Hormuz, Asian producers will have what they need to be operational. More material in the market will only drive prices further down globally. It is no surprise that Chinese imports have lead the charge with lower prices into the US, keeping US headquartered producers in line with where the market truly is. Participants are expecting prices to continue softening domestically in July. Please continue to look for competitive activity in the MEK market.</div>
+      </div>
+    </div>
+
+    <div class="product-row trend-stable-down" data-trend="stable-down">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">Glycol Ethers (E-Series)</div>
+        <div class="product-driver">ETHYLENE · ETHYLENE OXIDE</div>
+        <div class="product-tags">
+          <span class="product-tag">EB</span><span class="product-tag">DB</span>
+        </div>
+        <div class="row-right"><span class="trend-badge stable-down">↓ Stable to Down</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>EB and DB demand flat month over month in June. One major domestic producer officially terminated their Force Majeure on EB and DB in June — additional lbs returning to market in Q3 will support lower prices. Competitives already being discussed in our region. Dow still tight on both products, slowing downward price pressure somewhat. Barton remains on sales allocation with Eastman for EB and DB into Q3.</div>
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">Glycol Ether EB and DB demand in June remained flat month over month with little change going into July. Slow demand in the automotive industry due to ongoing affordability challenges, higher interest rates and low consumer confidence have become the norm this year. Participants are expecting Glycol Ether demand to remain stable to down for 2026. One major domestic producer has officially announced termination of their Force Majeure in June on EB and DB. This announcement will support lower prices as additional lbs are introduced back into the market in Q3. Competitives are already being discussed within our region. Please monitor competitive prices at customers as challenges are ahead for EB and DB. Dow has indicated they are still tight on both products, which has likely slowed the downward price pressure on each product. Dow is shipping EB and DB overseas to fulfill contract obligations left behind by the temporarily closed Sadara plant. Needless to say, Dow's tight supply has not impacted the market enough, leaving prices vulnerable to come down. An improvement in Butanol constraints should support better glycol ether production levels and provide some relief on prices as a result of lower production costs. Export opportunities for glycol ethers have been steady in June. The middle-east supplies large portions of imports to China, southeast Asia, Northeast Asia, Europe and Latin America - gaps that US producers can fill given healthier supply. Barton continues to be on sales allocation with Eastman for EB and DB going into Q3.</div>
+      </div>
+    </div>
+
+    <div class="product-row trend-stable-down" data-trend="stable-down">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">Ethanolamines</div>
+        <div class="product-driver">ETHYLENE · ETHYLENE OXIDE</div>
+        <div class="product-tags">
+          <span class="product-tag">MEA</span><span class="product-tag">DEA</span><span class="product-tag">TEA</span>
+        </div>
+        <div class="row-right"><span class="trend-badge stable-down">↓ Stable to Down</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>MEA supply will start to improve going into July. One major producer officially terminated their FM on EODs including MEA in June and lowered their price by 10 cpp for July — forcing other domestic players to follow soon. US/Iran MOU has softened appetite for US MEA export volumes. TEA exports remained strong. DEA demand steady for agricultural segment. Customers held to historical volumes for now, but that is ending as supply grows.</div>
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">MEA 99 supply will start to improve going into July. One major producer officially announced terminating their FM on EODs including MEA in June and subsequently lowered their price by 10 cpp for July. This move will force other domestic players to reduce prices sooner than later. US production remained strong during June with a brief disruption in Louisiana due to a turnaround at the Dow site. With the middle-east conflict supposedly coming to an end, the appetite for US MEA volumes appeared to soften through June. TEA exports remained strong, however. Producers are still watching sales and keeping customers to historical volumes, but this will be ending soon as supply grows and middle-east export demand dries up. DEA demand remains steady for the agricultural segment as weather conditions remain variable, while TEA demand domestically continues to be depressed as the construction market remains weak.</div>
+      </div>
+    </div>
+
+    <div class="product-row trend-stable-down" data-trend="stable-down">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">MEG / DEG / TEG</div>
+        <div class="product-driver">ETHYLENE · EO · SUPPLY &amp; DEMAND</div>
+        <div class="product-tags">
+          <span class="product-tag">Antifreeze</span><span class="product-tag">Heat Transfer Fluids</span><span class="product-tag">Paint &amp; Coatings</span>
+        </div>
+        <div class="row-right"><span class="trend-badge stable-down">↓ Stable to Down</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>MEG export demand from US cooling as middle-east needs slow with Strait reopening. Domestic demand weak on downstream derivatives. Prices for July rolled or came down. Antifreeze demand slowed way down heading into summer. Expect prices to soften throughout Q3 on lower feedstock costs and softer demand. DEG demand weak on construction softness. TX turnaround pressuring DEG market with restart expected July. TEG inquiries steady despite seasonal low demand period; prices trending slightly up.</div>
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">US MEG market has seen export demand from the US cool off in June as middle-eastern needs are slowing due to the Strait of Hormuz opening back up. Domestic demand in the US is also weak on downstream derivatives. Prices for July either rolled or came down some from domestic producers. Antifreeze demand has slowed way down as temperatures rise moving through summer. Supply is ample and meeting demand in the domestic market. Expect prices to soften throughtout Q3 on lower feedstock costs and softer demand. The supply/demand balance is softening amid lower export opportunities. DEG demand in the US remains weak across major applications like construction due to high housing prices, interest rates and inflation could delay recovery. However, a turnaround going on in TX is putting significant pressure on the domestic market with the expectations of a restart in July. The DEG balance remains tight as export opportunities persist amid middle-east tensions. Steady TEG inquiries have been reported in June even though a period of low seasonal demand lies ahead. Supply remains stable with prices trending slightly up.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CRUDE OIL -->
+  <div class="section-label">
+    Crude Oil &amp; Energy Derivatives
+    <div class="section-controls">
+      <button class="ctrl-btn" onclick="expandSection(this)">Expand All</button>
+      <button class="ctrl-btn" onclick="collapseSection(this)">Collapse All</button>
+    </div>
+  </div>
+  <div class="table-wrap">
+
+    <div class="product-row trend-volatile" data-trend="volatile">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">Crude Oil</div>
+        <div class="product-driver">DOMESTIC PRODUCTION · GEOPOLITICAL · SPECULATION</div>
+        <div class="product-tags">
+          <span class="product-tag">Aliphatics</span><span class="product-tag">Aromatics</span>
+        </div>
+        <div class="row-right"><span class="trend-badge volatile">⚡ Volatile</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Crude trended down through June, falling close to pre-conflict levels as the Iran risk premium unwound following the June 17 MOU. Market appears materially looser than previously expected. Strait of Hormuz reopening underway but normalization takes time. OPEC+ agreed to boost production in August to recover lost revenues. Recent missile strikes between US and Iran in early July have re-introduced volatility — traders uncertain about permanence of peace deal.</div>
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">Crude prices trended down through June and fell close to pre-conflict levels. Over the past four months oil outlook was shaped by a sizable middle-east risk premium. With that premium now largely unwound, the market appears materially looser than previously expected. Both geopolitical risks and underlying fundamentals have shifted in the same direction, leading to a more pronounced downward revision in how the market is forecasting prices. A key factor is the gradual reopening of the Strait of Hormuz. Following the US/Iran memorandum of understanding on June 17, shipping activity has begun to recover and vessels are once again transiting the waterway. While recent strikes have put a long-term peace deal in question, most participants feel negotiations are heading in the right direction based on where energy prices are today and the risk of a prolonged closure has eased significantly. Although normalization will take more time due to mine clearance, vessel repositioning and logistical adjustments, the overall impact is bearish for prices. In addition, OPEC+ has agreed to boost production in August to help make up for three months or more of lost export revenues.</div>
+      </div>
+    </div>
+
+    <div class="product-row trend-down" data-trend="down">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">Aliphatic Solvents</div>
+        <div class="product-driver">CRUDE OIL · UNL87</div>
+        <div class="product-tags">
+          <span class="product-tag">142 Sol</span><span class="product-tag">VM&amp;P</span><span class="product-tag">Hexane</span><span class="product-tag">Heptane</span>
+        </div>
+        <div class="row-right"><span class="trend-badge down">↓ Down</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Gasoline prices volatile through June but finished the month down month over month. Producers began lowering prices at end of June / early July as feed costs fell and middle-east conflict moved to a more manageable position. Heptane and VM&amp;P index prices saw a healthy decrease going into July. As energy prices fall, the alternative value proposition for producers loses profitability — look for competitive activity to pick up.</div>
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">UNLD 87 (gasoline) prices were volatile throughout June, but ultimately finished the month down month over month. With feed costs coming down again and the middle-east conflict in a more manageable position, producers began lowering prices at the end of June and early July. Index prices for Heptane and VM&P saw a healthy price decrease going into July on lower average gasoline costs in June. As energy prices start to fall the alternative value proposition for producers loses it's profitability factor and supports lower prices as we are experiencing right now. Look for competitive activity to pick up in the market.</div>
+      </div>
+    </div>
+
+    <div class="product-row trend-down" data-trend="down">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">Aromatic Solvents</div>
+        <div class="product-driver">CRUDE OIL · DIESEL · JET FUEL</div>
+        <div class="product-tags">
+          <span class="product-tag">Mineral Spirits</span><span class="product-tag">D-100</span><span class="product-tag">D-150</span><span class="product-tag">Aromatic 200</span>
+        </div>
+        <div class="row-right"><span class="trend-badge down">↓ Down</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>ULSD trended down in June then shot back up in early July on new US/Iran tensions. Mineral Spirits, D-100, and D-150 all saw price decreases to begin July. D-150 supply now in much better shape than the last few months — prices trending down as a result. Aromatic supply healthy and meeting soft demand. As energy prices soften so will heavy aromatics.</div>
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">Ultra-Low Sulfur Diesel price trended down in June, but has since shot back up in early July with additional tension between US and Iran. Jet fuel dipped as well with an uptick so far this month. The uncertainty in the middle-east has traders concerned of a resurgence of war activity after missle strikes were exchanged the first week of July. Prior to the latest news, energy prices fell last month forcing aromatic producers to lower prices at the end of June. Mineral Spirits, D-100 and D-150 blends all saw a decrease in price to begin July. D-150 supply is in much better shape than the last few months and prices are trending down as a result. Aromatic supply is healthy and meeting soft demand. Inventories from most domestic producer on 100 and now 150 are good and meeting soft demand. As energy prices soften so will heavy aromatics.</div>
+      </div>
+    </div>
+
+    <div class="product-row trend-down" data-trend="down">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">Toluol &amp; Xylol</div>
+        <div class="product-driver">CRUDE OIL · SEASONAL GASOLINE</div>
+        <div class="product-tags">
+          <span class="product-tag">Toluol</span><span class="product-tag">Xylol</span>
+        </div>
+        <div class="row-right"><span class="trend-badge down">↓ Down</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>T&amp;X prices trended down in June as energy prices fell, leaving alternative values less attractive. Plenty of supply to meet demand — Xylol sitting a bit better than Toluol. Stronger octane demand helping to slow Toluol's decline vs. Xylol. Summer gasoline demand below normal averages as pump prices remain elevated. US exports to Europe and Asia slowing on softer demand. Middle-east remains volatile.</div>
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">Toluol and Xylol prices trended down in June as energy prices started to fall. This drop in energy has left alternative values less attractive and not supporting higher prices from the previous few months. Plenty of supply to meet demand with Xylol sitting a little better than Toluol. Stronger Octane demand is helping to keep Toluol prices from falling as quickly as Xylol. Look for supply to meet current demand. Summer demand for gasoline is below normal averages as prices still remain elevated at the pump. The middle-east conflict remains volatile and easily influenced by geopolitical behaviors as we've been experiencing the last few months. Exports from the US have slowed into Europe and Asia on softer demand.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- NATURAL GAS -->
+  <div class="section-label">
+    Natural Gas &amp; Derivatives
+    <div class="section-controls">
+      <button class="ctrl-btn" onclick="expandSection(this)">Expand All</button>
+      <button class="ctrl-btn" onclick="collapseSection(this)">Collapse All</button>
+    </div>
+  </div>
+  <div class="table-wrap">
+
+    <div class="product-row trend-stable" data-trend="stable">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">Natural Gas</div>
+        <div class="product-driver">DOMESTIC MINING · REFINING · ENERGY USE</div>
+        <div class="product-tags">
+          <span class="product-tag">Methanol</span><span class="product-tag">Ethylene</span><span class="product-tag">Propylene</span>
+        </div>
+        <div class="row-right"><span class="trend-badge stable">→ Stable</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Natural gas prices are up on higher demand for cooling from mid-summer heat, a slight production dip, and renewed geopolitical tensions near the Strait of Hormuz pushing international buyers toward US LNG. Prices held in check by strong inventories vs. historical averages.</div>
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">US natural gas prices are up on higher demand for cooling due to mid-summer heat, slight production dip and geopolitical tensions. Renewed conflicts in the middle-east - including US/Iran skimishes near the Strait of Hormuz affecting cargo flows - have elevated global gas prices and pushed international buyers to secure more US LNG. Prices are being balanced by strong inventories compared to historical averages.</div>
+      </div>
+    </div>
+
+    <div class="product-row trend-stable-down" data-trend="stable-down">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">Methanol</div>
+        <div class="product-driver">NATURAL GAS · CRUDE</div>
+        <div class="product-tags">
+          <span class="product-tag">Bio-Diesel</span><span class="product-tag">Washer Fluid</span><span class="product-tag">Energy</span>
+        </div>
+        <div class="row-right"><span class="trend-badge stable-down">↓ Stable to Down</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>US methanol prices declined in June as spot buying activity remained limited. Export demand from Gulf Coast subdued as Strait of Hormuz shipping conditions continue to improve. Very little buying interest in June. No US production issues reported to begin Q3. Supply currently meeting demand.</div>
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">US Methanol prices declined in June as buying activity in the spot market has been limited. Export demand from the Gulf Coast remains subdued as shipping conditions through the Strait of Hormuz continue to improve. Very little buying interest in June and no US production issues have been reported to begin Q3. US Supply is currently meeting demand.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MISC -->
+  <div class="section-label">
+    Miscellaneous &amp; Specialty
+    <div class="section-controls">
+      <button class="ctrl-btn" onclick="expandSection(this)">Expand All</button>
+      <button class="ctrl-btn" onclick="collapseSection(this)">Collapse All</button>
+    </div>
+  </div>
+  <div class="table-wrap">
+
+    <div class="product-row trend-stable-up" data-trend="stable-up">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">D-Limonene</div>
+        <div class="product-driver">CITRUS HARVEST · WEATHER</div>
+        <div class="product-tags">
+          <span class="product-tag">Citrus Blends</span>
+        </div>
+        <div class="row-right"><span class="trend-badge stable-up">↑ Stable to Up</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Prices steady on snug supply. US Trade Representative has proposed an additional 25% Section 301 tariff on most goods from Brazil after July 15 — on top of the existing 10% tariff — stemming from an investigation into Brazil's trade policies. Brazil's new season product available September onwards but processing delayed 2 months due to the weak juice market. Rain forecast concerns for 2027/28 crop too early to confirm. Pricing should remain firm with upward pressure.</div>
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">D-Limonene prices continue to be steady on snug supply. The US Trade Representative has proposed an additional 25% Section 301 tariff on most goods imported from Brazil after July 15. This action stems from an investigation into Brazil's trade policies regarding digital trade, intellectual property, ethanol market access and preferential tariffs. This will be an add-on to the already 10% tariff . Product from Brazil's new seaon will be available September onwards. Brazil delayed processing 2 months this season due to the weak juice market. Participants are concerned of rain in the forecast - too much could impact blooming and potentially hurt 27/28 crop. However, it is too early to confirm. Pricing should remain firm with upward pressure.</div>
+      </div>
+    </div>
+
+    <div class="product-row trend-stable-up" data-trend="stable-up">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">Plasticizers</div>
+        <div class="product-driver">2-EH · TMA</div>
+        <div class="product-tags">
+          <span class="product-tag">168 Plasticizer (DOTP)</span><span class="product-tag">DINP</span><span class="product-tag">DIDP</span><span class="product-tag">TOTM</span><span class="product-tag">TEG-EH</span>
+        </div>
+        <div class="row-right"><span class="trend-badge stable-up">↑ Stable to Up</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>General plasticizer prices appear to have peaked as we move into July. Most producers rolled prices month over month going into Q3 as global supply chains begin to rebuild. Soft demand in building and housing sector putting downward pressure on prices once again. Import supply still volatile and inconsistent. Supply is meeting sluggish demand.</div>
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">General plasticizers prices have appeared to peak as we move into July. Most producers rolled prices month over month going into Q3 as global supply chains begin to rebuild. The overall soft demand in the building and housing sector are putting downward pressure on prices once again. The import market to the US is still volatile and consistency of supply will vary. Barton's focus ever since the middle-east issue arose was to maintain supply for our customers. Imports will remain a gamble until supply chain disruptions overseas become more predictable. Supply is meeting sluggish demand.</div>
+      </div>
+    </div>
+
+    <div class="product-row trend-stable" data-trend="stable">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">Ethanol</div>
+        <div class="product-driver">PURE · SDA ALCOHOL</div>
+        <div class="product-tags">
+          <span class="product-tag">SDA</span><span class="product-tag">Gov't Form</span>
+        </div>
+        <div class="row-right"><span class="trend-badge stable">→ Stable</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>2027 outlook for industrial ethanol remains steady with modest demand growth expected. Key risk: higher fuel-grade ethanol returns may incentivize plants to prioritize denatured/fuel-spec over industrial grades when capacity is tight, tightening industrial supply or supporting firmer non-fuel pricing. Market outlook remains positive with biofuels and sustainability initiatives driving expansion.</div>
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">It is very early yet, but the 2027 outlook for industrial (non-fuel) ethanol remains steady and demand should see modest growth with various government policy incentives supporting fuel ethanol and affecting overall ethanol availability. It is possible that higher returns on fuel-grade ethanol may lead plants to prioritize denatured/fuel-spec product over industrial grades when capacity is tight. This could tighten industrial supply or support firmer pricing for non-fuel volumes, depending on demand. Factors influencing the ethanol price for 2026 will be feedstock costs (corn), energy costs (nat gas/electricity), crude/gasoline, policy &amp; mandates, export demand and market sentiment and oversupply risks. Factors influencing supply are feedstock availability, production capacity, tech advancements, logistical constraints, trade dynamics, competing uses and environmental regulations. The ethanol market in 2026 so far is steady growth with price influenced by stable or slightly lower feedstock costs, fluctuating energy prices and strong policy-driven demand. Supply will be supported by robust production capacity and tech advancements, but may face contraints from weather, logistics and competing feedstock use. The market outlook remains positive with biofuels and sustainability initiatives driving expansion.</div>
+      </div>
+    </div>
+
+    <div class="product-row trend-stable-up" data-trend="stable-up">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">Glycerin</div>
+        <div class="product-driver">BIO-DIESEL · METHANOL</div>
+        <div class="product-tags">
+          <span class="product-tag">Veg Glycerin</span>
+        </div>
+        <div class="row-right"><span class="trend-badge stable-up">↑ Stable to Up</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Crude glycerin supply continues on the same tight path. Prices expected to stay elevated through August on feed source disruptions and slow/inconsistent import traffic. Large bio-based PG producer still purchasing CG at elevated levels to cover the Lyondell gap. Supply relief expected August/September once Lyondell is fully operational and PG inventories normalize. EPA biodiesel RVO at 5.25B gallons annually keeping refined glycerin production strong.</div>
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">Crude glycerin supply continues on the same path it's been the last few months. Availability is still tight in the market supporting higher prices. Market participants believe prices will stay elevated through August on feed source disruptions and slow to inconsistent import traffic as a result of the middle-east conflict. A large buyer of CG continues to purchase at greater levels than normal to manage their bio-based PG production. This is causing supply tightness in the US. Market participants feel once Lyondell is fully operational, this will help relieve stressed PG producers (both bio-based and petroleum based) with additional volume that has been missing the last several months. Participants believe supply relief could come in August or September once Lyondell has reestablished healthy PG inventories. As a reminder, on March 27, the EPA finalized the RVO for Renewable Biodiesel producers to 5.25 billion gallons annually, which has helped keep refined glycerin production strong and prices from sky rocketing. Bio-fuels producers are investing in new strategies to meet these updated requirements. Crude glycerine continues to be the favorable feedstock for biodiesel production with low cost and is traditionally in good supply.</div>
+      </div>
+    </div>
+
+    <div class="product-row trend-stable-up" data-trend="stable-up">
+      <div class="product-row-header" onclick="toggleRow(this.parentElement)">
+        <div class="product-name">Methyl Soyate / Sorbitol / Oleic Acid</div>
+        <div class="product-driver">SOYBEANS · SUGAR ALCOHOL · TALLOW</div>
+        <div class="product-tags">
+          <span class="product-tag">Methyl Soyate</span><span class="product-tag">Sorbitol</span><span class="product-tag">Oleic Acid</span>
+        </div>
+        <div class="row-right"><span class="trend-badge stable-up">↑ Stable to Up</span><i class="toggle-chevron">▼</i></div>
+      </div>
+      <div class="product-detail">
+        <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Methyl Soyate prices elevated but flat month over month into July as lower energy costs offset RVO policy support. Methyl ester demand into bio-diesel seasonally very strong and expected to stay that way through 2026. Sorbitol domestic supply healthy; imports stalled. Oleic Acid starting to loosen on slower demand — prices up slightly for July but producers expect relief in August on both tallow and veg-based oleic acid as demand slows.</div>
+        <span class="full-detail-label">Full Detail</span>
+        <div class="full-detail-text">Methyl Soyate prices have remained elavated supported by bullish RVO policy, however lower energy costs have kept prices flat month over month going into July. Supply is tight as Methyl ester demand into the bio-diesel industry is seasonally very strong right now. Participants expect this will be the case for the remainder of 2026. Soybean oil is the primary feedstock for MS. Domestic Sorbitol supply is healthy and contracted pricing for 2026 was a rollover from 2025. Imported prices are stalled due to supply chain disruptions over the past few months, but domestic supply is capable of meeting demand. Oleic Acid supply is starting to loosen up on slower demand, but is still considered tight. Prices are up slightly for July, however producers are expecting some price relief for August on both tallow and veg based oleic acid as demand slows on renewable producers turnarounds for maintenance due to lower energy prices. Strong tallow demand into the bio-fuels market is stabilizing bringing average costs down in July. This will support lower prices in August.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="section-label">Additional Notes</div>
+  <div class="war-banner" style="margin-bottom:8px;">
+    <h2>⚠ War with Iran — MOU Signed, But Tensions Remain</h2>
+    <p>It appears the Memorandum of Understanding that was signed by the US and Iran on June 17 is now in jeopardy as recent strikes by both countries has dimmed hopes of a permanent peace deal. Commercial vessels flowing through the Strait of Hormuz have recently been struck by Iranian missiles and retaliation strikes by US military soon followed. Markets have reacted with a small spike in energy prices that have started to retreat at the time of this writing. Please keep in mind tensions remain high as uncertainty lingers throughout the geopolitical landscape and the threats of ongoing war in the middle-east. The global markets are fluid and can quickly change from one conversation or meeting to another. Please continue to monitor your accounts for competitive activity where needed and communicate with your managers what you are seeing. This information is critical as we discuss market challenges with our channel partners.</p>
+  </div>
+  <div class="tariff-note">
+    <strong>⚠ Tariffs</strong>
+    See attached table with information regarding US implemented tariffs and their timeline.
+  </div>
+
+  <div class="disclaimer">
+    DISCLAIMER: The content provided in this document is for discussion purposes only. Barton Solvents does not guarantee the validity or accuracy of the information and is not liable for any decisions made based on the content shared.
+  </div>
+
+</main>
+
+<script>
+  function toggleTheme() {
+    const isLight = document.body.classList.toggle('light');
+    document.getElementById('themeToggle').textContent = isLight ? '☾ Dark Mode' : '☀ Light Mode';
+    try { localStorage.setItem('barsol-theme', isLight ? 'light' : 'dark'); } catch(e) {}
+  }
+
+  (function() {
+    try {
+      if (localStorage.getItem('barsol-theme') === 'light') {
+        document.body.classList.add('light');
+        document.getElementById('themeToggle').textContent = '☾ Dark Mode';
+      }
+    } catch(e) {}
+  })();
+
+  function toggleMacro() {
+    document.getElementById('macroOverview').classList.toggle('collapsed');
+  }
+
+  function positionFilterBar() {
+    const header = document.querySelector('header');
+    const bar = document.getElementById('filterBar');
+    if (header && bar) { bar.style.top = header.offsetHeight + 'px'; }
+  }
+  window.addEventListener('resize', positionFilterBar);
+  window.addEventListener('load', positionFilterBar);
+  positionFilterBar();
+
+  function toggleRow(row) {
+    const detail = row.querySelector('.product-detail');
+    const isClosed = detail.classList.contains('closed');
+    row.classList.toggle('open', isClosed);
+    detail.classList.toggle('closed', !isClosed);
+  }
+
+  function expandSection(btn) {
+    const wrap = btn.closest('.section-label').nextElementSibling;
+    wrap.querySelectorAll('.product-row:not(.hidden)').forEach(row => {
+      row.classList.add('open');
+      row.querySelector('.product-detail').classList.remove('closed');
+    });
+  }
+
+  function collapseSection(btn) {
+    const wrap = btn.closest('.section-label').nextElementSibling;
+    wrap.querySelectorAll('.product-row').forEach(row => {
+      row.classList.remove('open');
+      row.querySelector('.product-detail').classList.add('closed');
+    });
+  }
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      const filter = this.dataset.filter;
+      document.querySelectorAll('.product-row').forEach(row => {
+        if (filter === 'all' || row.dataset.trend === filter) {
+          row.classList.remove('hidden');
+          row.querySelector('.product-detail').classList.remove('closed');
+        } else {
+          row.classList.add('hidden');
+          row.querySelector('.product-detail').classList.add('closed');
+        }
+      });
+    });
+  });
+</script>
+</body>
+</html>
