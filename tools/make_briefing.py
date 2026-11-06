@@ -10,7 +10,7 @@ Run each month AFTER index.html is updated:
   python3 tools/make_briefing.py --model kokoro-v1.0.int8.onnx --voices voices-v1.0.bin
 
 Outputs briefing-<voice>.mp3 and briefing-<voice>.json in the repo root (voices: af_heart, am_michael).
-The audio follows the page order: intro, Iran, then each category and its products.
+The briefing reads each product, its trend and the one-line takeaway, in page order (no intro/section headers).
 """
 import argparse, html, json, os, re, subprocess, sys, tempfile, datetime
 import numpy as np, soundfile as sf
@@ -19,6 +19,7 @@ from kokoro_onnx import Kokoro
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December']
 VOICES = ['af_heart', 'am_michael']
+TREND_SAY = {'up': 'Up', 'stable-up': 'Stable to up', 'stable': 'Stable', 'stable-down': 'Stable to down', 'down': 'Down', 'volatile': 'Volatile'}
 SPELL = ['US','PGP','PDH','IPA','MEK','MEA','DEA','TEA','MEG','DEG','TEG','HTF','PET','TOTM','DOTP','DINP','DIDP','RVO','ICIS',
          'DPG','PG','PM','DPM','EB','DB','RV','EO','PP','PO','ULSD','PVC','UNL','MS','USDA','EPA','OPEC']
 
@@ -26,6 +27,7 @@ def speakable(t):
     t = re.sub(r'\+(\d+(?:\.\d+)?)-(\d+(?:\.\d+)?)¢', r'plus \1 to \2 cents', t)
     t = re.sub(r'\+(\d+(?:\.\d+)?)¢', r'plus \1 cents', t)
     t = t.replace('¢', ' cents')
+    t = re.sub(r'\b1 cents\b', '1 cent', t)
     t = re.sub(r'\b(\d{1,2})/(\d{1,2})\b', lambda m: f"{MONTHS[int(m.group(1))-1]} {m.group(2)}" if 1 <= int(m.group(1)) <= 12 else m.group(0), t)
     t = re.sub(r'(\d)-(\d)', r'\1 to \2', t)
     t = t.replace('%', ' percent').replace('~', 'about ').replace('&', ' and ').replace('/', ' ')
@@ -68,22 +70,13 @@ def render(k, voice, speed, when, war_short, cats, out):
         parts.extend([samples.astype(np.float32), pad]); t += (len(samples) + len(pad)) / sr
         print(f'[{voice}] {t:7.1f}s  {key}', file=sys.stderr, flush=True)
     rows = [r for _, rs in cats for r in rs]
-    rising = sum(r['trend'] in ('up', 'stable-up') for r in rows)
-    soft = sum(r['trend'] in ('stable-down', 'down') for r in rows)
-    flat = len(rows) - rising - soft
-    new = sum(r['new'] for r in rows)
-    add('b:intro', 'Barton Solvents chemical market update.' + when + f' {rising} products rising, {flat} flat or volatile, and {soft} softening.'
-        + (f' {new} changed trend since last month.' if new else ''), 0.6)
-    add('b:war', 'Iran war. ' + war_short, 0.8)
-    for label, rs in cats:
-        add('b:c:' + label, f"{label}. {len(rs)} products.", 0.5)
-        for r in rs:
-            add('b:i:' + r['name'], r['name'] + (', new trend' if r['new'] else '') + '. ' + r['line'] + '.', 0.45)
-    add('b:end', 'End of briefing.', 0.3)
+    # Briefing = just each product, its trend, and the one-line takeaway, in page order.
+    for r in rows:
+        add('b:i:' + r['name'], f"{r['name']}, {TREND_SAY[r['trend']]}. {r['line']}.", 0.45)
     briefing_end = round(t, 2)
     parts.append(np.zeros(int(sr * 1.0), dtype=np.float32)); t += 1.0
     for r in rows:
-        add('d:' + r['name'], r['name'] + '. ' + r['bl'], 0.8)
+        add('d:' + r['name'], f"{r['name']}, {TREND_SAY[r['trend']]}. {r['bl']}", 0.8)
     wav = np.concatenate(parts)
     with tempfile.TemporaryDirectory() as td:
         w = os.path.join(td, 'b.wav'); sf.write(w, wav, sr)

@@ -423,15 +423,17 @@
 
   .product-tag {
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
+    font-size: 12px;
+    font-weight: 600;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    color: var(--muted);
-    background: rgba(255,255,255,0.04);
-    border: 1px solid var(--border);
-    padding: 2px 7px;
-    border-radius: 2px;
+    color: var(--text);
+    background: var(--synopsis-bg);
+    border: 1px solid var(--muted);
+    padding: 3px 8px;
+    border-radius: 3px;
   }
+  .tags-label { flex-basis: 100%; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
 
   .row-right {
     display: flex;
@@ -533,7 +535,6 @@
   }
   .copy-btn:hover { color: var(--text); border-color: var(--muted); }
   .copy-btn.done { color: var(--stable-up); border-color: var(--stable-up); }
-  .prod-toggle { display: none; }
 
   .full-detail-label {
     font-family: 'IBM Plex Mono', monospace;
@@ -610,24 +611,7 @@
     .lbl-long { display: none; }
     .product-row-header { grid-template-columns: 1fr auto; gap: 8px 12px; }
     .product-driver { display: none; }
-    .prod-toggle {
-      display: inline-block;
-      grid-column: 1 / -1;
-      justify-self: start;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--muted);
-      background: none;
-      border: 1px solid var(--border);
-      border-radius: 3px;
-      padding: 4px 10px;
-      cursor: pointer;
-    }
-    .product-row.show-products .prod-toggle { color: var(--text); border-color: var(--muted); }
-    .product-tags { display: none; grid-column: 1 / -1; }
-    .product-row.show-products .product-tags { display: flex; }
+    .product-tags { grid-column: 1 / -1; }
     .product-row-header .row-right { grid-column: 2; grid-row: 1; }
   }
 
@@ -647,7 +631,7 @@
   body.view-quick .product-row[data-trend] .product-row-header {
     display: grid;
     grid-template-columns: 38px 1fr auto;
-    grid-template-areas: "ar nm ch" "ar ln ch" "pt pt pt" "tg tg tg";
+    grid-template-areas: "ar nm ch" "ar ln ch" "tg tg tg";
     gap: 2px 12px;
     align-items: center;
     padding: 14px 16px;
@@ -659,7 +643,6 @@
   body.view-quick .product-row[data-trend] .product-driver,
   body.view-quick .product-row[data-trend] .trend-badge { display: none; }
   body.view-quick .product-row[data-trend] .row-right { grid-area: ch; }
-  body.view-quick .product-row[data-trend] .prod-toggle { grid-area: pt; }
   body.view-quick .product-row[data-trend] .product-tags { grid-area: tg; margin-top: 4px; }
   .q-new { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; background: var(--c); color: var(--bg); border-radius: 5px; padding: 1px 7px; margin-right: 8px; vertical-align: 1px; }
 
@@ -773,7 +756,6 @@
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Propylene</div>
         <div class="product-driver">CRUDE · PROPANE · NATURAL GAS</div>
-        <button class="prod-toggle" onclick="toggleProducts(event,this)">Affected products ▾</button>
         <div class="product-tags">
           <span class="product-tag">Cumene / Acetone</span><span class="product-tag">IPA</span><span class="product-tag">PG</span><span class="product-tag">Butanol</span><span class="product-tag">Butyl Acetate</span><span class="product-tag">P-Series Glycol Ethers</span>
         </div>
@@ -790,7 +772,6 @@
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Propylene Oxide</div>
         <div class="product-driver">PROPYLENE · NATURAL GAS</div>
-        <button class="prod-toggle" onclick="toggleProducts(event,this)">Affected products ▾</button>
         <div class="product-tags">
           <span class="product-tag">Propylene Glycol</span><span class="product-tag">P-Series Glycol Ethers</span>
         </div>
@@ -807,7 +788,6 @@
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Acetone</div>
         <div class="product-driver">PROPYLENE · PHENOL · BENZENE</div>
-        <button class="prod-toggle" onclick="toggleProducts(event,this)">Affected products ▾</button>
         <div class="product-tags">
           <span class="product-tag">Acetone</span><span class="product-tag">IPA</span>
         </div>
@@ -824,7 +804,6 @@
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">IPA / Alcohol</div>
         <div class="product-driver">PROPYLENE</div>
-        <button class="prod-toggle" onclick="toggleProducts(event,this)">Affected products ▾</button>
         <div class="product-tags">
           <span class="product-tag">IPA</span><span class="product-tag">Butanol</span><span class="product-tag">Propanol</span>
         </div>
@@ -841,7 +820,6 @@
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Propylene Glycols</div>
         <div class="product-driver">PROPYLENE · SUPPLY &amp; DEMAND</div>
-        <button class="prod-toggle" onclick="toggleProducts(event,this)">Affected products ▾</button>
         <div class="product-tags">
           <span class="product-tag">Propylene Glycol based HTF</span>
         </div>
@@ -858,7 +836,6 @@
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Glycol Ethers (P-Series)</div>
         <div class="product-driver">PROPYLENE</div>
-        <button class="prod-toggle" onclick="toggleProducts(event,this)">Affected products ▾</button>
         <div class="product-tags">
           <span class="product-tag">PM</span><span class="product-tag">DPM</span><span class="product-tag">PM Acetate</span>
         </div>
@@ -887,7 +864,6 @@
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Ethylene</div>
         <div class="product-driver">CRUDE · NATURAL GAS · ETHANE</div>
-        <button class="prod-toggle" onclick="toggleProducts(event,this)">Affected products ▾</button>
         <div class="product-tags">
           <span class="product-tag">MEG</span><span class="product-tag">PEGs</span><span class="product-tag">Ethanolamines</span><span class="product-tag">Linear Alcohols</span><span class="product-tag">Polyethylene</span>
         </div>
@@ -904,7 +880,6 @@
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">MEK</div>
         <div class="product-driver">BUTYLENE</div>
-        <button class="prod-toggle" onclick="toggleProducts(event,this)">Affected products ▾</button>
         <div class="product-tags">
           <span class="product-tag">MEK</span>
         </div>
@@ -921,7 +896,6 @@
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Glycol Ethers (E-Series)</div>
         <div class="product-driver">ETHYLENE · ETHYLENE OXIDE</div>
-        <button class="prod-toggle" onclick="toggleProducts(event,this)">Affected products ▾</button>
         <div class="product-tags">
           <span class="product-tag">EB</span><span class="product-tag">DB</span>
         </div>
@@ -938,7 +912,6 @@
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Ethanolamines</div>
         <div class="product-driver">ETHYLENE · ETHYLENE OXIDE</div>
-        <button class="prod-toggle" onclick="toggleProducts(event,this)">Affected products ▾</button>
         <div class="product-tags">
           <span class="product-tag">MEA</span><span class="product-tag">DEA</span><span class="product-tag">TEA</span>
         </div>
@@ -955,7 +928,6 @@
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">MEG / DEG / TEG</div>
         <div class="product-driver">ETHYLENE · EO · SUPPLY &amp; DEMAND</div>
-        <button class="prod-toggle" onclick="toggleProducts(event,this)">Affected products ▾</button>
         <div class="product-tags">
           <span class="product-tag">Antifreeze</span><span class="product-tag">Heat Transfer Fluids</span><span class="product-tag">Paint &amp; Coatings</span>
         </div>
@@ -984,7 +956,6 @@
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Crude Oil</div>
         <div class="product-driver">DOMESTIC PRODUCTION · GEOPOLITICAL · SPECULATION</div>
-        <button class="prod-toggle" onclick="toggleProducts(event,this)">Affected products ▾</button>
         <div class="product-tags">
           <span class="product-tag">Aliphatics</span><span class="product-tag">Aromatics</span>
         </div>
@@ -1001,7 +972,6 @@
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Aliphatic Solvents</div>
         <div class="product-driver">CRUDE OIL · UNL87</div>
-        <button class="prod-toggle" onclick="toggleProducts(event,this)">Affected products ▾</button>
         <div class="product-tags">
           <span class="product-tag">142 Sol</span><span class="product-tag">VM&amp;P</span><span class="product-tag">Hexane</span><span class="product-tag">Heptane</span>
         </div>
@@ -1018,7 +988,6 @@
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Aromatic Solvents</div>
         <div class="product-driver">CRUDE OIL · DIESEL · JET FUEL</div>
-        <button class="prod-toggle" onclick="toggleProducts(event,this)">Affected products ▾</button>
         <div class="product-tags">
           <span class="product-tag">Mineral Spirits</span><span class="product-tag">D-100</span><span class="product-tag">D-150</span><span class="product-tag">Aromatic 200</span>
         </div>
@@ -1035,7 +1004,6 @@
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Toluol &amp; Xylol</div>
         <div class="product-driver">CRUDE OIL · SEASONAL GASOLINE</div>
-        <button class="prod-toggle" onclick="toggleProducts(event,this)">Affected products ▾</button>
         <div class="product-tags">
           <span class="product-tag">Toluol</span><span class="product-tag">Xylol</span>
         </div>
@@ -1064,7 +1032,6 @@
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Natural Gas</div>
         <div class="product-driver">DOMESTIC MINING · REFINING · ENERGY USE</div>
-        <button class="prod-toggle" onclick="toggleProducts(event,this)">Affected products ▾</button>
         <div class="product-tags">
           <span class="product-tag">Methanol</span><span class="product-tag">Ethylene</span><span class="product-tag">Propylene</span>
         </div>
@@ -1081,7 +1048,6 @@
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Methanol</div>
         <div class="product-driver">NATURAL GAS · CRUDE</div>
-        <button class="prod-toggle" onclick="toggleProducts(event,this)">Affected products ▾</button>
         <div class="product-tags">
           <span class="product-tag">Bio-Diesel</span><span class="product-tag">Washer Fluid</span><span class="product-tag">Energy</span>
         </div>
@@ -1110,7 +1076,6 @@
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">D-Limonene</div>
         <div class="product-driver">CITRUS HARVEST · WEATHER</div>
-        <button class="prod-toggle" onclick="toggleProducts(event,this)">Affected products ▾</button>
         <div class="product-tags">
           <span class="product-tag">Citrus Blends</span>
         </div>
@@ -1127,7 +1092,6 @@
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Plasticizers</div>
         <div class="product-driver">2-EH · TMA</div>
-        <button class="prod-toggle" onclick="toggleProducts(event,this)">Affected products ▾</button>
         <div class="product-tags">
           <span class="product-tag">168 Plasticizer (DOTP)</span><span class="product-tag">DINP</span><span class="product-tag">DIDP</span><span class="product-tag">TOTM</span><span class="product-tag">TEG-EH</span>
         </div>
@@ -1144,7 +1108,6 @@
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Ethanol</div>
         <div class="product-driver">PURE · SDA ALCOHOL</div>
-        <button class="prod-toggle" onclick="toggleProducts(event,this)">Affected products ▾</button>
         <div class="product-tags">
           <span class="product-tag">SDA</span><span class="product-tag">Gov't Form</span>
         </div>
@@ -1161,7 +1124,6 @@
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Glycerin</div>
         <div class="product-driver">BIO-DIESEL · METHANOL</div>
-        <button class="prod-toggle" onclick="toggleProducts(event,this)">Affected products ▾</button>
         <div class="product-tags">
           <span class="product-tag">Veg Glycerin</span>
         </div>
@@ -1178,7 +1140,6 @@
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Methyl Soyate / Sorbitol / Oleic Acid</div>
         <div class="product-driver">SOYBEANS · SUGAR ALCOHOL · TALLOW</div>
-        <button class="prod-toggle" onclick="toggleProducts(event,this)">Affected products ▾</button>
         <div class="product-tags">
           <span class="product-tag">Methyl Soyate</span><span class="product-tag">Sorbitol</span><span class="product-tag">Oleic Acid</span>
         </div>
@@ -1418,13 +1379,6 @@
   window.addEventListener('scroll', updateFloatNav, { passive: true });
   window.addEventListener('load', updateFloatNav);
 
-  function toggleProducts(ev, btn) {
-    ev.stopPropagation();
-    const row = btn.closest('.product-row');
-    const on = row.classList.toggle('show-products');
-    btn.textContent = on ? 'Affected products ▴' : 'Affected products ▾';
-  }
-
   function copyRow(btn) { copyFromRow(btn.closest('.product-row'), btn); }
 
   function copyFromRow(row, btn) {
@@ -1481,6 +1435,7 @@
     store('barsol-view', v);
   }
 
+  const TREND_SAY = { 'up': 'Up', 'stable-up': 'Stable to up', 'stable': 'Stable', 'stable-down': 'Stable to down', 'down': 'Down', 'volatile': 'Volatile' };
   const Q_ARROW = { 'up': '↑', 'stable-up': '↗', 'stable': '→', 'stable-down': '↘', 'down': '↓', 'volatile': '⚡' };
   const productRows = () => Array.from(document.querySelectorAll('.product-row[data-trend]'));
   const rowName = row => row.querySelector('.product-name').textContent.trim();
@@ -1488,6 +1443,11 @@
   function decorateRows() {
     productRows().forEach(row => {
       const hd = row.querySelector('.product-row-header');
+      const tagBox = row.querySelector('.product-tags');
+      if (tagBox) {
+        const tl = document.createElement('span'); tl.className = 'tags-label'; tl.textContent = 'Affected products';
+        tagBox.insertBefore(tl, tagBox.firstChild);
+      }
       const ar = document.createElement('span');
       ar.className = 'q-arrow'; ar.textContent = Q_ARROW[row.dataset.trend] || '';
       hd.insertBefore(ar, hd.firstChild);
@@ -1546,22 +1506,9 @@
       .then(buildListenUI);
   }
 
-  function categoryLabels() {
-    const out = {};
-    document.querySelectorAll('.section-label').forEach(l => {
-      const nxt = l.nextElementSibling;
-      if (nxt && nxt.querySelector && nxt.querySelector('.product-row[data-trend]')) out[l.firstChild.textContent.trim()] = l;
-    });
-    return out;
-  }
   function markTarget(key) {
-    if (key === 'b:war') return document.querySelector('.war-banner');
-    if (key.startsWith('b:c:')) return categoryLabels()[key.slice(4)] || null;
-    if (key.startsWith('b:i:') || key.startsWith('d:')) {
-      const name = key.replace(/^(b:i:|d:)/, '');
-      return productRows().find(r => rowName(r) === name) || null;
-    }
-    return null;
+    const name = key.replace(/^(b:i:|d:)/, '');
+    return productRows().find(r => rowName(r) === name) || null;
   }
   function listenMark(el) {
     document.querySelectorAll('.speaking').forEach(x => x.classList.remove('speaking'));
@@ -1651,7 +1598,7 @@
     if (m && m !== AUD.cur) {
       AUD.cur = m;
       listenMark(markTarget(m.key));
-      const label = m.key.replace(/^(b:i:|b:c:|d:)/, '').replace(/^b:(intro|war|end)$/, (x, y) => ({ intro: 'Intro', war: 'Iran war', end: 'End' }[y]));
+      const label = m.key.replace(/^(b:i:|d:)/, '');
       sessionTitle(label);
       listenUI();
     }
@@ -1679,25 +1626,12 @@
   const L = { items: [], idx: 0, on: false, paused: false, rate: 1, token: 0, rates: [1, 1.25, 1.5, 0.85] };
 
   function speechBriefingItems() {
-    const sub = document.querySelector('.subtitle').textContent;
-    const m = sub.match(/Updated\s+(\d+)\s*\/\s*(\d+)\s*\/\s*(\d+)/);
-    const when = m ? ' Updated ' + MONTHS[+m[1] - 1] + ' ' + (+m[2]) + '.' : '';
-    const banner = document.querySelector('.war-banner');
-    const war = banner.querySelector('p').textContent.trim().split(/(?<=\.)\s/)[0];
-    const out = [{ text: 'Barton Solvents chemical market update.' + when }, { text: 'Iran war. ' + war, el: banner }];
-    const labels = categoryLabels();
-    Object.keys(labels).forEach(name => {
-      const rows = Array.from(labels[name].nextElementSibling.querySelectorAll('.product-row[data-trend]'));
-      out.push({ text: name + '. ' + rows.length + ' products.', el: labels[name] });
-      rows.forEach(r => out.push({ text: rowName(r) + (r.dataset.prev && r.dataset.prev !== r.dataset.trend ? ', new trend' : '') + '. ' + (r.dataset.line || '') + '.', el: r }));
-    });
-    out.push({ text: 'End of briefing.' });
-    return out;
+    return productRows().map(r => ({ text: rowName(r) + ', ' + TREND_SAY[r.dataset.trend] + '. ' + (r.dataset.line || '') + '.', el: r }));
   }
   function speechBriefing() { listenStart(speechBriefingItems()); }
   function speechItem(row) {
     const syn = row.querySelector('.synopsis'); const lab = syn.querySelector('.synopsis-label');
-    listenStart([{ text: rowName(row) + '. ' + syn.textContent.replace(lab ? lab.textContent : '', '').trim(), el: row }]);
+    listenStart([{ text: rowName(row) + ', ' + TREND_SAY[row.dataset.trend] + '. ' + syn.textContent.replace(lab ? lab.textContent : '', '').trim(), el: row }]);
   }
   function pickVoice() {
     const vs = speechSynthesis.getVoices().filter(v => /^en/i.test(v.lang));
@@ -1740,7 +1674,7 @@
     document.getElementById('mpPause').textContent = paused ? '▶ Resume' : '⏸ Pause';
     document.getElementById('mpRate').textContent = rate + '×';
     let now = 'Listening';
-    if (AUD.active && AUD.cur) now = AUD.cur.key.replace(/^(b:i:|b:c:|d:)/, '').replace(/^b:(intro|war|end)$/, (x, y) => ({ intro: 'Intro', war: 'Iran war', end: 'End' }[y]));
+    if (AUD.active && AUD.cur) now = AUD.cur.key.replace(/^(b:i:|d:)/, '');
     else if (L.on && L.items[L.idx]) now = L.items[L.idx].text.split('.')[0];
     document.getElementById('mpNow').textContent = paused ? 'Paused' : '🔊 ' + now;
   }
