@@ -630,6 +630,8 @@
   .product-row.trend-volatile { --c: var(--volatile); }
 
   /* ===== Trend history strip (last editions, oldest to newest) ===== */
+  .ar-g { display: inline-block; transform: rotate(var(--r, 0deg)); line-height: 1; }
+  .ar-bolt { display: inline-block; line-height: 1; }
   .trend-hist { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 4px; align-items: flex-end; margin-top: 6px; }
   .trend-hist .th-label { flex-basis: 100%; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
   .th-cell { flex: 1 1 0; max-width: 52px; min-width: 30px; display: flex; flex-direction: column; align-items: center; padding: 2px 0 3px; border-bottom: 3px solid transparent; --c: var(--muted); }
@@ -983,7 +985,7 @@
         <div class="product-tags">
           <span class="product-tag">Aliphatics</span><span class="product-tag">Aromatics</span>
         </div>
-        <div class="row-right"><span class="trend-badge volatile">⚡ Volatile</span><i class="toggle-chevron">▼</i></div>
+        <div class="row-right"><span class="trend-badge volatile">↯ Volatile</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
         <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Crude stayed elevated through October on more strikes on Saudi pipelines and an attack on at least one crude vessel in the Strait of Hormuz, and that risk premium should carry into November. US-Iran negotiators continue to explore a phased Hormuz reopening with no target dates. Crude slipped slightly to begin November, but expect continued volatility.</div>
@@ -1450,7 +1452,9 @@
   }
 
   const TREND_SAY = { 'up': 'Up', 'stable-up': 'Stable to up', 'stable': 'Stable', 'stable-down': 'Stable to down', 'down': 'Down', 'volatile': 'Volatile' };
-  const Q_ARROW = { 'up': '↑', 'stable-up': '↗', 'stable': '→', 'stable-down': '↘', 'down': '↓', 'volatile': '⚡' };
+  // Arrows are a plain "→" rotated with CSS. (The diagonal characters ↗ ↘ and ⚡ are drawn as emoji tiles on iPhones.)
+  const Q_DEG = { 'up': -90, 'stable-up': -45, 'stable': 0, 'stable-down': 45, 'down': 90 };
+  const arrowHTML = t => t === 'volatile' ? '<span class="ar-bolt">↯</span>' : (t in Q_DEG ? '<span class="ar-g" style="--r:' + Q_DEG[t] + 'deg">→</span>' : '·');
   const productRows = () => Array.from(document.querySelectorAll('.product-row[data-trend]'));
   const rowName = row => row.querySelector('.product-name').textContent.trim();
 
@@ -1469,7 +1473,7 @@
     box.className = 'trend-hist';
     box.setAttribute('aria-label', 'Trend history: ' + cells.map(c => c[0] + ' ' + T_NAME[c[1]]).join(', '));
     box.innerHTML = '<span class="th-label">Trend history</span>' + cells.map(([mo, t, now]) =>
-      '<div class="th-cell t-' + t + (now ? ' now' : '') + '" title="' + mo + ': ' + T_NAME[t] + '"><span class="th-ar">' + (t === '?' ? '·' : Q_ARROW[t]) + '</span><span class="th-mo">' + mo + '</span></div>').join('');
+      '<div class="th-cell t-' + t + (now ? ' now' : '') + '" title="' + mo + ': ' + T_NAME[t] + '"><span class="th-ar">' + arrowHTML(t) + '</span><span class="th-mo">' + mo + '</span></div>').join('');
     return box;
   }
 
@@ -1484,7 +1488,7 @@
         tagBox.insertBefore(tl, tagBox.firstChild);
       }
       const ar = document.createElement('span');
-      ar.className = 'q-arrow'; ar.textContent = Q_ARROW[row.dataset.trend] || '';
+      ar.className = 'q-arrow'; ar.innerHTML = arrowHTML(row.dataset.trend);
       hd.insertBefore(ar, hd.firstChild);
 
       const ln = document.createElement('div');
