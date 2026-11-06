@@ -7,11 +7,11 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0f1117;
-    --surface: #181c25;
-    --border: #252a36;
-    --text: #dde3f0;
-    --muted: #7a8299;
+    --bg: #000000;
+    --surface: #0b0c10;
+    --border: #4a5064;
+    --text: #ffffff;
+    --muted: #d3d8e4;
     --up: #ff4d4d;
     --up-bg: rgba(255,77,77,0.08);
     --up-border: rgba(255,77,77,0.3);
@@ -31,9 +31,9 @@
     --volatile-bg: rgba(196,113,237,0.08);
     --volatile-border: rgba(196,113,237,0.3);
     --synopsis-text: #ffffff;
-    --detail-text: #b0b8cc;
+    --detail-text: #ffffff;
     --detail-bg: rgba(0,0,0,0.12);
-    --synopsis-bg: rgba(255,255,255,0.04);
+    --synopsis-bg: rgba(255,255,255,0.08);
     --war: #ff5fa8;
     --war-bg: rgba(255,95,168,0.07);
     --war-border: rgba(255,95,168,0.35);
@@ -630,8 +630,6 @@
   .product-row.trend-volatile { --c: var(--volatile); }
 
   /* ===== Trend history strip (last editions, oldest to newest) ===== */
-  .ar-g { display: inline-block; transform: rotate(var(--r, 0deg)); line-height: 1; }
-  .ar-bolt { display: inline-block; line-height: 1; }
   .trend-hist { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 4px; align-items: flex-end; margin-top: 6px; }
   .trend-hist .th-label { flex-basis: 100%; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
   .th-cell { flex: 1 1 0; max-width: 52px; min-width: 30px; display: flex; flex-direction: column; align-items: center; padding: 2px 0 3px; border-bottom: 3px solid transparent; --c: var(--muted); }
@@ -658,7 +656,7 @@
   }
   body.view-quick .product-row[data-trend] .q-arrow { display: block; grid-area: ar; font-size: 30px; font-weight: 800; color: var(--c); text-align: center; line-height: 1; }
   body.view-quick .product-row[data-trend] .product-name { grid-area: nm; font-size: 23px; line-height: 1.15; }
-  body.view-quick .product-row[data-trend] .q-line { display: block; grid-area: ln; font-size: 17px; line-height: 1.35; color: var(--muted); }
+  body.view-quick .product-row[data-trend] .q-line { display: block; grid-area: ln; font-size: 17px; line-height: 1.35; color: var(--text); }
   body.view-quick .product-row[data-trend] .product-driver,
   body.view-quick .product-row[data-trend] .trend-badge { display: none; }
   body.view-quick .product-row[data-trend] .row-right { grid-area: ch; }
@@ -785,7 +783,7 @@
         <div class="product-tags">
           <span class="product-tag">Cumene / Acetone</span><span class="product-tag">IPA</span><span class="product-tag">PG</span><span class="product-tag">Butanol</span><span class="product-tag">Butyl Acetate</span><span class="product-tag">P-Series Glycol Ethers</span>
         </div>
-        <div class="row-right"><span class="trend-badge stable-up">↑ Stable to Up</span><i class="toggle-chevron">▼</i></div>
+        <div class="row-right"><span class="trend-badge stable-up">↗️ Stable to Up</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
         <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>PGP contract settled up 1 cpp for October on higher crude, propane and energy costs. Supply is still long, with PDH units, crackers and refineries running strong, so buyers are purchasing as needed. Elevated propane through Q1 '27 gives prices a firmer floor, but any upside depends on demand improving enough to absorb ample production.</div>
@@ -801,7 +799,7 @@
         <div class="product-tags">
           <span class="product-tag">Propylene Glycol</span><span class="product-tag">P-Series Glycol Ethers</span>
         </div>
-        <div class="row-right"><span class="trend-badge stable-up">↑ Stable to Up</span><i class="toggle-chevron">▼</i></div>
+        <div class="row-right"><span class="trend-badge stable-up">↗️ Stable to Up</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
         <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>PO spot prices moved up slightly on higher propylene to end October. Talk of moving the PO formula price to a supply-and-demand basis continues, though clarity is fuzzy, and participants feel PO isn't tracking propylene as closely as it once did. Prices are expected to stay pretty flat through year-end, as even lower prices won't lift volumes in a weak, slowing market.</div>
@@ -817,7 +815,7 @@
         <div class="product-tags">
           <span class="product-tag">Acetone</span><span class="product-tag">IPA</span>
         </div>
-        <div class="row-right"><span class="trend-badge stable-up">↑ Stable to Up</span><i class="toggle-chevron">▼</i></div>
+        <div class="row-right"><span class="trend-badge stable-up">↗️ Stable to Up</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
         <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Large buyer Acetone settled up 1 cpp for October, and producers announced 5-6 cpp increases for Nov 1 on volatile feedstock costs and reduced imports. The market is balanced with more spot inquiries, but demand is weak and expected to slow further in Nov-Dec. Benzene fell sharply in late October, so watch for acetone competitives.</div>
@@ -833,7 +831,7 @@
         <div class="product-tags">
           <span class="product-tag">IPA</span><span class="product-tag">Butanol</span><span class="product-tag">Propanol</span>
         </div>
-        <div class="row-right"><span class="trend-badge stable-up">↑ Stable to Up</span><i class="toggle-chevron">▼</i></div>
+        <div class="row-right"><span class="trend-badge stable-up">↗️ Stable to Up</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
         <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>US IPA spot prices were slightly higher in October on more buying activity and higher European and freight costs, and higher acetone feedstock could push domestic spot IPA up in November. Q4 is seasonally slow, though, so the improved volumes may not last. Oxo alcohols are seeing softer demand with ample supply, so expect competitive price activity to continue through Q4.</div>
@@ -849,7 +847,7 @@
         <div class="product-tags">
           <span class="product-tag">Propylene Glycol based HTF</span>
         </div>
-        <div class="row-right"><span class="trend-badge down">↓ Down</span><i class="toggle-chevron">▼</i></div>
+        <div class="row-right"><span class="trend-badge down">⬇️ Down</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
         <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Domestic PG supply is healthy and meeting stable to soft demand, with data center fills the main driver of demand. Prices have eased for months on better supply, and producers hope they stabilize once winter temperatures arrive. Imports keep the price advantage, so expect special deals from domestic producers to end the year strong. DPG supply is improving, and Dow's HTF has no supply issues.</div>
@@ -865,7 +863,7 @@
         <div class="product-tags">
           <span class="product-tag">PM</span><span class="product-tag">DPM</span><span class="product-tag">PM Acetate</span>
         </div>
-        <div class="row-right"><span class="trend-badge stable-down">↓ Stable to Down</span><i class="toggle-chevron">▼</i></div>
+        <div class="row-right"><span class="trend-badge stable-down">↘️ Stable to Down</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
         <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>P-Series supply is keeping up with softer demand, and further price erosion is expected through Q4 even with slightly elevated feed costs for November. Producers want to hold share, so gather competitive offers. Section 301 tariffs and rising hazmat freight challenge imports, but imports are still a big piece of US supply and carry the price advantage. Domestic partners are offering one-time deals.</div>
@@ -893,7 +891,7 @@
         <div class="product-tags">
           <span class="product-tag">MEG</span><span class="product-tag">PEGs</span><span class="product-tag">Ethanolamines</span><span class="product-tag">Linear Alcohols</span><span class="product-tag">Polyethylene</span>
         </div>
-        <div class="row-right"><span class="trend-badge stable-up">↑ Stable to Up</span><i class="toggle-chevron">▼</i></div>
+        <div class="row-right"><span class="trend-badge stable-up">↗️ Stable to Up</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
         <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Ethylene contract settled up 1.5 cpp for October on higher energy costs, with light spot trading (only seven trades the last week). The market is balanced to long with no cracker maintenance expected for the rest of the year, and margins are expected to hold through EOY. Exports face closed arbitrage windows and high freight.</div>
@@ -909,7 +907,7 @@
         <div class="product-tags">
           <span class="product-tag">MEK</span>
         </div>
-        <div class="row-right"><span class="trend-badge stable-down">↓ Stable to Down</span><i class="toggle-chevron">▼</i></div>
+        <div class="row-right"><span class="trend-badge stable-down">↘️ Stable to Down</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
         <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>MEK prices have risen globally over the last 30 days, pushing Barton's main supplier to raise domestic prices 5 cpp at the end of October, and one other major producer has announced an increase too. Imports are surprisingly disadvantaged versus domestic players. US demand is still soft, so watch for competitive behavior from competitors.</div>
@@ -925,7 +923,7 @@
         <div class="product-tags">
           <span class="product-tag">EB</span><span class="product-tag">DB</span>
         </div>
-        <div class="row-right"><span class="trend-badge stable-down">↓ Stable to Down</span><i class="toggle-chevron">▼</i></div>
+        <div class="row-right"><span class="trend-badge stable-down">↘️ Stable to Down</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
         <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Ineos declared force majeure on its glycol ether line including EB and DB, and Eastman and Dow announced 10 cpp increases effective end of October. Ineos is lifting the FM effective 11/6, so watch what Eastman and Dow do next. Demand is soft and slowing in Q4, and Dow is still supplementing overseas contracts but hasn't yet shown supply is falling short. Watch for competitor behavior.</div>
@@ -941,7 +939,7 @@
         <div class="product-tags">
           <span class="product-tag">MEA</span><span class="product-tag">DEA</span><span class="product-tag">TEA</span>
         </div>
-        <div class="row-right"><span class="trend-badge stable">→ Stable</span><i class="toggle-chevron">▼</i></div>
+        <div class="row-right"><span class="trend-badge stable">➡️ Stable</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
         <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>MEA from domestic producers keeps softening on better supply and softer demand, helped by healthy summer imports, and competitive activity should continue through Q4. TEA has loosened to start November, with some producers rolling price while others cut to spark volume. DEA is stable.</div>
@@ -957,7 +955,7 @@
         <div class="product-tags">
           <span class="product-tag">Antifreeze</span><span class="product-tag">Heat Transfer Fluids</span><span class="product-tag">Paint &amp; Coatings</span>
         </div>
-        <div class="row-right"><span class="trend-badge stable">→ Stable</span><i class="toggle-chevron">▼</i></div>
+        <div class="row-right"><span class="trend-badge stable">➡️ Stable</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
         <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>US MEG prices held steady into November despite the Ineos force majeure, which Ineos lifts 11/6. Asia MEG has started to correct as limited parcels clear Hormuz, and China tanks are at lows but imports are due in early November. The export arbitrage is open but with lower margins. DEG may free up and domestic prices are starting to correct, but TEG stays constrained with no imports coming.</div>
@@ -985,7 +983,7 @@
         <div class="product-tags">
           <span class="product-tag">Aliphatics</span><span class="product-tag">Aromatics</span>
         </div>
-        <div class="row-right"><span class="trend-badge volatile">↯ Volatile</span><i class="toggle-chevron">▼</i></div>
+        <div class="row-right"><span class="trend-badge volatile">⚡️ Volatile</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
         <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Crude stayed elevated through October on more strikes on Saudi pipelines and an attack on at least one crude vessel in the Strait of Hormuz, and that risk premium should carry into November. US-Iran negotiators continue to explore a phased Hormuz reopening with no target dates. Crude slipped slightly to begin November, but expect continued volatility.</div>
@@ -1001,7 +999,7 @@
         <div class="product-tags">
           <span class="product-tag">142 Sol</span><span class="product-tag">VM&amp;P</span><span class="product-tag">Hexane</span><span class="product-tag">Heptane</span>
         </div>
-        <div class="row-right"><span class="trend-badge stable-up">↑ Stable to Up</span><i class="toggle-chevron">▼</i></div>
+        <div class="row-right"><span class="trend-badge stable-up">↗️ Stable to Up</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
         <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>UNL87 was elevated but stable most of October, then fell significantly to start November. Producers will delay any decision until prices settle, and will have to erase their October increases if costs stay down. Heptane and VM&amp;P index prices moved down for the first time in a few months. Supply is healthy on soft demand and producers want to keep the business.</div>
@@ -1017,7 +1015,7 @@
         <div class="product-tags">
           <span class="product-tag">Mineral Spirits</span><span class="product-tag">D-100</span><span class="product-tag">D-150</span><span class="product-tag">Aromatic 200</span>
         </div>
-        <div class="row-right"><span class="trend-badge stable-up">↑ Stable to Up</span><i class="toggle-chevron">▼</i></div>
+        <div class="row-right"><span class="trend-badge stable-up">↗️ Stable to Up</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
         <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>ULSD stayed volatile through most of October, with bigger declines heading into November on potential US-Iran peace talks, though prices bounce on any diplomatic hurdle. High US diesel exports keep domestic supplies tight, but inventories are above the key 100-million-barrel threshold. Prices are stable, with one producer moving 100 and 150 down on lower motor gas values.</div>
@@ -1033,7 +1031,7 @@
         <div class="product-tags">
           <span class="product-tag">Toluol</span><span class="product-tag">Xylol</span>
         </div>
-        <div class="row-right"><span class="trend-badge stable-up">↑ Stable to Up</span><i class="toggle-chevron">▼</i></div>
+        <div class="row-right"><span class="trend-badge stable-up">↗️ Stable to Up</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
         <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Toluol and Xylol stayed firm for most of October on octane blending demand, then declined over the last few reporting days. Solvent-grade postings followed commercial grade lower, but prices still rose 3-4 cpp in November, about half of what was projected. Supply meets stable to soft demand, and prices should stay volatile as the US-Iran path is unclear.</div>
@@ -1061,7 +1059,7 @@
         <div class="product-tags">
           <span class="product-tag">Methanol</span><span class="product-tag">Ethylene</span><span class="product-tag">Propylene</span>
         </div>
-        <div class="row-right"><span class="trend-badge stable-up">↑ Stable to Up</span><i class="toggle-chevron">▼</i></div>
+        <div class="row-right"><span class="trend-badge stable-up">↗️ Stable to Up</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
         <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>US natural gas trended up, then fell off mid-October. Sentiment is pressured by expectations of an unusually mild November, and working gas in storage is above the 5-year average but below last year's level.</div>
@@ -1077,7 +1075,7 @@
         <div class="product-tags">
           <span class="product-tag">Bio-Diesel</span><span class="product-tag">Washer Fluid</span><span class="product-tag">Energy</span>
         </div>
-        <div class="row-right"><span class="trend-badge stable-up">↑ Stable to Up</span><i class="toggle-chevron">▼</i></div>
+        <div class="row-right"><span class="trend-badge stable-up">↗️ Stable to Up</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
         <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>US methanol rose slightly in October on cooler weather and seasonal demand, but contract prices from the two main players rolled into November. Prompt trading is quiet, though seasonal and Asia export demand and low global inventories keep a floor under prices. High energy costs on renewed Middle East tension set the stage for another potential run-up.</div>
@@ -1105,7 +1103,7 @@
         <div class="product-tags">
           <span class="product-tag">Citrus Blends</span>
         </div>
-        <div class="row-right"><span class="trend-badge stable-up">↑ Stable to Up</span><i class="toggle-chevron">▼</i></div>
+        <div class="row-right"><span class="trend-badge stable-up">↗️ Stable to Up</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
         <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>D-Limonene is steady. Brazil stays bullish and says it's sold out, but participants are discounting supply constraints as the US market looks balanced. Florida starts production soon, but its 10-million-box crop is the smallest in history on citrus greening, and some producers are withdrawing. Brazil's push for an increase is unlikely to stick on soft demand and the tariff.</div>
@@ -1121,7 +1119,7 @@
         <div class="product-tags">
           <span class="product-tag">168 Plasticizer (DOTP)</span><span class="product-tag">DINP</span><span class="product-tag">DIDP</span><span class="product-tag">TOTM</span><span class="product-tag">TEG-EH</span>
         </div>
-        <div class="row-right"><span class="trend-badge stable-down">↓ Stable to Down</span><i class="toggle-chevron">▼</i></div>
+        <div class="row-right"><span class="trend-badge stable-down">↘️ Stable to Down</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
         <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Plasticizer prices are relatively stable going into November, with supply meeting slow demand and no operational issues. Most domestic producers rolled prices and a few came down, including TOTM from one major producer. Wire and cable demand from data-center buildouts stays strong while construction and consumer PVC demand is muted.</div>
@@ -1137,7 +1135,7 @@
         <div class="product-tags">
           <span class="product-tag">SDA</span><span class="product-tag">Gov't Form</span>
         </div>
-        <div class="row-right"><span class="trend-badge stable">→ Stable</span><i class="toggle-chevron">▼</i></div>
+        <div class="row-right"><span class="trend-badge stable">➡️ Stable</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
         <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Corn futures have fallen sharply since September and the ethanol spot market has come off its highs. The USDA November report should confirm crop size and could raise the export forecast. Barton will be looking at 2027 contract prices soon, hoping to catch corn on the low side. Higher fuel-grade returns could tighten industrial supply.</div>
@@ -1153,7 +1151,7 @@
         <div class="product-tags">
           <span class="product-tag">Veg Glycerin</span>
         </div>
-        <div class="row-right"><span class="trend-badge stable-down">↓ Stable to Down</span><i class="toggle-chevron">▼</i></div>
+        <div class="row-right"><span class="trend-badge stable-down">↘️ Stable to Down</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
         <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Refined glycerin is loosening as a couple of major domestic producers are back online and imports are climbing with shorter lead times. RV antifreeze demand has slowed since producers met their winter campaign volumes, so prices are off their highs from a month ago. Watch reports of US Customs withholding some imports over labor-law disputes, though no official details exist.</div>
@@ -1169,7 +1167,7 @@
         <div class="product-tags">
           <span class="product-tag">Methyl Soyate</span><span class="product-tag">Sorbitol</span><span class="product-tag">Oleic Acid</span>
         </div>
-        <div class="row-right"><span class="trend-badge stable-down">↓ Stable to Down</span><i class="toggle-chevron">▼</i></div>
+        <div class="row-right"><span class="trend-badge stable-down">↘️ Stable to Down</span><i class="toggle-chevron">▼</i></div>
       </div>
       <div class="product-detail">
         <div class="synopsis"><span class="synopsis-label">📋 Bottom Line</span>Methyl Soyate eased slightly to start November: supply is snug on strong biofuels demand, but inventories are meeting softer demand. Sorbitol supply is healthy with stable contracts. Tallow-based Oleic Acid fell on soft tallow demand, while overall oleic supply is expected to tighten on slowing imports and anti-dumping duties, leaving veg-based oleic temporarily disadvantaged versus tallow.</div>
@@ -1452,12 +1450,11 @@
   }
 
   const TREND_SAY = { 'up': 'Up', 'stable-up': 'Stable to up', 'stable': 'Stable', 'stable-down': 'Stable to down', 'down': 'Down', 'volatile': 'Volatile' };
-  // Arrows are a plain "→" rotated with CSS. (The diagonal characters ↗ ↘ and ⚡ are drawn as emoji tiles on iPhones.)
-  const Q_DEG = { 'up': -90, 'stable-up': -45, 'stable': 0, 'stable-down': 45, 'down': 90 };
-  const arrowHTML = t => t === 'volatile' ? '<span class="ar-bolt">↯</span>' : (t in Q_DEG ? '<span class="ar-g" style="--r:' + Q_DEG[t] + 'deg">→</span>' : '·');
+  // Emoji arrows (explicit emoji presentation so every phone draws the same arrow tiles).
+  const Q_ARROW = { 'up': '\u2b06\ufe0f', 'stable-up': '\u2197\ufe0f', 'stable': '\u27a1\ufe0f', 'stable-down': '\u2198\ufe0f', 'down': '\u2b07\ufe0f', 'volatile': '\u26a1\ufe0f' };
+  const arrowHTML = t => Q_ARROW[t] || '·';
   const productRows = () => Array.from(document.querySelectorAll('.product-row[data-trend]'));
   const rowName = row => row.querySelector('.product-name').textContent.trim();
-
   const T_NAME = { 'up': 'Up', 'stable-up': 'Stable to Up', 'stable': 'Stable', 'stable-down': 'Stable to Down', 'down': 'Down', 'volatile': 'Volatile', '?': 'n/a' };
   function currentMonthLabel() {
     const m = document.querySelector('.subtitle').textContent.match(/Updated\s+(\d+)\s*\//);
