@@ -137,6 +137,7 @@
   }
 
   .theme-toggle:hover { color: var(--text); border-color: var(--muted); }
+  select.theme-toggle { max-width: 190px; cursor: pointer; }
 
   .filter-bar {
     padding: 10px 36px;
@@ -604,6 +605,9 @@
   @media (max-width: 800px) {
     header, .filter-bar, main { padding-left: 16px; padding-right: 16px; }
     header.min { padding: 6px 16px; }
+    .header-right { flex-wrap: nowrap; gap: 8px; }
+    .theme-toggle { padding: 6px 9px; font-size: 10px; }
+    select.theme-toggle { max-width: 120px; }
     .filter-bar { padding-top: 6px; padding-bottom: 6px; }
     .filter-chips { flex-basis: 100%; order: 3; }
     .float-nav { right: 0; left: 0; bottom: 12px; flex-direction: row; justify-content: center; gap: 6px; padding: 0 12px; }
@@ -684,6 +688,7 @@
   </div>
   <div class="header-right">
     <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">☀ Light Mode</button>
+    <select class="theme-toggle header-toggle" id="archiveSelect" aria-label="Past months" hidden><option value="">Past months</option></select>
     <button class="theme-toggle header-toggle" id="viewToggle" onclick="toggleView()" title="Switch between the quick glance view and the full detail view">Full view</button>
     <button class="theme-toggle header-toggle" id="headerToggle" onclick="toggleHeader()" title="Minimize or expand the header">▲ Minimize</button>
   </div>
@@ -1739,6 +1744,20 @@
     setHeaderMin(h === null ? isMobile() : h === '1');
     setFilterMin(f === null ? isMobile() : f === '1');
     updateFloatNav();
+  })();
+
+  (function initArchiveMenu() {
+    const sel = document.getElementById('archiveSelect');
+    fetch('archive/index.json', { cache: 'no-cache' })
+      .then(r => { if (!r.ok) throw new Error('none'); return r.json(); })
+      .then(list => {
+        if (!list.length) return;
+        sel.innerHTML = '<option value="">Past months</option>' + list.map(e =>
+          '<option value="' + e.path + '">' + e.label + ' · updated ' + e.updated.replace(/\/\d{4}$/, '') + '</option>').join('');
+        sel.hidden = false;
+        sel.onchange = () => { if (sel.value) window.location.href = sel.value; };
+      })
+      .catch(() => {});
   })();
 
   decorateRows();
