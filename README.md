@@ -4,6 +4,8 @@ Barton Solvents Monthly Market Recap
 ## Monthly update checklist (index.html)
 0. FIRST, archive the month being replaced: `python3 tools/archive_month.py`
    (saves a frozen copy + its tariff PDF under `archive/` and adds it to the "Past months" menu)
+   Then, AFTER updating index.html with the new month, refresh the trend strips: `python3 tools/build_history.py`
+   (fills each product's "Trend history" from the archived months; the current month is added by the page)
 - Header date, `<title>`, and the "Market Overview" paragraph block
 - Each product row: trend badge/class, `data-trend`, Bottom Line, Full Detail
 - Each product row also carries two fields used by the Quick view and Listen:
