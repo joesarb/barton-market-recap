@@ -631,44 +631,56 @@
     .product-row-header .row-right { grid-column: 2; grid-row: 1; }
   }
 
-  /* ===== Quick view (mobile-first glance mode) ===== */
-  .snapshot { display: none; padding-top: 4px; }
-  body.view-quick .snapshot { display: block; }
-  body.view-quick .cat-section,
-  body.view-quick .war-section,
-  body.view-quick .filter-bar { display: none !important; }
-  body.view-quick main { padding-top: 16px; }
+  /* ===== Trend color per row (used by Quick view cards) ===== */
+  .product-row.trend-up { --c: var(--up); }
+  .product-row.trend-stable-up { --c: var(--stable-up); }
+  .product-row.trend-stable { --c: var(--stable); }
+  .product-row.trend-stable-down { --c: var(--stable-down); }
+  .product-row.trend-down { --c: var(--down); }
+  .product-row.trend-volatile { --c: var(--volatile); }
 
-  .snap-war { border: 2px solid var(--war); background: var(--war-bg); border-radius: 12px; padding: 12px 14px; margin-bottom: 12px; }
-  .snap-war b { color: var(--war); font-size: 15px; letter-spacing: 0.05em; text-transform: uppercase; }
-  .snap-war p { font-size: 17px; line-height: 1.5; margin-top: 4px; color: var(--text); }
-  .snap-war button { margin-top: 6px; background: none; border: 0; color: var(--war); font-size: 15px; font-weight: 700; padding: 6px 0; cursor: pointer; }
+  /* ===== Quick view: same page and order, glance-friendly cards ===== */
+  .q-arrow, .q-line, .q-actions { display: none; }
+  .fcount { margin-left: 6px; font-weight: 700; opacity: 0.85; }
 
-  .snap-listen { margin-bottom: 12px; }
-  .listen-btn { width: 100%; font: inherit; font-size: 18px; font-weight: 700; padding: 15px; border-radius: 12px; border: 2px solid var(--text); background: var(--surface); color: var(--text); cursor: pointer; }
+  body.view-quick .product-row[data-trend] { border-left-width: 8px; }
+  body.view-quick .product-row[data-trend] .product-row-header {
+    display: grid;
+    grid-template-columns: 38px 1fr auto;
+    grid-template-areas: "ar nm ch" "ar ln ch" "pt pt pt" "tg tg tg";
+    gap: 2px 12px;
+    align-items: center;
+    padding: 14px 16px;
+    min-height: 74px;
+  }
+  body.view-quick .product-row[data-trend] .q-arrow { display: block; grid-area: ar; font-size: 30px; font-weight: 800; color: var(--c); text-align: center; line-height: 1; }
+  body.view-quick .product-row[data-trend] .product-name { grid-area: nm; font-size: 23px; line-height: 1.15; }
+  body.view-quick .product-row[data-trend] .q-line { display: block; grid-area: ln; font-size: 17px; line-height: 1.35; color: var(--muted); }
+  body.view-quick .product-row[data-trend] .product-driver,
+  body.view-quick .product-row[data-trend] .trend-badge { display: none; }
+  body.view-quick .product-row[data-trend] .row-right { grid-area: ch; }
+  body.view-quick .product-row[data-trend] .prod-toggle { grid-area: pt; }
+  body.view-quick .product-row[data-trend] .product-tags { grid-area: tg; margin-top: 4px; }
+  .q-new { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; background: var(--c); color: var(--bg); border-radius: 5px; padding: 1px 7px; margin-right: 8px; vertical-align: 1px; }
+
+  body.view-quick .product-row[data-trend] .product-detail { padding: 4px 18px 18px; }
+  body.view-quick .product-row[data-trend] .synopsis { font-size: 18px; line-height: 1.55; }
+  body.view-quick .product-row[data-trend]:not(.show-full) .full-detail-head,
+  body.view-quick .product-row[data-trend]:not(.show-full) .full-detail-text { display: none; }
+  body.view-quick .product-row[data-trend] .full-detail-head .copy-btn { display: none; }
+  body.view-quick .product-row[data-trend] .full-detail-text { font-size: 17px; line-height: 1.65; }
+  body.view-quick .product-row[data-trend] .q-actions { display: flex; gap: 8px; margin-top: 14px; }
+  .q-actions button { flex: 1; font: inherit; font-size: 15px; border: 1px solid var(--border); background: none; color: var(--text); border-radius: 10px; padding: 12px 6px; cursor: pointer; }
+  .q-actions button.done { color: var(--stable); border-color: var(--stable); }
+
+  /* ===== Listen ===== */
+  .listen-row { margin-bottom: 14px; }
+  .listen-btn { width: 100%; font: inherit; font-size: 18px; font-weight: 700; padding: 14px; border-radius: 12px; border: 2px solid var(--text); background: var(--surface); color: var(--text); cursor: pointer; }
   .listen-btn small { display: block; font-size: 13px; font-weight: 500; color: var(--muted); }
-
-  .snap-sum { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 4px; }
-  .snap-sum div { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 10px 6px; text-align: center; }
-  .snap-sum b { display: block; font-size: 28px; line-height: 1.1; }
-  .snap-sum span { font-size: 13px; color: var(--muted); }
-
-  .snap-group { font-family: 'IBM Plex Mono', monospace; font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); padding: 20px 2px 8px; display: flex; justify-content: space-between; }
-  .snap-item { background: var(--surface); border: 1px solid var(--border); border-left: 8px solid var(--c); border-radius: 12px; margin-bottom: 10px; overflow: hidden; }
-  .snap-item.speaking, .snap-war.speaking, .snap-group.speaking { outline: 3px solid var(--text); outline-offset: 2px; }
-  .snap-hd { width: 100%; text-align: left; background: none; border: 0; color: inherit; font: inherit; padding: 12px 14px; display: grid; grid-template-columns: 34px 1fr 24px; gap: 10px; align-items: center; min-height: 68px; cursor: pointer; }
-  .snap-ar { font-size: 30px; font-weight: 800; color: var(--c); line-height: 1; text-align: center; }
-  .snap-nm { font-size: 21px; font-weight: 700; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; line-height: 1.2; }
-  .snap-ln { font-size: 17px; color: var(--muted); margin-top: 3px; line-height: 1.35; }
-  .snap-new { font-size: 11px; font-weight: 800; letter-spacing: 0.06em; background: var(--c); color: var(--bg); border-radius: 6px; padding: 2px 7px; }
-  .snap-ch { color: var(--muted); transition: transform 0.2s; }
-  .snap-item.open .snap-ch { transform: rotate(180deg); }
-  .snap-bd { display: none; padding: 2px 16px 16px 16px; font-size: 18px; line-height: 1.55; color: var(--text); border-top: 1px solid var(--border); }
-  .snap-item.open .snap-bd { display: block; }
-  .snap-bd .lab { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin: 12px 0 4px; }
-  .snap-act { margin-top: 12px; display: flex; gap: 8px; }
-  .snap-act button { flex: 1; font: inherit; font-size: 15px; border: 1px solid var(--border); background: none; color: var(--text); border-radius: 10px; padding: 12px 6px; cursor: pointer; }
-  .snap-act button.done { color: var(--stable); border-color: var(--stable); }
+  .voice-pick { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 14px; color: var(--muted); }
+  .voice-pick button { flex: 1; font: inherit; font-size: 15px; border: 1px solid var(--border); background: none; color: var(--text); border-radius: 10px; padding: 9px 6px; cursor: pointer; }
+  .voice-pick button.on { border-color: var(--text); font-weight: 700; background: var(--synopsis-bg); }
+  .product-row.speaking, .war-banner.speaking, .section-label.speaking { outline: 3px solid var(--text); outline-offset: 2px; }
 
   .mini-player { position: fixed; left: 12px; right: 12px; bottom: 76px; z-index: 130; background: var(--surface); border: 2px solid var(--text); border-radius: 14px; padding: 10px 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.35); }
   .mini-player[hidden] { display: none; }
@@ -677,7 +689,6 @@
   .mp-btns button { flex: 1; font: inherit; font-size: 15px; font-weight: 600; border: 1px solid var(--border); background: none; color: var(--text); border-radius: 10px; padding: 11px 4px; cursor: pointer; }
   @media (min-width: 801px) {
     .mini-player { left: 16px; right: auto; width: 420px; bottom: 16px; }
-    .snapshot { max-width: 760px; margin: 0 auto; }
   }
 </style>
 </head>
@@ -731,12 +742,7 @@
 
 <main>
 
-  <div class="snapshot" id="snapshot">
-    <div class="snap-war" id="snapWar"></div>
-    <div class="snap-listen" id="snapListen"></div>
-    <div class="snap-sum" id="snapSum"></div>
-    <div id="snapGroups"></div>
-  </div>
+  <div class="listen-row" id="snapListen"></div>
 
   <div class="section-label">Macro Context</div>
   <div class="macro-overview" id="macroOverview">
@@ -754,14 +760,14 @@
   </div>
 
   <!-- PROPYLENE -->
-  <div class="section-label cat-section">
+  <div class="section-label">
     Propylene &amp; Derivatives
     <div class="section-controls">
       <button class="ctrl-btn" onclick="expandSection(this)">Expand this category</button>
       <button class="ctrl-btn" onclick="collapseSection(this)">Collapse this category</button>
     </div>
   </div>
-  <div class="table-wrap cat-section">
+  <div class="table-wrap">
 
     <div class="product-row trend-stable-up" data-trend="stable-up" data-line="+1¢ for Oct; supply long, propane props it up" data-prev="stable-down">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
@@ -868,14 +874,14 @@
   </div>
 
   <!-- ETHYLENE -->
-  <div class="section-label cat-section">
+  <div class="section-label">
     Ethylene &amp; Derivatives
     <div class="section-controls">
       <button class="ctrl-btn" onclick="expandSection(this)">Expand this category</button>
       <button class="ctrl-btn" onclick="collapseSection(this)">Collapse this category</button>
     </div>
   </div>
-  <div class="table-wrap cat-section">
+  <div class="table-wrap">
 
     <div class="product-row trend-stable-up" data-trend="stable-up" data-line="+1.5¢ settled; no cracker outages thru EOY" data-prev="down">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
@@ -965,14 +971,14 @@
   </div>
 
   <!-- CRUDE OIL -->
-  <div class="section-label cat-section">
+  <div class="section-label">
     Crude Oil &amp; Energy Derivatives
     <div class="section-controls">
       <button class="ctrl-btn" onclick="expandSection(this)">Expand this category</button>
       <button class="ctrl-btn" onclick="collapseSection(this)">Collapse this category</button>
     </div>
   </div>
-  <div class="table-wrap cat-section">
+  <div class="table-wrap">
 
     <div class="product-row trend-volatile" data-trend="volatile" data-line="Elevated; Hormuz talks, no target dates" data-prev="volatile">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
@@ -1045,14 +1051,14 @@
   </div>
 
   <!-- NATURAL GAS -->
-  <div class="section-label cat-section">
+  <div class="section-label">
     Natural Gas &amp; Derivatives
     <div class="section-controls">
       <button class="ctrl-btn" onclick="expandSection(this)">Expand this category</button>
       <button class="ctrl-btn" onclick="collapseSection(this)">Collapse this category</button>
     </div>
   </div>
-  <div class="table-wrap cat-section">
+  <div class="table-wrap">
 
     <div class="product-row trend-stable-up" data-trend="stable-up" data-line="Mild Nov weather pressuring; storage above avg" data-prev="stable-up">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
@@ -1091,14 +1097,14 @@
   </div>
 
   <!-- MISC -->
-  <div class="section-label cat-section">
+  <div class="section-label">
     Miscellaneous &amp; Specialty
     <div class="section-controls">
       <button class="ctrl-btn" onclick="expandSection(this)">Expand this category</button>
       <button class="ctrl-btn" onclick="collapseSection(this)">Collapse this category</button>
     </div>
   </div>
-  <div class="table-wrap cat-section">
+  <div class="table-wrap">
 
     <div class="product-row trend-stable-up" data-trend="stable-up" data-line="Steady; Florida crop smallest on record" data-prev="stable-up">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
@@ -1187,8 +1193,8 @@
 
   </div>
 
-  <div class="section-label war-section">Additional Notes</div>
-  <div class="war-banner war-section" style="margin-bottom:8px;">
+  <div class="section-label">Additional Notes</div>
+  <div class="war-banner" style="margin-bottom:8px;">
     <h2>⚠ War with Iran — Hormuz Reopening Talks Continue With No Target Dates</h2>
     <p>The war in the middle-east remains volatile. US and Iranian negotiators continue to explore a phased reopening of the Strait of Hormuz, but no target dates have been communicated. Strikes targeting Saudi pipelines and an attack on at least one crude vessel in the Strait kept crude elevated through October. US strikes slowed ahead of the US mid-term elections, and now that they are over, participants are watching for any re-escalation. The Strait and the Red Sea are still considered security choke points, driving freight costs and import delays. The global markets are fluid and can quickly change from one conversation or meeting to another. Please continue to monitor your accounts for competitive activity where needed and communicate with your managers what you are seeing. This information is critical as we discuss market challenges with our channel partners.</p>
   </div>
@@ -1392,7 +1398,7 @@
   }
   function jumpTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
   function jumpCategory(dir) {
-    const labels = Array.from(document.querySelectorAll('.section-label, .snap-group')).filter(l => l.offsetParent);
+    const labels = Array.from(document.querySelectorAll('.section-label')).filter(l => l.offsetParent);
     const off = stickyOffset();
     let target = null;
     if (dir > 0) {
@@ -1461,7 +1467,7 @@
   }
 
 
-  // ===== Quick view =====
+  // ===== View mode: Quick and Full are the same page, same order. Only the card style differs. =====
   function setView(v) {
     document.body.classList.toggle('view-quick', v === 'quick');
     document.body.classList.toggle('view-full', v === 'full');
@@ -1471,108 +1477,190 @@
   }
   function toggleView() {
     const v = document.body.classList.contains('view-quick') ? 'full' : 'quick';
-    listenStop();
     setView(v);
     store('barsol-view', v);
-    window.scrollTo(0, 0);
-  }
-  function openFull(row) {
-    listenStop();
-    setView('full');
-    store('barsol-view', 'full');
-    if (row.classList.contains('hidden')) document.querySelector('.filter-btn[data-filter="all"]').click();
-    row.classList.add('open');
-    row.querySelector('.product-detail').classList.remove('closed');
-    const y = row.getBoundingClientRect().top + window.pageYOffset - stickyOffset() - 8;
-    window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
   }
 
-  const SNAP_GROUPS = [
-    ['Rising', ['up', 'stable-up']],
-    ['Flat', ['stable']],
-    ['Softening', ['stable-down', 'down']],
-    ['Volatile', ['volatile']]
-  ];
-  const SNAP_COLOR = { 'up': '--up', 'stable-up': '--stable-up', 'stable': '--stable', 'stable-down': '--stable-down', 'down': '--down', 'volatile': '--volatile' };
-  const SNAP_ARROW = { 'up': '↑', 'stable-up': '↗', 'stable': '→', 'stable-down': '↘', 'down': '↓', 'volatile': '⚡' };
-  let snapItems = [];   // { name, trend, line, isNew, el, bl }
-  let snapWarEl = null, snapWarShort = '';
+  const Q_ARROW = { 'up': '↑', 'stable-up': '↗', 'stable': '→', 'stable-down': '↘', 'down': '↓', 'volatile': '⚡' };
+  const productRows = () => Array.from(document.querySelectorAll('.product-row[data-trend]'));
+  const rowName = row => row.querySelector('.product-name').textContent.trim();
 
-  function buildSnapshot() {
-    const rows = Array.from(document.querySelectorAll('.product-row[data-trend]'));
-    const items = rows.map(row => {
-      const syn = row.querySelector('.synopsis');
-      const lab = syn.querySelector('.synopsis-label');
-      return {
-        row,
-        name: row.querySelector('.product-name').textContent.trim(),
-        trend: row.dataset.trend,
-        line: row.dataset.line || '',
-        isNew: !!row.dataset.prev && row.dataset.prev !== row.dataset.trend,
-        bl: syn.textContent.replace(lab ? lab.textContent : '', '').trim()
+  function decorateRows() {
+    productRows().forEach(row => {
+      const hd = row.querySelector('.product-row-header');
+      const ar = document.createElement('span');
+      ar.className = 'q-arrow'; ar.textContent = Q_ARROW[row.dataset.trend] || '';
+      hd.insertBefore(ar, hd.firstChild);
+
+      const ln = document.createElement('div');
+      ln.className = 'q-line';
+      if (row.dataset.prev && row.dataset.prev !== row.dataset.trend) {
+        const tag = document.createElement('span'); tag.className = 'q-new'; tag.textContent = 'NEW TREND'; ln.appendChild(tag);
+      }
+      ln.appendChild(document.createTextNode(row.dataset.line || ''));
+      hd.insertBefore(ln, row.querySelector('.product-name').nextSibling);
+
+      const act = document.createElement('div');
+      act.className = 'q-actions';
+      act.innerHTML = '<button type="button" data-a="full">Full detail ▾</button><button type="button" data-a="copy" data-label="⧉ Copy">⧉ Copy</button><button type="button" data-a="listen">🔊 Listen</button>';
+      act.querySelector('[data-a="full"]').onclick = function () {
+        const on = row.classList.toggle('show-full');
+        this.textContent = on ? 'Hide detail ▴' : 'Full detail ▾';
       };
+      act.querySelector('[data-a="copy"]').onclick = function () { copyFromRow(row, this); };
+      act.querySelector('[data-a="listen"]').onclick = () => listenItem(row);
+      row.querySelector('.synopsis').insertAdjacentElement('afterend', act);
     });
-
-    // Iran card (text comes from the war banner so it only needs updating in one place)
-    const banner = document.querySelector('.war-banner');
-    const wTitle = banner.querySelector('h2').textContent.replace('⚠', '').trim();
-    const wFull = banner.querySelector('p').textContent.trim();
-    snapWarShort = wFull.split(/(?<=\.)\s/)[0];
-    const war = document.getElementById('snapWar');
-    war.innerHTML = '<b>⚠ ' + esc(wTitle) + '</b><p>' + esc(snapWarShort) + '</p><button type="button">Read more ▾</button>';
-    war.querySelector('button').onclick = function () {
-      const p = war.querySelector('p');
-      const more = this.textContent.indexOf('more') > -1;
-      p.textContent = more ? wFull : snapWarShort;
-      this.textContent = more ? 'Show less ▴' : 'Read more ▾';
-    };
-    snapWarEl = war;
-
-    // counts
-    const cnt = ts => items.filter(i => ts.includes(i.trend)).length;
-    document.getElementById('snapSum').innerHTML =
-      '<div><b style="color:var(--stable-up)">' + cnt(['up', 'stable-up']) + '</b><span>Rising</span></div>' +
-      '<div><b style="color:var(--stable)">' + cnt(['stable', 'volatile']) + '</b><span>Flat / Volatile</span></div>' +
-      '<div><b style="color:var(--stable-down)">' + cnt(['stable-down', 'down']) + '</b><span>Softening</span></div>';
-
-    // groups
-    const host = document.getElementById('snapGroups');
-    host.innerHTML = '';
-    snapItems = [];
-    SNAP_GROUPS.forEach(([label, ts]) => {
-      const list = items.filter(i => ts.includes(i.trend));
-      if (!list.length) return;
-      const h = document.createElement('div');
-      h.className = 'snap-group';
-      h.innerHTML = '<span>' + label + '</span><span>' + list.length + '</span>';
-      host.appendChild(h);
-      snapItems.push({ kind: 'group', text: label + '. ' + list.length + (list.length === 1 ? ' product.' : ' products.'), el: h });
-      list.forEach(i => {
-        const e = document.createElement('div');
-        e.className = 'snap-item';
-        e.style.setProperty('--c', 'var(' + SNAP_COLOR[i.trend] + ')');
-        e.innerHTML =
-          '<button type="button" class="snap-hd"><span class="snap-ar">' + SNAP_ARROW[i.trend] + '</span>' +
-          '<span><span class="snap-nm">' + esc(i.name) + (i.isNew ? '<span class="snap-new">NEW TREND</span>' : '') + '</span>' +
-          '<div class="snap-ln">' + esc(i.line) + '</div></span><span class="snap-ch">▾</span></button>' +
-          '<div class="snap-bd"><div class="lab">Bottom line</div>' + esc(i.bl) +
-          '<div class="snap-act"><button type="button" data-a="full">Full detail</button>' +
-          '<button type="button" data-a="copy">⧉ Copy</button><button type="button" data-a="listen">🔊 Listen</button></div></div>';
-        e.querySelector('.snap-hd').onclick = () => e.classList.toggle('open');
-        e.querySelector('[data-a="full"]').onclick = () => openFull(i.row);
-        e.querySelector('[data-a="copy"]').onclick = function () { copyFromRow(i.row, this); };
-        e.querySelector('[data-a="listen"]').onclick = () => listenStart([{ text: i.name + '. ' + i.bl, el: e }]);
-        host.appendChild(e);
-        snapItems.push({ kind: 'item', text: i.name + (i.isNew ? ', new trend' : '') + '. ' + i.line + '.', el: e });
-      });
-    });
-
-    buildListenButton();
   }
-  function esc(t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function initFilterCounts() {
+    const rows = productRows();
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      const f = btn.dataset.filter;
+      const n = f === 'all' ? rows.length : rows.filter(r => r.dataset.trend === f).length;
+      const c = document.createElement('span'); c.className = 'fcount'; c.textContent = n; btn.appendChild(c);
+    });
+  }
+  function collapseProductRows() {
+    productRows().forEach(row => { row.classList.remove('open'); row.querySelector('.product-detail').classList.add('closed'); });
+  }
 
-  // ===== Listen (browser text-to-speech: no account or server involved) =====
+  // ===== Listen =====
+  // Preferred: a real audio file (natural voice) so it plays like a podcast: lock-screen / car controls, takes over audio.
+  // Fallback: the browser's built-in speech (used if the audio files aren't available).
   const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const VOICE_OPTS = [{ id: 'af_heart', label: 'Heart', sub: 'female' }, { id: 'am_michael', label: 'Michael', sub: 'male' }];
+  const AUD = { el: new Audio(), meta: null, voice: null, ready: false, active: false, mode: null, stopAt: null, rate: 1, cur: null, rates: [1, 1.25, 1.5] };
+  AUD.el.preload = 'none';
+  const ttsOK = () => 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
+  const audioVoicePref = () => { const v = load('barsol-voice'); return VOICE_OPTS.some(o => o.id === v) ? v : VOICE_OPTS[0].id; };
+
+  function audioLoad(voice) {
+    AUD.ready = false;
+    return fetch('briefing-' + voice + '.json', { cache: 'no-cache' })
+      .then(r => { if (!r.ok) throw new Error('no audio'); return r.json(); })
+      .then(m => {
+        AUD.meta = m; AUD.voice = voice; AUD.ready = true;
+        AUD.el.src = 'briefing-' + voice + '.mp3?v=' + encodeURIComponent(m.generated);
+      })
+      .catch(() => { AUD.ready = false; })
+      .then(buildListenUI);
+  }
+
+  function categoryLabels() {
+    const out = {};
+    document.querySelectorAll('.section-label').forEach(l => {
+      const nxt = l.nextElementSibling;
+      if (nxt && nxt.querySelector && nxt.querySelector('.product-row[data-trend]')) out[l.firstChild.textContent.trim()] = l;
+    });
+    return out;
+  }
+  function markTarget(key) {
+    if (key === 'b:war') return document.querySelector('.war-banner');
+    if (key.startsWith('b:c:')) return categoryLabels()[key.slice(4)] || null;
+    if (key.startsWith('b:i:') || key.startsWith('d:')) {
+      const name = key.replace(/^(b:i:|d:)/, '');
+      return productRows().find(r => rowName(r) === name) || null;
+    }
+    return null;
+  }
+  function listenMark(el) {
+    document.querySelectorAll('.speaking').forEach(x => x.classList.remove('speaking'));
+    if (el && el.offsetParent) { el.classList.add('speaking'); el.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
+  }
+
+  function buildListenUI() {
+    const host = document.getElementById('snapListen');
+    if (!AUD.ready && !ttsOK()) { host.innerHTML = ''; return; }
+    let mins, note;
+    if (AUD.ready) { mins = Math.max(1, Math.round(AUD.meta.briefingEnd / 60)); note = 'About ' + mins + ' min · plays like a podcast, with lock-screen and car controls'; }
+    else { mins = 2; note = 'About 2 min · uses your phone\'s built-in voice'; }
+    let html = '<button type="button" class="listen-btn" id="listenBtn">🔊 Listen to the briefing<small>' + note + '</small></button>';
+    if (AUD.ready) {
+      html += '<div class="voice-pick"><span>Voice:</span>' +
+        VOICE_OPTS.map(o => '<button type="button" data-v="' + o.id + '" class="' + (o.id === AUD.voice ? 'on' : '') + '">' + o.label + ' · ' + o.sub + '</button>').join('') + '</div>';
+    }
+    host.innerHTML = html;
+    document.getElementById('listenBtn').onclick = () => (AUD.ready ? audioBriefing() : speechBriefing());
+    host.querySelectorAll('[data-v]').forEach(b => b.onclick = () => { listenStop(); store('barsol-voice', b.dataset.v); audioLoad(b.dataset.v); });
+  }
+  function listenItem(row) { if (AUD.ready) audioItem(row); else speechItem(row); }
+
+  // ---- audio engine
+  function markAt(prefix, t) {
+    let cur = null;
+    AUD.meta.marks.forEach(m => { if (m.key.startsWith(prefix) && m.start <= t + 0.05) cur = m; });
+    return cur;
+  }
+  function nextMarkStart(prefix, t) {
+    const n = AUD.meta.marks.find(m => m.key.startsWith(prefix) && m.start > t + 0.3);
+    return n ? n.start : null;
+  }
+  function sessionInit() {
+    if (!('mediaSession' in navigator)) return;
+    const a = AUD.el, set = (k, f) => { try { navigator.mediaSession.setActionHandler(k, f); } catch (e) {} };
+    set('play', () => a.play()); set('pause', () => a.pause()); set('stop', listenStop);
+    set('nexttrack', listenSkip); set('previoustrack', audioBack);
+    set('seekbackward', () => { a.currentTime = Math.max(0, a.currentTime - 10); });
+    set('seekforward', () => { a.currentTime = Math.min(a.duration || 1e9, a.currentTime + 10); });
+  }
+  function sessionTitle(title) {
+    if (!('mediaSession' in navigator) || typeof MediaMetadata === 'undefined') return;
+    try {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: title, artist: 'Barton Solvents', album: 'Chemical Market Update',
+        artwork: [{ src: 'briefing-art.png', sizes: '512x512', type: 'image/png' }]
+      });
+    } catch (e) {}
+  }
+  function audioPlayFrom(t, stopAt, mode, fail) {
+    if (ttsOK()) speechSynthesis.cancel();
+    stopSpeech();
+    const a = AUD.el;
+    AUD.mode = mode; AUD.stopAt = stopAt; AUD.active = true; AUD.cur = null;
+    a.playbackRate = AUD.rate;
+    sessionInit(); sessionTitle('Chemical Market Update');
+    const seek = () => { a.currentTime = t; };
+    if (a.readyState >= 1) { seek(); a.muted = false; }
+    else if (t > 0) {
+      a.muted = true;
+      a.addEventListener('loadedmetadata', seek, { once: true });
+      a.addEventListener('seeked', () => { a.muted = false; }, { once: true });
+    } else { a.muted = false; }
+    const p = a.play();
+    if (p && p.catch) p.catch(() => { AUD.active = false; AUD.ready = false; listenUI(); buildListenUI(); fail(); });
+    listenUI();
+  }
+  function audioBriefing() { audioPlayFrom(0, AUD.meta.briefingEnd, 'b:', speechBriefing); }
+  function audioItem(row) {
+    const m = AUD.meta.marks.find(x => x.key === 'd:' + rowName(row));
+    if (!m) return speechItem(row);
+    const end = nextMarkStart('d:', m.start) || AUD.meta.duration;
+    audioPlayFrom(m.start, end, 'd:', () => speechItem(row));
+  }
+  function audioBack() {
+    if (!AUD.active || AUD.mode !== 'b:') return;
+    const t = AUD.el.currentTime;
+    const prev = AUD.meta.marks.filter(m => m.key.startsWith('b:') && m.start < t - 2).pop();
+    AUD.el.currentTime = prev ? prev.start : 0;
+  }
+  AUD.el.addEventListener('timeupdate', () => {
+    if (!AUD.active || !AUD.meta) return;
+    const t = AUD.el.currentTime;
+    if (AUD.stopAt != null && t >= AUD.stopAt - 0.05) return listenStop();
+    const m = markAt(AUD.mode, t);
+    if (m && m !== AUD.cur) {
+      AUD.cur = m;
+      listenMark(markTarget(m.key));
+      const label = m.key.replace(/^(b:i:|b:c:|d:)/, '').replace(/^b:(intro|war|end)$/, (x, y) => ({ intro: 'Intro', war: 'Iran war', end: 'End' }[y]));
+      sessionTitle(label);
+      listenUI();
+    }
+  });
+  AUD.el.addEventListener('ended', () => listenStop());
+  AUD.el.addEventListener('pause', () => { if (AUD.active) listenUI(); });
+  AUD.el.addEventListener('play', () => { if (AUD.active) listenUI(); });
+
+  // ---- built-in speech fallback
   function speakable(t) {
     return t
       .replace(/\+(\d+(?:\.\d+)?)-(\d+(?:\.\d+)?)¢/g, 'plus $1 to $2 cents')
@@ -1586,83 +1674,108 @@
       .replace(/\bFM\b/g, 'force majeure')
       .replace(/\bavg\b/gi, 'average')
       .replace(/\bQ(\d)\b/g, 'Q $1')
-      .replace(/\bPGP\b/g, 'P G P')
-      .replace(/\bMEK\b/g, 'M E K')
-      .replace(/\bIPA\b/g, 'I P A');
+      .replace(/\bPGP\b/g, 'P G P').replace(/\bMEK\b/g, 'M E K').replace(/\bIPA\b/g, 'I P A');
   }
   const L = { items: [], idx: 0, on: false, paused: false, rate: 1, token: 0, rates: [1, 1.25, 1.5, 0.85] };
-  const ttsOK = () => 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
 
-  function briefingItems() {
+  function speechBriefingItems() {
     const sub = document.querySelector('.subtitle').textContent;
     const m = sub.match(/Updated\s+(\d+)\s*\/\s*(\d+)\s*\/\s*(\d+)/);
     const when = m ? ' Updated ' + MONTHS[+m[1] - 1] + ' ' + (+m[2]) + '.' : '';
-    return [{ text: 'Barton Solvents chemical market update.' + when }]
-      .concat([{ text: 'Iran war. ' + snapWarShort, el: snapWarEl }])
-      .concat(snapItems)
-      .concat([{ text: 'End of briefing.' }]);
+    const banner = document.querySelector('.war-banner');
+    const war = banner.querySelector('p').textContent.trim().split(/(?<=\.)\s/)[0];
+    const out = [{ text: 'Barton Solvents chemical market update.' + when }, { text: 'Iran war. ' + war, el: banner }];
+    const labels = categoryLabels();
+    Object.keys(labels).forEach(name => {
+      const rows = Array.from(labels[name].nextElementSibling.querySelectorAll('.product-row[data-trend]'));
+      out.push({ text: name + '. ' + rows.length + ' products.', el: labels[name] });
+      rows.forEach(r => out.push({ text: rowName(r) + (r.dataset.prev && r.dataset.prev !== r.dataset.trend ? ', new trend' : '') + '. ' + (r.dataset.line || '') + '.', el: r }));
+    });
+    out.push({ text: 'End of briefing.' });
+    return out;
   }
-  function buildListenButton() {
-    const host = document.getElementById('snapListen');
-    if (!ttsOK()) { host.innerHTML = ''; return; }
-    const words = briefingItems().reduce((n, i) => n + i.text.split(/\s+/).length, 0);
-    const mins = Math.max(1, Math.round(words / 150));
-    host.innerHTML = '<button type="button" class="listen-btn">🔊 Listen to the briefing<small>About ' + mins + ' min · plays through your phone speaker or car audio</small></button>';
-    host.querySelector('button').onclick = () => listenStart(briefingItems());
+  function speechBriefing() { listenStart(speechBriefingItems()); }
+  function speechItem(row) {
+    const syn = row.querySelector('.synopsis'); const lab = syn.querySelector('.synopsis-label');
+    listenStart([{ text: rowName(row) + '. ' + syn.textContent.replace(lab ? lab.textContent : '', '').trim(), el: row }]);
   }
-
   function pickVoice() {
-    const vs = speechSynthesis.getVoices().filter(v => /^en(-|_)US/i.test(v.lang) || /^en/i.test(v.lang));
+    const vs = speechSynthesis.getVoices().filter(v => /^en/i.test(v.lang));
     return vs.find(v => /US/i.test(v.lang) && v.localService) || vs.find(v => /US/i.test(v.lang)) || vs[0] || null;
-  }
-  function listenMark(el) {
-    document.querySelectorAll('.speaking').forEach(x => x.classList.remove('speaking'));
-    if (el) { el.classList.add('speaking'); el.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
-  }
-  function listenUI() {
-    const mp = document.getElementById('miniPlayer');
-    mp.hidden = !L.on;
-    document.getElementById('mpPause').textContent = L.paused ? '▶ Resume' : '⏸ Pause';
-    document.getElementById('mpRate').textContent = L.rate + '×';
-    const cur = L.items[L.idx];
-    document.getElementById('mpNow').textContent = L.paused ? 'Paused' : (cur ? '🔊 ' + cur.text.split('.')[0] : 'Done');
   }
   function listenStart(items) {
     if (!ttsOK()) return;
+    if (AUD.active) { AUD.active = false; AUD.el.pause(); }
     speechSynthesis.cancel();
     L.items = items; L.idx = 0; L.on = true; L.paused = false;
-    listenSpeak();
+    speechSpeak();
   }
-  function listenSpeak() {
+  function speechSpeak() {
     const item = L.items[L.idx];
-    if (!item) return listenStop();
+    if (!item) return stopSpeech();
     const my = ++L.token;
     const u = new SpeechSynthesisUtterance(speakable(item.text));
     u.rate = L.rate; u.lang = 'en-US';
     const v = pickVoice(); if (v) u.voice = v;
     u.onstart = () => { if (my === L.token) { listenMark(item.el); listenUI(); } };
-    const next = () => { if (my === L.token && L.on && !L.paused) { L.idx++; listenSpeak(); } };
+    const next = () => { if (my === L.token && L.on && !L.paused) { L.idx++; speechSpeak(); } };
     u.onend = next;
     u.onerror = e => { if (e.error !== 'canceled' && e.error !== 'interrupted') next(); };
     listenUI();
     speechSynthesis.speak(u);
   }
-  function listenPause() {
-    if (!L.on) return;
-    if (L.paused) { L.paused = false; listenSpeak(); }
-    else { L.paused = true; L.token++; speechSynthesis.cancel(); listenUI(); }
-  }
-  function listenSkip() { if (!L.on) return; L.token++; speechSynthesis.cancel(); L.paused = false; L.idx++; listenSpeak(); }
-  function listenRate() {
-    L.rate = L.rates[(L.rates.indexOf(L.rate) + 1) % L.rates.length];
-    if (L.on && !L.paused) { L.token++; speechSynthesis.cancel(); listenSpeak(); } else listenUI();
-  }
-  function listenStop() {
+  function stopSpeech() {
     if (!ttsOK()) return;
     L.token++; L.on = false; L.paused = false; speechSynthesis.cancel();
+  }
+
+  // ---- shared controls (work for either engine)
+  function listenUI() {
+    const mp = document.getElementById('miniPlayer');
+    const live = AUD.active || L.on;
+    mp.hidden = !live;
+    if (!live) return;
+    const paused = AUD.active ? AUD.el.paused : L.paused;
+    const rate = AUD.active ? AUD.rate : L.rate;
+    document.getElementById('mpPause').textContent = paused ? '▶ Resume' : '⏸ Pause';
+    document.getElementById('mpRate').textContent = rate + '×';
+    let now = 'Listening';
+    if (AUD.active && AUD.cur) now = AUD.cur.key.replace(/^(b:i:|b:c:|d:)/, '').replace(/^b:(intro|war|end)$/, (x, y) => ({ intro: 'Intro', war: 'Iran war', end: 'End' }[y]));
+    else if (L.on && L.items[L.idx]) now = L.items[L.idx].text.split('.')[0];
+    document.getElementById('mpNow').textContent = paused ? 'Paused' : '🔊 ' + now;
+  }
+  function listenPause() {
+    if (AUD.active) { if (AUD.el.paused) AUD.el.play(); else AUD.el.pause(); listenUI(); return; }
+    if (!L.on) return;
+    if (L.paused) { L.paused = false; speechSpeak(); }
+    else { L.paused = true; L.token++; speechSynthesis.cancel(); listenUI(); }
+  }
+  function listenSkip() {
+    if (AUD.active) {
+      const n = AUD.mode === 'b:' ? nextMarkStart('b:', AUD.el.currentTime) : null;
+      if (n == null || n >= AUD.stopAt) return listenStop();
+      AUD.el.currentTime = n; return;
+    }
+    if (!L.on) return;
+    L.token++; speechSynthesis.cancel(); L.paused = false; L.idx++; speechSpeak();
+  }
+  function listenRate() {
+    if (AUD.active) {
+      AUD.rate = AUD.rates[(AUD.rates.indexOf(AUD.rate) + 1) % AUD.rates.length];
+      AUD.el.playbackRate = AUD.rate; listenUI(); return;
+    }
+    L.rate = L.rates[(L.rates.indexOf(L.rate) + 1) % L.rates.length];
+    if (L.on && !L.paused) { L.token++; speechSynthesis.cancel(); speechSpeak(); } else listenUI();
+  }
+  function listenStop() {
+    if (AUD.active) {
+      AUD.active = false; AUD.el.pause(); AUD.el.muted = false;
+      if ('mediaSession' in navigator) { try { navigator.mediaSession.playbackState = 'none'; } catch (e) {} }
+    }
+    stopSpeech();
     listenMark(null); listenUI();
   }
-  if (ttsOK()) { speechSynthesis.onvoiceschanged = () => {}; window.addEventListener('pagehide', () => speechSynthesis.cancel()); }
+  window.addEventListener('pagehide', () => { if (ttsOK()) speechSynthesis.cancel(); });
 
   function toggleMacro() {
     document.getElementById('macroOverview').classList.toggle('collapsed');
@@ -1684,12 +1797,18 @@
     updateFloatNav();
   })();
 
-  buildSnapshot();
+  decorateRows();
+  initFilterCounts();
+  buildListenUI();
+  audioLoad(audioVoicePref());
   (function initView() {
     const v = load('barsol-view');
     const view = v === 'quick' || v === 'full' ? v : (isMobile() ? 'quick' : 'full');
     setView(view);
-    if (view === 'quick') document.getElementById('macroOverview').classList.add('collapsed');
+    if (view === 'quick') {
+      collapseProductRows();
+      document.getElementById('macroOverview').classList.add('collapsed');
+    }
   })();
 
   function toggleRow(row) {
