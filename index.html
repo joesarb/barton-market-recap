@@ -1601,11 +1601,11 @@
     if (menu && live) menu.hidden = true;
   }
   const LIST_OPTS = [
-    ['brief', 'Brief', 'Each product and its trend only', 1],
-    ['short', 'Short', 'Plus the one-line takeaway', 2],
-    ['full', 'Full', 'Plus the full detail for each product', 28]
+    ['brief', 'Brief', 'Product, trend and the one-line takeaway', 2],
+    ['medium', 'Medium', 'Product, trend and the Bottom Line', 8],
+    ['full', 'Full', 'Product, trend and the full detail', 26]
   ];
-  const LIST_NAME = { brief: 'Brief briefing', short: 'Short briefing', full: 'Full briefing' };
+  const LIST_NAME = { brief: 'Brief briefing', medium: 'Medium briefing', full: 'Full briefing' };
   function listMinutes(kind, guess) {
     const l = AUD.ready && AUD.manifest.lists && AUD.manifest.lists[kind];
     const m = l ? l.duration / 60 : guess;
@@ -1614,7 +1614,7 @@
   function buildListenUI() {
     const host = document.getElementById('snapListen');
     if (!canListen()) { host.innerHTML = ''; return; }
-    const note = AUD.ready ? 'Brief, Short or Full · plays like a podcast, with lock-screen and car controls' : 'Brief, Short or Full · uses your phone\'s built-in voice';
+    const note = AUD.ready ? 'Brief, Medium or Full · plays like a podcast, with lock-screen and car controls' : 'Brief, Medium or Full · uses your phone\'s built-in voice';
     host.innerHTML = '<button type="button" class="listen-btn" id="listenBtn">🔊 Listen to the briefing ▾<small>' + note + '</small></button>' +
       '<div class="listen-menu" id="listenMenu" hidden>' + LIST_OPTS.map(o =>
         '<button type="button" data-k="' + o[0] + '"><b>' + o[1] + '</b><span>' + o[2] + ' · ' + listMinutes(o[0], o[3]) + '</span></button>').join('') + '</div>';
@@ -1756,9 +1756,11 @@
     const items = [];
     productRows().forEach(r => {
       const lead = rowName(r) + ', ' + TREND_SAY[r.dataset.trend] + '.';
-      if (kind === 'brief') items.push({ text: lead, el: r, scroll: true });
-      else if (kind === 'short') items.push({ text: lead + ' ' + (r.dataset.line || '') + '.', el: r, scroll: true });
-      else chunkSentences(lead + ' ' + r.querySelector('.full-detail-text').textContent.trim()).forEach((t, i) => items.push({ text: t, el: r, scroll: i === 0 }));
+      if (kind === 'brief') items.push({ text: lead + ' ' + (r.dataset.line || '') + '.', el: r, scroll: true });
+      else {
+        const body = kind === 'medium' ? bottomLineText(r) : r.querySelector('.full-detail-text').textContent.trim();
+        chunkSentences(lead + ' ' + body).forEach((t, i) => items.push({ text: t, el: r, scroll: i === 0 }));
+      }
     });
     listenStart(items);
   }
