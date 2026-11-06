@@ -630,6 +630,55 @@
     .product-row.show-products .product-tags { display: flex; }
     .product-row-header .row-right { grid-column: 2; grid-row: 1; }
   }
+
+  /* ===== Quick view (mobile-first glance mode) ===== */
+  .snapshot { display: none; padding-top: 4px; }
+  body.view-quick .snapshot { display: block; }
+  body.view-quick .cat-section,
+  body.view-quick .war-section,
+  body.view-quick .filter-bar { display: none !important; }
+  body.view-quick main { padding-top: 16px; }
+
+  .snap-war { border: 2px solid var(--war); background: var(--war-bg); border-radius: 12px; padding: 12px 14px; margin-bottom: 12px; }
+  .snap-war b { color: var(--war); font-size: 15px; letter-spacing: 0.05em; text-transform: uppercase; }
+  .snap-war p { font-size: 17px; line-height: 1.5; margin-top: 4px; color: var(--text); }
+  .snap-war button { margin-top: 6px; background: none; border: 0; color: var(--war); font-size: 15px; font-weight: 700; padding: 6px 0; cursor: pointer; }
+
+  .snap-listen { margin-bottom: 12px; }
+  .listen-btn { width: 100%; font: inherit; font-size: 18px; font-weight: 700; padding: 15px; border-radius: 12px; border: 2px solid var(--text); background: var(--surface); color: var(--text); cursor: pointer; }
+  .listen-btn small { display: block; font-size: 13px; font-weight: 500; color: var(--muted); }
+
+  .snap-sum { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 4px; }
+  .snap-sum div { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 10px 6px; text-align: center; }
+  .snap-sum b { display: block; font-size: 28px; line-height: 1.1; }
+  .snap-sum span { font-size: 13px; color: var(--muted); }
+
+  .snap-group { font-family: 'IBM Plex Mono', monospace; font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); padding: 20px 2px 8px; display: flex; justify-content: space-between; }
+  .snap-item { background: var(--surface); border: 1px solid var(--border); border-left: 8px solid var(--c); border-radius: 12px; margin-bottom: 10px; overflow: hidden; }
+  .snap-item.speaking, .snap-war.speaking, .snap-group.speaking { outline: 3px solid var(--text); outline-offset: 2px; }
+  .snap-hd { width: 100%; text-align: left; background: none; border: 0; color: inherit; font: inherit; padding: 12px 14px; display: grid; grid-template-columns: 34px 1fr 24px; gap: 10px; align-items: center; min-height: 68px; cursor: pointer; }
+  .snap-ar { font-size: 30px; font-weight: 800; color: var(--c); line-height: 1; text-align: center; }
+  .snap-nm { font-size: 21px; font-weight: 700; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; line-height: 1.2; }
+  .snap-ln { font-size: 17px; color: var(--muted); margin-top: 3px; line-height: 1.35; }
+  .snap-new { font-size: 11px; font-weight: 800; letter-spacing: 0.06em; background: var(--c); color: var(--bg); border-radius: 6px; padding: 2px 7px; }
+  .snap-ch { color: var(--muted); transition: transform 0.2s; }
+  .snap-item.open .snap-ch { transform: rotate(180deg); }
+  .snap-bd { display: none; padding: 2px 16px 16px 16px; font-size: 18px; line-height: 1.55; color: var(--text); border-top: 1px solid var(--border); }
+  .snap-item.open .snap-bd { display: block; }
+  .snap-bd .lab { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin: 12px 0 4px; }
+  .snap-act { margin-top: 12px; display: flex; gap: 8px; }
+  .snap-act button { flex: 1; font: inherit; font-size: 15px; border: 1px solid var(--border); background: none; color: var(--text); border-radius: 10px; padding: 12px 6px; cursor: pointer; }
+  .snap-act button.done { color: var(--stable); border-color: var(--stable); }
+
+  .mini-player { position: fixed; left: 12px; right: 12px; bottom: 76px; z-index: 130; background: var(--surface); border: 2px solid var(--text); border-radius: 14px; padding: 10px 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.35); }
+  .mini-player[hidden] { display: none; }
+  .mp-now { font-size: 16px; font-weight: 600; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mp-btns { display: flex; gap: 6px; }
+  .mp-btns button { flex: 1; font: inherit; font-size: 15px; font-weight: 600; border: 1px solid var(--border); background: none; color: var(--text); border-radius: 10px; padding: 11px 4px; cursor: pointer; }
+  @media (min-width: 801px) {
+    .mini-player { left: 16px; right: auto; width: 420px; bottom: 16px; }
+    .snapshot { max-width: 760px; margin: 0 auto; }
+  }
 </style>
 </head>
 <body>
@@ -641,6 +690,7 @@
   </div>
   <div class="header-right">
     <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">☀ Light Mode</button>
+    <button class="theme-toggle header-toggle" id="viewToggle" onclick="toggleView()" title="Switch between the quick glance view and the full detail view">Full view</button>
     <button class="theme-toggle header-toggle" id="headerToggle" onclick="toggleHeader()" title="Minimize or expand the header">▲ Minimize</button>
   </div>
 </header>
@@ -663,6 +713,16 @@
   </div>
 </div>
 
+<div class="mini-player" id="miniPlayer" hidden>
+  <div class="mp-now" id="mpNow">Starting…</div>
+  <div class="mp-btns">
+    <button id="mpPause" onclick="listenPause()">⏸ Pause</button>
+    <button onclick="listenSkip()">⏭ Skip</button>
+    <button id="mpRate" onclick="listenRate()">1×</button>
+    <button onclick="listenStop()">■ Stop</button>
+  </div>
+</div>
+
 <div class="float-nav" id="floatNav">
   <button onclick="jumpTop()" title="Jump to top">↑ Top</button>
   <button onclick="jumpCategory(-1)" title="Previous category">← Prev<span class="lbl-long"> category</span></button>
@@ -670,6 +730,13 @@
 </div>
 
 <main>
+
+  <div class="snapshot" id="snapshot">
+    <div class="snap-war" id="snapWar"></div>
+    <div class="snap-listen" id="snapListen"></div>
+    <div class="snap-sum" id="snapSum"></div>
+    <div id="snapGroups"></div>
+  </div>
 
   <div class="section-label">Macro Context</div>
   <div class="macro-overview" id="macroOverview">
@@ -687,16 +754,16 @@
   </div>
 
   <!-- PROPYLENE -->
-  <div class="section-label">
+  <div class="section-label cat-section">
     Propylene &amp; Derivatives
     <div class="section-controls">
       <button class="ctrl-btn" onclick="expandSection(this)">Expand this category</button>
       <button class="ctrl-btn" onclick="collapseSection(this)">Collapse this category</button>
     </div>
   </div>
-  <div class="table-wrap">
+  <div class="table-wrap cat-section">
 
-    <div class="product-row trend-stable-up" data-trend="stable-up">
+    <div class="product-row trend-stable-up" data-trend="stable-up" data-line="+1¢ for Oct; supply long, propane props it up" data-prev="stable-down">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Propylene</div>
         <div class="product-driver">CRUDE · PROPANE · NATURAL GAS</div>
@@ -713,7 +780,7 @@
       </div>
     </div>
 
-    <div class="product-row trend-stable-up" data-trend="stable-up">
+    <div class="product-row trend-stable-up" data-trend="stable-up" data-line="Edged up with propylene; flat to year-end" data-prev="stable-down">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Propylene Oxide</div>
         <div class="product-driver">PROPYLENE · NATURAL GAS</div>
@@ -730,7 +797,7 @@
       </div>
     </div>
 
-    <div class="product-row trend-stable-up" data-trend="stable-up">
+    <div class="product-row trend-stable-up" data-trend="stable-up" data-line="+5-6¢ announced for Nov 1; demand weak" data-prev="stable-down">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Acetone</div>
         <div class="product-driver">PROPYLENE · PHENOL · BENZENE</div>
@@ -747,7 +814,7 @@
       </div>
     </div>
 
-    <div class="product-row trend-stable-up" data-trend="stable-up">
+    <div class="product-row trend-stable-up" data-trend="stable-up" data-line="Spot slightly higher; Q4 slowdown may cap it" data-prev="down">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">IPA / Alcohol</div>
         <div class="product-driver">PROPYLENE</div>
@@ -764,7 +831,7 @@
       </div>
     </div>
 
-    <div class="product-row trend-down" data-trend="down">
+    <div class="product-row trend-down" data-trend="down" data-line="Still easing; imports hold the price edge" data-prev="down">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Propylene Glycols</div>
         <div class="product-driver">PROPYLENE · SUPPLY &amp; DEMAND</div>
@@ -781,7 +848,7 @@
       </div>
     </div>
 
-    <div class="product-row trend-stable-down" data-trend="stable-down">
+    <div class="product-row trend-stable-down" data-trend="stable-down" data-line="More erosion expected; producers cutting deals" data-prev="stable-down">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Glycol Ethers (P-Series)</div>
         <div class="product-driver">PROPYLENE</div>
@@ -801,16 +868,16 @@
   </div>
 
   <!-- ETHYLENE -->
-  <div class="section-label">
+  <div class="section-label cat-section">
     Ethylene &amp; Derivatives
     <div class="section-controls">
       <button class="ctrl-btn" onclick="expandSection(this)">Expand this category</button>
       <button class="ctrl-btn" onclick="collapseSection(this)">Collapse this category</button>
     </div>
   </div>
-  <div class="table-wrap">
+  <div class="table-wrap cat-section">
 
-    <div class="product-row trend-stable-up" data-trend="stable-up">
+    <div class="product-row trend-stable-up" data-trend="stable-up" data-line="+1.5¢ settled; no cracker outages thru EOY" data-prev="down">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Ethylene</div>
         <div class="product-driver">CRUDE · NATURAL GAS · ETHANE</div>
@@ -827,7 +894,7 @@
       </div>
     </div>
 
-    <div class="product-row trend-stable-down" data-trend="stable-down">
+    <div class="product-row trend-stable-down" data-trend="stable-down" data-line="Main supplier +5¢ end of Oct; demand soft" data-prev="stable-down">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">MEK</div>
         <div class="product-driver">BUTYLENE</div>
@@ -844,7 +911,7 @@
       </div>
     </div>
 
-    <div class="product-row trend-stable-down" data-trend="stable-down">
+    <div class="product-row trend-stable-down" data-trend="stable-down" data-line="Ineos FM lifts 11/6; Eastman/Dow +10¢ in question" data-prev="stable-down">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Glycol Ethers (E-Series)</div>
         <div class="product-driver">ETHYLENE · ETHYLENE OXIDE</div>
@@ -861,7 +928,7 @@
       </div>
     </div>
 
-    <div class="product-row trend-stable" data-trend="stable">
+    <div class="product-row trend-stable" data-trend="stable" data-line="MEA softening, TEA loosening, DEA stable" data-prev="stable">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Ethanolamines</div>
         <div class="product-driver">ETHYLENE · ETHYLENE OXIDE</div>
@@ -878,7 +945,7 @@
       </div>
     </div>
 
-    <div class="product-row trend-stable" data-trend="stable">
+    <div class="product-row trend-stable" data-trend="stable" data-line="MEG steady, DEG easing, TEG still tight" data-prev="stable-up">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">MEG / DEG / TEG</div>
         <div class="product-driver">ETHYLENE · EO · SUPPLY &amp; DEMAND</div>
@@ -898,16 +965,16 @@
   </div>
 
   <!-- CRUDE OIL -->
-  <div class="section-label">
+  <div class="section-label cat-section">
     Crude Oil &amp; Energy Derivatives
     <div class="section-controls">
       <button class="ctrl-btn" onclick="expandSection(this)">Expand this category</button>
       <button class="ctrl-btn" onclick="collapseSection(this)">Collapse this category</button>
     </div>
   </div>
-  <div class="table-wrap">
+  <div class="table-wrap cat-section">
 
-    <div class="product-row trend-volatile" data-trend="volatile">
+    <div class="product-row trend-volatile" data-trend="volatile" data-line="Elevated; Hormuz talks, no target dates" data-prev="volatile">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Crude Oil</div>
         <div class="product-driver">DOMESTIC PRODUCTION · GEOPOLITICAL · SPECULATION</div>
@@ -924,7 +991,7 @@
       </div>
     </div>
 
-    <div class="product-row trend-stable-up" data-trend="stable-up">
+    <div class="product-row trend-stable-up" data-trend="stable-up" data-line="Fell early Nov; Oct hikes may be erased" data-prev="stable-up">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Aliphatic Solvents</div>
         <div class="product-driver">CRUDE OIL · UNL87</div>
@@ -941,7 +1008,7 @@
       </div>
     </div>
 
-    <div class="product-row trend-stable-up" data-trend="stable-up">
+    <div class="product-row trend-stable-up" data-trend="stable-up" data-line="Stable; one producer cut 100/150" data-prev="stable-up">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Aromatic Solvents</div>
         <div class="product-driver">CRUDE OIL · DIESEL · JET FUEL</div>
@@ -958,7 +1025,7 @@
       </div>
     </div>
 
-    <div class="product-row trend-stable-up" data-trend="stable-up">
+    <div class="product-row trend-stable-up" data-trend="stable-up" data-line="+3-4¢ for Nov, about half of what was expected" data-prev="stable-up">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Toluol &amp; Xylol</div>
         <div class="product-driver">CRUDE OIL · SEASONAL GASOLINE</div>
@@ -978,16 +1045,16 @@
   </div>
 
   <!-- NATURAL GAS -->
-  <div class="section-label">
+  <div class="section-label cat-section">
     Natural Gas &amp; Derivatives
     <div class="section-controls">
       <button class="ctrl-btn" onclick="expandSection(this)">Expand this category</button>
       <button class="ctrl-btn" onclick="collapseSection(this)">Collapse this category</button>
     </div>
   </div>
-  <div class="table-wrap">
+  <div class="table-wrap cat-section">
 
-    <div class="product-row trend-stable-up" data-trend="stable-up">
+    <div class="product-row trend-stable-up" data-trend="stable-up" data-line="Mild Nov weather pressuring; storage above avg" data-prev="stable-up">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Natural Gas</div>
         <div class="product-driver">DOMESTIC MINING · REFINING · ENERGY USE</div>
@@ -1004,7 +1071,7 @@
       </div>
     </div>
 
-    <div class="product-row trend-stable-up" data-trend="stable-up">
+    <div class="product-row trend-stable-up" data-trend="stable-up" data-line="Firm on seasonal demand, low global stocks" data-prev="stable-up">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Methanol</div>
         <div class="product-driver">NATURAL GAS · CRUDE</div>
@@ -1024,16 +1091,16 @@
   </div>
 
   <!-- MISC -->
-  <div class="section-label">
+  <div class="section-label cat-section">
     Miscellaneous &amp; Specialty
     <div class="section-controls">
       <button class="ctrl-btn" onclick="expandSection(this)">Expand this category</button>
       <button class="ctrl-btn" onclick="collapseSection(this)">Collapse this category</button>
     </div>
   </div>
-  <div class="table-wrap">
+  <div class="table-wrap cat-section">
 
-    <div class="product-row trend-stable-up" data-trend="stable-up">
+    <div class="product-row trend-stable-up" data-trend="stable-up" data-line="Steady; Florida crop smallest on record" data-prev="stable-up">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">D-Limonene</div>
         <div class="product-driver">CITRUS HARVEST · WEATHER</div>
@@ -1050,7 +1117,7 @@
       </div>
     </div>
 
-    <div class="product-row trend-stable-down" data-trend="stable-down">
+    <div class="product-row trend-stable-down" data-trend="stable-down" data-line="Mostly rolled; TOTM lower" data-prev="stable-down">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Plasticizers</div>
         <div class="product-driver">2-EH · TMA</div>
@@ -1067,7 +1134,7 @@
       </div>
     </div>
 
-    <div class="product-row trend-stable" data-trend="stable">
+    <div class="product-row trend-stable" data-trend="stable" data-line="Corn down sharply; 2027 contracts coming" data-prev="stable">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Ethanol</div>
         <div class="product-driver">PURE · SDA ALCOHOL</div>
@@ -1084,7 +1151,7 @@
       </div>
     </div>
 
-    <div class="product-row trend-stable-down" data-trend="stable-down">
+    <div class="product-row trend-stable-down" data-trend="stable-down" data-line="Loosening as producers return; RV demand done" data-prev="up">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Glycerin</div>
         <div class="product-driver">BIO-DIESEL · METHANOL</div>
@@ -1101,7 +1168,7 @@
       </div>
     </div>
 
-    <div class="product-row trend-stable-down" data-trend="stable-down">
+    <div class="product-row trend-stable-down" data-trend="stable-down" data-line="Soyate slightly lower; tallow oleic down" data-prev="stable-down">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Methyl Soyate / Sorbitol / Oleic Acid</div>
         <div class="product-driver">SOYBEANS · SUGAR ALCOHOL · TALLOW</div>
@@ -1120,8 +1187,8 @@
 
   </div>
 
-  <div class="section-label">Additional Notes</div>
-  <div class="war-banner" style="margin-bottom:8px;">
+  <div class="section-label war-section">Additional Notes</div>
+  <div class="war-banner war-section" style="margin-bottom:8px;">
     <h2>⚠ War with Iran — Hormuz Reopening Talks Continue With No Target Dates</h2>
     <p>The war in the middle-east remains volatile. US and Iranian negotiators continue to explore a phased reopening of the Strait of Hormuz, but no target dates have been communicated. Strikes targeting Saudi pipelines and an attack on at least one crude vessel in the Strait kept crude elevated through October. US strikes slowed ahead of the US mid-term elections, and now that they are over, participants are watching for any re-escalation. The Strait and the Red Sea are still considered security choke points, driving freight costs and import delays. The global markets are fluid and can quickly change from one conversation or meeting to another. Please continue to monitor your accounts for competitive activity where needed and communicate with your managers what you are seeing. This information is critical as we discuss market challenges with our channel partners.</p>
   </div>
@@ -1270,7 +1337,8 @@
 
   (function() {
     try {
-      if (localStorage.getItem('barsol-theme') === 'light') {
+      const savedTheme = localStorage.getItem('barsol-theme');
+      if (savedTheme === 'light' || (savedTheme === null && window.matchMedia('(max-width: 800px)').matches)) {
         document.body.classList.add('light');
         document.getElementById('themeToggle').textContent = '☾ Dark Mode';
       }
@@ -1319,11 +1387,12 @@
   // Floating navigation
   function stickyOffset() {
     const bar = document.getElementById('filterBar');
-    return bar.getBoundingClientRect().bottom + 4;
+    const el = bar.offsetParent ? bar : document.querySelector('header');
+    return el.getBoundingClientRect().bottom + 4;
   }
   function jumpTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
   function jumpCategory(dir) {
-    const labels = Array.from(document.querySelectorAll('.section-label'));
+    const labels = Array.from(document.querySelectorAll('.section-label, .snap-group')).filter(l => l.offsetParent);
     const off = stickyOffset();
     let target = null;
     if (dir > 0) {
@@ -1336,7 +1405,9 @@
     window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
   }
   function updateFloatNav() {
-    document.getElementById('floatNav').classList.toggle('show', window.pageYOffset > 120);
+    const on = window.pageYOffset > 120;
+    document.getElementById('floatNav').classList.toggle('show', on);
+    document.body.classList.toggle('nav-visible', on);
   }
   window.addEventListener('scroll', updateFloatNav, { passive: true });
   window.addEventListener('load', updateFloatNav);
@@ -1348,8 +1419,9 @@
     btn.textContent = on ? 'Affected products ▴' : 'Affected products ▾';
   }
 
-  function copyRow(btn) {
-    const row = btn.closest('.product-row');
+  function copyRow(btn) { copyFromRow(btn.closest('.product-row'), btn); }
+
+  function copyFromRow(row, btn) {
     const name = row.querySelector('.product-name').textContent.trim();
     const tags = Array.from(row.querySelectorAll('.product-tag')).map(t => t.textContent.trim()).join(', ');
     const detail = row.querySelector('.full-detail-text').textContent.trim();
@@ -1359,8 +1431,9 @@
       (tags ? '<p><strong>Related products: ' + esc(tags) + '</strong></p>' : '') +
       '<p>' + esc(detail) + '</p>';
     const done = () => {
+      const orig = btn.dataset.label || '⧉ Copy';
       btn.textContent = '✓ Copied'; btn.classList.add('done');
-      setTimeout(() => { btn.textContent = '⧉ Copy'; btn.classList.remove('done'); }, 1500);
+      setTimeout(() => { btn.textContent = orig; btn.classList.remove('done'); }, 1500);
     };
     // Fallback that also carries rich text: intercept the copy event.
     const fallback = () => {
@@ -1387,6 +1460,210 @@
     } else { fallback(); }
   }
 
+
+  // ===== Quick view =====
+  function setView(v) {
+    document.body.classList.toggle('view-quick', v === 'quick');
+    document.body.classList.toggle('view-full', v === 'full');
+    document.getElementById('viewToggle').textContent = v === 'quick' ? 'Full view' : 'Quick view';
+    positionFilterBar();
+    updateFloatNav();
+  }
+  function toggleView() {
+    const v = document.body.classList.contains('view-quick') ? 'full' : 'quick';
+    listenStop();
+    setView(v);
+    store('barsol-view', v);
+    window.scrollTo(0, 0);
+  }
+  function openFull(row) {
+    listenStop();
+    setView('full');
+    store('barsol-view', 'full');
+    if (row.classList.contains('hidden')) document.querySelector('.filter-btn[data-filter="all"]').click();
+    row.classList.add('open');
+    row.querySelector('.product-detail').classList.remove('closed');
+    const y = row.getBoundingClientRect().top + window.pageYOffset - stickyOffset() - 8;
+    window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+  }
+
+  const SNAP_GROUPS = [
+    ['Rising', ['up', 'stable-up']],
+    ['Flat', ['stable']],
+    ['Softening', ['stable-down', 'down']],
+    ['Volatile', ['volatile']]
+  ];
+  const SNAP_COLOR = { 'up': '--up', 'stable-up': '--stable-up', 'stable': '--stable', 'stable-down': '--stable-down', 'down': '--down', 'volatile': '--volatile' };
+  const SNAP_ARROW = { 'up': '↑', 'stable-up': '↗', 'stable': '→', 'stable-down': '↘', 'down': '↓', 'volatile': '⚡' };
+  let snapItems = [];   // { name, trend, line, isNew, el, bl }
+  let snapWarEl = null, snapWarShort = '';
+
+  function buildSnapshot() {
+    const rows = Array.from(document.querySelectorAll('.product-row[data-trend]'));
+    const items = rows.map(row => {
+      const syn = row.querySelector('.synopsis');
+      const lab = syn.querySelector('.synopsis-label');
+      return {
+        row,
+        name: row.querySelector('.product-name').textContent.trim(),
+        trend: row.dataset.trend,
+        line: row.dataset.line || '',
+        isNew: !!row.dataset.prev && row.dataset.prev !== row.dataset.trend,
+        bl: syn.textContent.replace(lab ? lab.textContent : '', '').trim()
+      };
+    });
+
+    // Iran card (text comes from the war banner so it only needs updating in one place)
+    const banner = document.querySelector('.war-banner');
+    const wTitle = banner.querySelector('h2').textContent.replace('⚠', '').trim();
+    const wFull = banner.querySelector('p').textContent.trim();
+    snapWarShort = wFull.split(/(?<=\.)\s/)[0];
+    const war = document.getElementById('snapWar');
+    war.innerHTML = '<b>⚠ ' + esc(wTitle) + '</b><p>' + esc(snapWarShort) + '</p><button type="button">Read more ▾</button>';
+    war.querySelector('button').onclick = function () {
+      const p = war.querySelector('p');
+      const more = this.textContent.indexOf('more') > -1;
+      p.textContent = more ? wFull : snapWarShort;
+      this.textContent = more ? 'Show less ▴' : 'Read more ▾';
+    };
+    snapWarEl = war;
+
+    // counts
+    const cnt = ts => items.filter(i => ts.includes(i.trend)).length;
+    document.getElementById('snapSum').innerHTML =
+      '<div><b style="color:var(--stable-up)">' + cnt(['up', 'stable-up']) + '</b><span>Rising</span></div>' +
+      '<div><b style="color:var(--stable)">' + cnt(['stable', 'volatile']) + '</b><span>Flat / Volatile</span></div>' +
+      '<div><b style="color:var(--stable-down)">' + cnt(['stable-down', 'down']) + '</b><span>Softening</span></div>';
+
+    // groups
+    const host = document.getElementById('snapGroups');
+    host.innerHTML = '';
+    snapItems = [];
+    SNAP_GROUPS.forEach(([label, ts]) => {
+      const list = items.filter(i => ts.includes(i.trend));
+      if (!list.length) return;
+      const h = document.createElement('div');
+      h.className = 'snap-group';
+      h.innerHTML = '<span>' + label + '</span><span>' + list.length + '</span>';
+      host.appendChild(h);
+      snapItems.push({ kind: 'group', text: label + '. ' + list.length + (list.length === 1 ? ' product.' : ' products.'), el: h });
+      list.forEach(i => {
+        const e = document.createElement('div');
+        e.className = 'snap-item';
+        e.style.setProperty('--c', 'var(' + SNAP_COLOR[i.trend] + ')');
+        e.innerHTML =
+          '<button type="button" class="snap-hd"><span class="snap-ar">' + SNAP_ARROW[i.trend] + '</span>' +
+          '<span><span class="snap-nm">' + esc(i.name) + (i.isNew ? '<span class="snap-new">NEW TREND</span>' : '') + '</span>' +
+          '<div class="snap-ln">' + esc(i.line) + '</div></span><span class="snap-ch">▾</span></button>' +
+          '<div class="snap-bd"><div class="lab">Bottom line</div>' + esc(i.bl) +
+          '<div class="snap-act"><button type="button" data-a="full">Full detail</button>' +
+          '<button type="button" data-a="copy">⧉ Copy</button><button type="button" data-a="listen">🔊 Listen</button></div></div>';
+        e.querySelector('.snap-hd').onclick = () => e.classList.toggle('open');
+        e.querySelector('[data-a="full"]').onclick = () => openFull(i.row);
+        e.querySelector('[data-a="copy"]').onclick = function () { copyFromRow(i.row, this); };
+        e.querySelector('[data-a="listen"]').onclick = () => listenStart([{ text: i.name + '. ' + i.bl, el: e }]);
+        host.appendChild(e);
+        snapItems.push({ kind: 'item', text: i.name + (i.isNew ? ', new trend' : '') + '. ' + i.line + '.', el: e });
+      });
+    });
+
+    buildListenButton();
+  }
+  function esc(t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+  // ===== Listen (browser text-to-speech: no account or server involved) =====
+  const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  function speakable(t) {
+    return t
+      .replace(/\+(\d+(?:\.\d+)?)-(\d+(?:\.\d+)?)¢/g, 'plus $1 to $2 cents')
+      .replace(/\+(\d+(?:\.\d+)?)¢/g, 'plus $1 cents')
+      .replace(/¢/g, ' cents')
+      .replace(/\b(\d{1,2})\/(\d{1,2})\b/g, (m, a, b) => (MONTHS[+a - 1] || a) + ' ' + b)
+      .replace(/&/g, ' and ')
+      .replace(/\//g, ' ')
+      .replace(/\bthru\b/gi, 'through')
+      .replace(/\bEOY\b/g, 'end of year')
+      .replace(/\bFM\b/g, 'force majeure')
+      .replace(/\bavg\b/gi, 'average')
+      .replace(/\bQ(\d)\b/g, 'Q $1')
+      .replace(/\bPGP\b/g, 'P G P')
+      .replace(/\bMEK\b/g, 'M E K')
+      .replace(/\bIPA\b/g, 'I P A');
+  }
+  const L = { items: [], idx: 0, on: false, paused: false, rate: 1, token: 0, rates: [1, 1.25, 1.5, 0.85] };
+  const ttsOK = () => 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
+
+  function briefingItems() {
+    const sub = document.querySelector('.subtitle').textContent;
+    const m = sub.match(/Updated\s+(\d+)\s*\/\s*(\d+)\s*\/\s*(\d+)/);
+    const when = m ? ' Updated ' + MONTHS[+m[1] - 1] + ' ' + (+m[2]) + '.' : '';
+    return [{ text: 'Barton Solvents chemical market update.' + when }]
+      .concat([{ text: 'Iran war. ' + snapWarShort, el: snapWarEl }])
+      .concat(snapItems)
+      .concat([{ text: 'End of briefing.' }]);
+  }
+  function buildListenButton() {
+    const host = document.getElementById('snapListen');
+    if (!ttsOK()) { host.innerHTML = ''; return; }
+    const words = briefingItems().reduce((n, i) => n + i.text.split(/\s+/).length, 0);
+    const mins = Math.max(1, Math.round(words / 150));
+    host.innerHTML = '<button type="button" class="listen-btn">🔊 Listen to the briefing<small>About ' + mins + ' min · plays through your phone speaker or car audio</small></button>';
+    host.querySelector('button').onclick = () => listenStart(briefingItems());
+  }
+
+  function pickVoice() {
+    const vs = speechSynthesis.getVoices().filter(v => /^en(-|_)US/i.test(v.lang) || /^en/i.test(v.lang));
+    return vs.find(v => /US/i.test(v.lang) && v.localService) || vs.find(v => /US/i.test(v.lang)) || vs[0] || null;
+  }
+  function listenMark(el) {
+    document.querySelectorAll('.speaking').forEach(x => x.classList.remove('speaking'));
+    if (el) { el.classList.add('speaking'); el.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
+  }
+  function listenUI() {
+    const mp = document.getElementById('miniPlayer');
+    mp.hidden = !L.on;
+    document.getElementById('mpPause').textContent = L.paused ? '▶ Resume' : '⏸ Pause';
+    document.getElementById('mpRate').textContent = L.rate + '×';
+    const cur = L.items[L.idx];
+    document.getElementById('mpNow').textContent = L.paused ? 'Paused' : (cur ? '🔊 ' + cur.text.split('.')[0] : 'Done');
+  }
+  function listenStart(items) {
+    if (!ttsOK()) return;
+    speechSynthesis.cancel();
+    L.items = items; L.idx = 0; L.on = true; L.paused = false;
+    listenSpeak();
+  }
+  function listenSpeak() {
+    const item = L.items[L.idx];
+    if (!item) return listenStop();
+    const my = ++L.token;
+    const u = new SpeechSynthesisUtterance(speakable(item.text));
+    u.rate = L.rate; u.lang = 'en-US';
+    const v = pickVoice(); if (v) u.voice = v;
+    u.onstart = () => { if (my === L.token) { listenMark(item.el); listenUI(); } };
+    const next = () => { if (my === L.token && L.on && !L.paused) { L.idx++; listenSpeak(); } };
+    u.onend = next;
+    u.onerror = e => { if (e.error !== 'canceled' && e.error !== 'interrupted') next(); };
+    listenUI();
+    speechSynthesis.speak(u);
+  }
+  function listenPause() {
+    if (!L.on) return;
+    if (L.paused) { L.paused = false; listenSpeak(); }
+    else { L.paused = true; L.token++; speechSynthesis.cancel(); listenUI(); }
+  }
+  function listenSkip() { if (!L.on) return; L.token++; speechSynthesis.cancel(); L.paused = false; L.idx++; listenSpeak(); }
+  function listenRate() {
+    L.rate = L.rates[(L.rates.indexOf(L.rate) + 1) % L.rates.length];
+    if (L.on && !L.paused) { L.token++; speechSynthesis.cancel(); listenSpeak(); } else listenUI();
+  }
+  function listenStop() {
+    if (!ttsOK()) return;
+    L.token++; L.on = false; L.paused = false; speechSynthesis.cancel();
+    listenMark(null); listenUI();
+  }
+  if (ttsOK()) { speechSynthesis.onvoiceschanged = () => {}; window.addEventListener('pagehide', () => speechSynthesis.cancel()); }
+
   function toggleMacro() {
     document.getElementById('macroOverview').classList.toggle('collapsed');
   }
@@ -1405,6 +1682,14 @@
     setHeaderMin(h === null ? isMobile() : h === '1');
     setFilterMin(f === null ? isMobile() : f === '1');
     updateFloatNav();
+  })();
+
+  buildSnapshot();
+  (function initView() {
+    const v = load('barsol-view');
+    const view = v === 'quick' || v === 'full' ? v : (isMobile() ? 'quick' : 'full');
+    setView(view);
+    if (view === 'quick') document.getElementById('macroOverview').classList.add('collapsed');
   })();
 
   function toggleRow(row) {
