@@ -1652,7 +1652,7 @@
   ['playing', 'seeked', 'ratechange'].forEach(ev => AUD.el.addEventListener(ev, armStop));
 
   // ---- built-in speech fallback
-  // ALL-CAPS acronyms are spelled letter by letter with periods ("I. P. A.") so each letter is pronounced.
+  // ALL-CAPS acronyms are read letter by letter, run together ("I.P.A.") for the phone's built-in voice.
   const SAY_WORD = { OPEC: 'OPEC', PET: 'pet' }, SAY_AS = { ICIS: 'eye sis' };
   function speakable(t) {
     return t
@@ -1666,7 +1666,7 @@
       .replace(/\bEOY\b/g, 'end of year').replace(/\bFM\b/g, 'force majeure').replace(/\bavg\b/gi, 'average')
       .replace(/\bQ(\d)\b/g, 'Q $1')
       .replace(/\b([A-Z])-(Series)\b/g, '$1. $2')
-      .replace(/(?<![A-Za-z])[A-Z]{2,5}(?![a-z])/g, w => (w in SAY_WORD ? SAY_WORD[w] : w in SAY_AS ? SAY_AS[w] : w.split('').map(c => c + '.').join(' ') + ' '))
+      .replace(/(?<![A-Za-z])[A-Z]{2,5}(?![a-z])/g, w => (w in SAY_WORD ? SAY_WORD[w] : w in SAY_AS ? SAY_AS[w] : w.split('').map(c => c + '.').join('') + ' '))
       .replace(/\s+([,;:])/g, '$1').replace(/\.\s+\./g, '.').replace(/\s+/g, ' ').trim();
   }
   const L = { items: [], idx: 0, on: false, paused: false, rate: 1, token: 0, rates: [1, 1.25, 1.5, 0.85] };
