@@ -60,12 +60,12 @@ def speakable(t):
     t = re.sub(r'(\d)-(\d)', r'\1 to \2', t)
     t = t.replace('%', ' percent').replace('~', 'about ').replace('&', ' and ')
     t = t.replace(' / ', ', ').replace('/', ' ')
+    t = t.replace('(', ' ').replace(')', ' ')                                       # no pause for "(P-Series)"
     t = re.sub(r'\bcpp\b', 'cents per pound', t)
     t = re.sub(r"'(\d\d)\b", lambda m: 'twenty ' + m.group(1), t)
     for a, b in [('thru','through'),('EOY','end of year'),('EOM','end of month'),('FM','force majeure'),('avg','average'),
                  ('Oct','October'),('Nov','November'),('Dec','December'),('Q1','Q one'),('Q2','Q two'),('Q3','Q three'),('Q4','Q four')]:
         t = re.sub(r'\b' + a + r'\b', b, t)
-    t = re.sub(r'\b([A-Z])-(Series)\b', lambda m: LB + m.group(1) + RB + ' ' + m.group(2), t)   # "P-Series" -> letter P + Series
     t = re.sub(r'(?<![A-Za-z])[A-Z]{2,5}(?![a-z])', spell_acronym, t)           # every other ALL-CAPS acronym
     t = re.sub(r'\s+([,;:])', r'\1', t)                                         # no space before , ; :
     return re.sub(r'\s+', ' ', t).strip()
