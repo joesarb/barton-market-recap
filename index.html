@@ -613,7 +613,8 @@
     .float-nav { right: 0; left: 0; bottom: 12px; flex-direction: row; justify-content: center; gap: 6px; padding: 0 12px; }
     .float-nav button { padding: 10px 12px; }
     .lbl-long { display: none; }
-    .product-row-header { grid-template-columns: 1fr auto; gap: 8px 12px; }
+    .product-row-header { grid-template-columns: minmax(0, 1fr) auto; gap: 8px 12px; }
+    .product-name { overflow-wrap: anywhere; }
     .product-driver { display: none; }
     .product-tags { grid-column: 1 / -1; }
     .product-row-header .row-right { grid-column: 2; grid-row: 1; }
@@ -627,6 +628,17 @@
   .product-row.trend-down { --c: var(--down); }
   .product-row.trend-volatile { --c: var(--volatile); }
 
+  /* ===== Trend history strip (last editions, oldest to newest) ===== */
+  .trend-hist { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 4px; align-items: flex-end; margin-top: 6px; }
+  .trend-hist .th-label { flex-basis: 100%; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  .th-cell { flex: 1 1 0; max-width: 52px; min-width: 30px; display: flex; flex-direction: column; align-items: center; padding: 2px 0 3px; border-bottom: 3px solid transparent; --c: var(--muted); }
+  .th-cell .th-ar { font-size: 22px; font-weight: 800; line-height: 1.1; color: var(--c); }
+  .th-cell .th-mo { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+  .th-cell.now { border-bottom-color: var(--c); }
+  .th-cell.now .th-mo { color: var(--text); font-weight: 700; }
+  .th-cell.t-up { --c: var(--up); } .th-cell.t-stable-up { --c: var(--stable-up); } .th-cell.t-stable { --c: var(--stable); }
+  .th-cell.t-stable-down { --c: var(--stable-down); } .th-cell.t-down { --c: var(--down); } .th-cell.t-volatile { --c: var(--volatile); }
+
   /* ===== Quick view: same page and order, glance-friendly cards ===== */
   .q-arrow, .q-line, .q-actions { display: none; }
   .fcount { margin-left: 6px; font-weight: 700; opacity: 0.85; }
@@ -635,7 +647,7 @@
   body.view-quick .product-row[data-trend] .product-row-header {
     display: grid;
     grid-template-columns: 38px 1fr auto;
-    grid-template-areas: "ar nm ch" "ar ln ch" "tg tg tg";
+    grid-template-areas: "ar nm ch" "ar ln ch" "tg tg tg" "th th th";
     gap: 2px 12px;
     align-items: center;
     padding: 14px 16px;
@@ -648,6 +660,7 @@
   body.view-quick .product-row[data-trend] .trend-badge { display: none; }
   body.view-quick .product-row[data-trend] .row-right { grid-area: ch; }
   body.view-quick .product-row[data-trend] .product-tags { grid-area: tg; margin-top: 4px; }
+  body.view-quick .product-row[data-trend] .trend-hist { grid-area: th; }
   .q-new { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; background: var(--c); color: var(--bg); border-radius: 5px; padding: 1px 7px; margin-right: 8px; vertical-align: 1px; }
 
   body.view-quick .product-row[data-trend] .product-detail { padding: 4px 18px 18px; }
@@ -677,7 +690,13 @@
   @media (min-width: 801px) {
     .mini-player { left: 16px; right: auto; width: 420px; bottom: 16px; }
   }
+  @media (max-width: 380px) {
+    .product-name, body.view-quick .product-row[data-trend] .product-name { font-size: 20px; }
+    .product-row-header { padding-left: 14px; padding-right: 14px; }
+    .trend-badge { font-size: 10px; letter-spacing: 0.04em; padding-left: 7px; padding-right: 7px; }
+  }
 </style>
+<meta name="history-months" content="May,Jun,Jul,Aug,Sep,Oct">
 </head>
 <body>
 
@@ -757,7 +776,7 @@
   </div>
   <div class="table-wrap">
 
-    <div class="product-row trend-stable-up" data-trend="stable-up" data-line="+1¢ for Oct; supply long, propane props it up" data-prev="stable-down">
+    <div class="product-row trend-stable-up" data-trend="stable-up" data-line="+1¢ for Oct; supply long, propane props it up" data-prev="stable-down" data-history="up,stable-down,down,stable-down,stable-down,stable-down">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Propylene</div>
         <div class="product-driver">CRUDE · PROPANE · NATURAL GAS</div>
@@ -773,7 +792,7 @@
       </div>
     </div>
 
-    <div class="product-row trend-stable-up" data-trend="stable-up" data-line="Edged up with propylene; flat to year-end" data-prev="stable-down">
+    <div class="product-row trend-stable-up" data-trend="stable-up" data-line="Edged up with propylene; flat to year-end" data-prev="stable-down" data-history="stable-up,stable-down,down,stable,stable-down,stable-down">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Propylene Oxide</div>
         <div class="product-driver">PROPYLENE · NATURAL GAS</div>
@@ -789,7 +808,7 @@
       </div>
     </div>
 
-    <div class="product-row trend-stable-up" data-trend="stable-up" data-line="+5-6¢ announced for Nov 1; demand weak" data-prev="stable-down">
+    <div class="product-row trend-stable-up" data-trend="stable-up" data-line="+5-6¢ announced for Nov 1; demand weak" data-prev="stable-down" data-history="up,stable-down,down,stable-down,stable-down,stable-down">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Acetone</div>
         <div class="product-driver">PROPYLENE · PHENOL · BENZENE</div>
@@ -805,7 +824,7 @@
       </div>
     </div>
 
-    <div class="product-row trend-stable-up" data-trend="stable-up" data-line="Spot slightly higher; Q4 slowdown may cap it" data-prev="down">
+    <div class="product-row trend-stable-up" data-trend="stable-up" data-line="Spot slightly higher; Q4 slowdown may cap it" data-prev="down" data-history="stable-up,stable-down,down,down,down,down">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">IPA / Alcohol</div>
         <div class="product-driver">PROPYLENE</div>
@@ -821,7 +840,7 @@
       </div>
     </div>
 
-    <div class="product-row trend-down" data-trend="down" data-line="Still easing; imports hold the price edge" data-prev="down">
+    <div class="product-row trend-down" data-trend="down" data-line="Still easing; imports hold the price edge" data-prev="down" data-history="up,stable,stable-down,down,down,down">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Propylene Glycols</div>
         <div class="product-driver">PROPYLENE · SUPPLY &amp; DEMAND</div>
@@ -837,7 +856,7 @@
       </div>
     </div>
 
-    <div class="product-row trend-stable-down" data-trend="stable-down" data-line="More erosion expected; producers cutting deals" data-prev="stable-down">
+    <div class="product-row trend-stable-down" data-trend="stable-down" data-line="More erosion expected; producers cutting deals" data-prev="stable-down" data-history="stable-up,stable-down,stable-down,stable-down,stable-down,stable-down">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Glycol Ethers (P-Series)</div>
         <div class="product-driver">PROPYLENE</div>
@@ -865,7 +884,7 @@
   </div>
   <div class="table-wrap">
 
-    <div class="product-row trend-stable-up" data-trend="stable-up" data-line="+1.5¢ settled; no cracker outages thru EOY" data-prev="down">
+    <div class="product-row trend-stable-up" data-trend="stable-up" data-line="+1.5¢ settled; no cracker outages thru EOY" data-prev="down" data-history="stable-up,stable-down,down,down,down,down">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Ethylene</div>
         <div class="product-driver">CRUDE · NATURAL GAS · ETHANE</div>
@@ -881,7 +900,7 @@
       </div>
     </div>
 
-    <div class="product-row trend-stable-down" data-trend="stable-down" data-line="Main supplier +5¢ end of Oct; demand soft" data-prev="stable-down">
+    <div class="product-row trend-stable-down" data-trend="stable-down" data-line="Main supplier +5¢ end of Oct; demand soft" data-prev="stable-down" data-history="stable-up,stable-down,down,down,down,stable-down">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">MEK</div>
         <div class="product-driver">BUTYLENE</div>
@@ -897,7 +916,7 @@
       </div>
     </div>
 
-    <div class="product-row trend-stable-down" data-trend="stable-down" data-line="Ineos FM lifts 11/6; Eastman/Dow +10¢ in question" data-prev="stable-down">
+    <div class="product-row trend-stable-down" data-trend="stable-down" data-line="Ineos FM lifts 11/6; Eastman/Dow +10¢ in question" data-prev="stable-down" data-history="stable-up,stable-down,stable-down,stable-down,stable-down,stable-down">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Glycol Ethers (E-Series)</div>
         <div class="product-driver">ETHYLENE · ETHYLENE OXIDE</div>
@@ -913,7 +932,7 @@
       </div>
     </div>
 
-    <div class="product-row trend-stable" data-trend="stable" data-line="MEA softening, TEA loosening, DEA stable" data-prev="stable">
+    <div class="product-row trend-stable" data-trend="stable" data-line="MEA softening, TEA loosening, DEA stable" data-prev="stable" data-history="stable-up,up,stable-down,stable-down,stable-down,stable">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Ethanolamines</div>
         <div class="product-driver">ETHYLENE · ETHYLENE OXIDE</div>
@@ -929,7 +948,7 @@
       </div>
     </div>
 
-    <div class="product-row trend-stable" data-trend="stable" data-line="MEG steady, DEG easing, TEG still tight" data-prev="stable-up">
+    <div class="product-row trend-stable" data-trend="stable" data-line="MEG steady, DEG easing, TEG still tight" data-prev="stable-up" data-history="stable-up,stable-down,stable-down,stable-up,stable-up,stable-up">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">MEG / DEG / TEG</div>
         <div class="product-driver">ETHYLENE · EO · SUPPLY &amp; DEMAND</div>
@@ -957,7 +976,7 @@
   </div>
   <div class="table-wrap">
 
-    <div class="product-row trend-volatile" data-trend="volatile" data-line="Elevated; Hormuz talks, no target dates" data-prev="volatile">
+    <div class="product-row trend-volatile" data-trend="volatile" data-line="Elevated; Hormuz talks, no target dates" data-prev="volatile" data-history="volatile,volatile,volatile,volatile,volatile,volatile">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Crude Oil</div>
         <div class="product-driver">DOMESTIC PRODUCTION · GEOPOLITICAL · SPECULATION</div>
@@ -973,7 +992,7 @@
       </div>
     </div>
 
-    <div class="product-row trend-stable-up" data-trend="stable-up" data-line="Fell early Nov; Oct hikes may be erased" data-prev="stable-up">
+    <div class="product-row trend-stable-up" data-trend="stable-up" data-line="Fell early Nov; Oct hikes may be erased" data-prev="stable-up" data-history="up,stable-up,down,stable-down,stable-up,stable-up">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Aliphatic Solvents</div>
         <div class="product-driver">CRUDE OIL · UNL87</div>
@@ -989,7 +1008,7 @@
       </div>
     </div>
 
-    <div class="product-row trend-stable-up" data-trend="stable-up" data-line="Stable; one producer cut 100/150" data-prev="stable-up">
+    <div class="product-row trend-stable-up" data-trend="stable-up" data-line="Stable; one producer cut 100/150" data-prev="stable-up" data-history="up,stable-down,down,stable-down,stable-up,stable-up">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Aromatic Solvents</div>
         <div class="product-driver">CRUDE OIL · DIESEL · JET FUEL</div>
@@ -1005,7 +1024,7 @@
       </div>
     </div>
 
-    <div class="product-row trend-stable-up" data-trend="stable-up" data-line="+3-4¢ for Nov, about half of what was expected" data-prev="stable-up">
+    <div class="product-row trend-stable-up" data-trend="stable-up" data-line="+3-4¢ for Nov, about half of what was expected" data-prev="stable-up" data-history="up,up,down,stable-down,stable-down,stable-up">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Toluol &amp; Xylol</div>
         <div class="product-driver">CRUDE OIL · SEASONAL GASOLINE</div>
@@ -1033,7 +1052,7 @@
   </div>
   <div class="table-wrap">
 
-    <div class="product-row trend-stable-up" data-trend="stable-up" data-line="Mild Nov weather pressuring; storage above avg" data-prev="stable-up">
+    <div class="product-row trend-stable-up" data-trend="stable-up" data-line="Mild Nov weather pressuring; storage above avg" data-prev="stable-up" data-history="stable-up,stable,stable,stable,stable-up,stable-up">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Natural Gas</div>
         <div class="product-driver">DOMESTIC MINING · REFINING · ENERGY USE</div>
@@ -1049,7 +1068,7 @@
       </div>
     </div>
 
-    <div class="product-row trend-stable-up" data-trend="stable-up" data-line="Firm on seasonal demand, low global stocks" data-prev="stable-up">
+    <div class="product-row trend-stable-up" data-trend="stable-up" data-line="Firm on seasonal demand, low global stocks" data-prev="stable-up" data-history="stable-up,stable-down,stable-down,stable-down,stable,stable-up">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Methanol</div>
         <div class="product-driver">NATURAL GAS · CRUDE</div>
@@ -1077,7 +1096,7 @@
   </div>
   <div class="table-wrap">
 
-    <div class="product-row trend-stable-up" data-trend="stable-up" data-line="Steady; Florida crop smallest on record" data-prev="stable-up">
+    <div class="product-row trend-stable-up" data-trend="stable-up" data-line="Steady; Florida crop smallest on record" data-prev="stable-up" data-history="stable-up,stable-up,stable-up,stable-up,stable-up,stable-up">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">D-Limonene</div>
         <div class="product-driver">CITRUS HARVEST · WEATHER</div>
@@ -1093,7 +1112,7 @@
       </div>
     </div>
 
-    <div class="product-row trend-stable-down" data-trend="stable-down" data-line="Mostly rolled; TOTM lower" data-prev="stable-down">
+    <div class="product-row trend-stable-down" data-trend="stable-down" data-line="Mostly rolled; TOTM lower" data-prev="stable-down" data-history="stable-up,stable-up,stable-up,stable-down,stable-down,stable-down">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Plasticizers</div>
         <div class="product-driver">2-EH · TMA</div>
@@ -1109,7 +1128,7 @@
       </div>
     </div>
 
-    <div class="product-row trend-stable" data-trend="stable" data-line="Corn down sharply; 2027 contracts coming" data-prev="stable">
+    <div class="product-row trend-stable" data-trend="stable" data-line="Corn down sharply; 2027 contracts coming" data-prev="stable" data-history="stable,stable,stable,stable,stable,stable">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Ethanol</div>
         <div class="product-driver">PURE · SDA ALCOHOL</div>
@@ -1125,7 +1144,7 @@
       </div>
     </div>
 
-    <div class="product-row trend-stable-down" data-trend="stable-down" data-line="Loosening as producers return; RV demand done" data-prev="up">
+    <div class="product-row trend-stable-down" data-trend="stable-down" data-line="Loosening as producers return; RV demand done" data-prev="up" data-history="stable-up,up,stable-up,stable-up,up,up">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Glycerin</div>
         <div class="product-driver">BIO-DIESEL · METHANOL</div>
@@ -1141,7 +1160,7 @@
       </div>
     </div>
 
-    <div class="product-row trend-stable-down" data-trend="stable-down" data-line="Soyate slightly lower; tallow oleic down" data-prev="stable-down">
+    <div class="product-row trend-stable-down" data-trend="stable-down" data-line="Soyate slightly lower; tallow oleic down" data-prev="stable-down" data-history="stable-up,up,stable-up,stable-down,stable,stable-down">
       <div class="product-row-header" onclick="toggleRow(this.parentElement)">
         <div class="product-name">Methyl Soyate / Sorbitol / Oleic Acid</div>
         <div class="product-driver">SOYBEANS · SUGAR ALCOHOL · TALLOW</div>
@@ -1445,8 +1464,29 @@
   const productRows = () => Array.from(document.querySelectorAll('.product-row[data-trend]'));
   const rowName = row => row.querySelector('.product-name').textContent.trim();
 
+  const T_NAME = { 'up': 'Up', 'stable-up': 'Stable to Up', 'stable': 'Stable', 'stable-down': 'Stable to Down', 'down': 'Down', 'volatile': 'Volatile', '?': 'n/a' };
+  function currentMonthLabel() {
+    const m = document.querySelector('.subtitle').textContent.match(/Updated\s+(\d+)\s*\//);
+    return m ? MONTHS[+m[1] - 1].slice(0, 3) : 'Now';
+  }
+  function buildHistory(row) {
+    const meta = document.querySelector('meta[name="history-months"]');
+    if (!meta || !row.dataset.history) return null;
+    const months = meta.content.split(',');
+    const past = row.dataset.history.split(',');
+    const cells = past.map((t, i) => [months[i] || '', t, false]).concat([[currentMonthLabel(), row.dataset.trend, true]]);
+    const box = document.createElement('div');
+    box.className = 'trend-hist';
+    box.setAttribute('aria-label', 'Trend history: ' + cells.map(c => c[0] + ' ' + T_NAME[c[1]]).join(', '));
+    box.innerHTML = '<span class="th-label">Trend history</span>' + cells.map(([mo, t, now]) =>
+      '<div class="th-cell t-' + t + (now ? ' now' : '') + '" title="' + mo + ': ' + T_NAME[t] + '"><span class="th-ar">' + (t === '?' ? '·' : Q_ARROW[t]) + '</span><span class="th-mo">' + mo + '</span></div>').join('');
+    return box;
+  }
+
   function decorateRows() {
     productRows().forEach(row => {
+      const hist = buildHistory(row);
+      if (hist) row.querySelector('.product-row-header').appendChild(hist);
       const hd = row.querySelector('.product-row-header');
       const tagBox = row.querySelector('.product-tags');
       if (tagBox) {
