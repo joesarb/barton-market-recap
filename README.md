@@ -36,3 +36,9 @@ This writes `audio/` (about 35 MB, ~18 minutes to build):
 Each file ends with a short silent tail and plays to its natural end. If the files are missing the page falls back to
 the phone's built-in voice. The top "Listen to the briefing" button opens the Brief / Medium / Full menu; the other Listen buttons are on each block's
 heading line (Bottom Line, Full Detail, Market Overview).
+
+## Search engines
+Every page carries `<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">` (the main page and each archived
+month; `tools/archive_month.py` keeps it on future months) and the PDF links are `nofollow`. This asks Google/Bing not to
+list the pages. It is a request, not security: anyone with a link can still open the page, and files such as the PDFs and
+audio are not covered by page tags. GitHub Pages cannot password-protect a personal-account site.
