@@ -20,8 +20,18 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December']
 VOICES = ['af_heart', 'am_michael']
 TREND_SAY = {'up': 'Up', 'stable-up': 'Stable to up', 'stable': 'Stable', 'stable-down': 'Stable to down', 'down': 'Down', 'volatile': 'Volatile'}
-SPELL = ['US','PGP','PDH','IPA','MEK','MEA','DEA','TEA','MEG','DEG','TEG','HTF','PET','TOTM','DOTP','DINP','DIDP','RVO','ICIS',
-         'DPG','PG','PM','DPM','EB','DB','RV','EO','PP','PO','ULSD','PVC','UNL','MS','USDA','EPA','OPEC']
+# ALL-CAPS acronyms (2-5 letters) are spelled out letter by letter with periods ("I. P. A."), which the voice
+# reads as distinct letters. (Plain "I P A" gets slurred together and a lone "A" can come out as "uh".)
+SAY_AS_WORD = {'OPEC': 'OPEC', 'PET': 'pet'}      # acronyms people say as a word
+SAY_AS = {'ICIS': 'eye sis'}                      # special pronunciations
+
+
+def spell_acronym(m):
+    w = m.group(0)
+    if w in SAY_AS_WORD: return SAY_AS_WORD[w]
+    if w in SAY_AS: return SAY_AS[w]
+    return ' '.join(c + '.' for c in w) + ' '
+
 
 def speakable(t):
     t = re.sub(r'\+(\d+(?:\.\d+)?)-(\d+(?:\.\d+)?)¢', r'plus \1 to \2 cents', t)
@@ -30,15 +40,19 @@ def speakable(t):
     t = re.sub(r'\b1 cents\b', '1 cent', t)
     t = re.sub(r'\b(\d{1,2})/(\d{1,2})\b', lambda m: f"{MONTHS[int(m.group(1))-1]} {m.group(2)}" if 1 <= int(m.group(1)) <= 12 else m.group(0), t)
     t = re.sub(r'(\d)-(\d)', r'\1 to \2', t)
-    t = t.replace('%', ' percent').replace('~', 'about ').replace('&', ' and ').replace('/', ' ')
+    t = t.replace('%', ' percent').replace('~', 'about ').replace('&', ' and ')
+    t = t.replace(' / ', ', ').replace('/', ' ')
     t = re.sub(r'\bcpp\b', 'cents per pound', t)
     t = re.sub(r"'(\d\d)\b", lambda m: 'twenty ' + m.group(1), t)
-    t = re.sub(r'\bVM and P\b', 'V M and P', t)
     for a, b in [('thru','through'),('EOY','end of year'),('EOM','end of month'),('FM','force majeure'),('avg','average'),
                  ('Oct','October'),('Nov','November'),('Dec','December'),('Q1','Q one'),('Q2','Q two'),('Q3','Q three'),('Q4','Q four')]:
         t = re.sub(r'\b' + a + r'\b', b, t)
-    t = re.sub(r'\b(' + '|'.join(SPELL) + r')\b', lambda m: ' '.join(m.group(1)), t)
+    t = re.sub(r'\b([A-Z])-(Series)\b', r'\1. \2', t)                       # "P-Series" -> "P. Series"
+    t = re.sub(r'(?<![A-Za-z])[A-Z]{2,5}(?![a-z])', spell_acronym, t)           # every other ALL-CAPS acronym
+    t = re.sub(r'\s+([,;:])', r'\1', t)                                         # no space before , ; :
+    t = re.sub(r'\.\s+\.', '.', t)                                              # "U. S. D. A. ." -> "U. S. D. A."
     return re.sub(r'\s+', ' ', t).strip()
+
 
 def parse_page(src):
     sub = re.search(r'Updated\s+(\d+)\s*/\s*(\d+)\s*/\s*(\d+)', src)
