@@ -1,0 +1,304 @@
+{
+ "voice": "af_heart",
+ "generated": "2026-11-06",
+ "briefing": {
+  "file": "briefing.mp3",
+  "duration": 128.25,
+  "marks": [
+   {
+    "key": "b:i:Propylene",
+    "start": 0.0,
+    "end": 5.48
+   },
+   {
+    "key": "b:i:Propylene Oxide",
+    "start": 5.93,
+    "end": 10.43
+   },
+   {
+    "key": "b:i:Acetone",
+    "start": 10.88,
+    "end": 16.11
+   },
+   {
+    "key": "b:i:IPA / Alcohol",
+    "start": 16.56,
+    "end": 21.79
+   },
+   {
+    "key": "b:i:Propylene Glycols",
+    "start": 22.24,
+    "end": 26.61
+   },
+   {
+    "key": "b:i:Glycol Ethers (P-Series)",
+    "start": 27.06,
+    "end": 32.86
+   },
+   {
+    "key": "b:i:Ethylene",
+    "start": 33.31,
+    "end": 39.31
+   },
+   {
+    "key": "b:i:MEK",
+    "start": 39.76,
+    "end": 45.22
+   },
+   {
+    "key": "b:i:Glycol Ethers (E-Series)",
+    "start": 45.67,
+    "end": 54.16
+   },
+   {
+    "key": "b:i:Ethanolamines",
+    "start": 54.61,
+    "end": 59.77
+   },
+   {
+    "key": "b:i:MEG / DEG / TEG",
+    "start": 60.22,
+    "end": 66.67
+   },
+   {
+    "key": "b:i:Crude Oil",
+    "start": 67.12,
+    "end": 71.17
+   },
+   {
+    "key": "b:i:Aliphatic Solvents",
+    "start": 71.62,
+    "end": 76.74
+   },
+   {
+    "key": "b:i:Aromatic Solvents",
+    "start": 77.19,
+    "end": 82.93
+   },
+   {
+    "key": "b:i:Toluol & Xylol",
+    "start": 83.38,
+    "end": 89.59
+   },
+   {
+    "key": "b:i:Natural Gas",
+    "start": 90.04,
+    "end": 95.2
+   },
+   {
+    "key": "b:i:Methanol",
+    "start": 95.65,
+    "end": 100.11
+   },
+   {
+    "key": "b:i:D-Limonene",
+    "start": 100.56,
+    "end": 105.08
+   },
+   {
+    "key": "b:i:Plasticizers",
+    "start": 105.53,
+    "end": 109.71
+   },
+   {
+    "key": "b:i:Ethanol",
+    "start": 110.16,
+    "end": 115.07
+   },
+   {
+    "key": "b:i:Glycerin",
+    "start": 115.52,
+    "end": 120.45
+   },
+   {
+    "key": "b:i:Methyl Soyate / Sorbitol / Oleic Acid",
+    "start": 120.9,
+    "end": 127.4
+   }
+  ]
+ },
+ "overview": {
+  "file": "overview.mp3",
+  "duration": 174.56
+ },
+ "bl": {
+  "Propylene": {
+   "file": "bl/propylene.mp3",
+   "duration": 25.23
+  },
+  "Propylene Oxide": {
+   "file": "bl/propylene-oxide.mp3",
+   "duration": 24.72
+  },
+  "Acetone": {
+   "file": "bl/acetone.mp3",
+   "duration": 25.27
+  },
+  "IPA / Alcohol": {
+   "file": "bl/ipa-alcohol.mp3",
+   "duration": 26.36
+  },
+  "Propylene Glycols": {
+   "file": "bl/propylene-glycols.mp3",
+   "duration": 26.62
+  },
+  "Glycol Ethers (P-Series)": {
+   "file": "bl/glycol-ethers-p-series.mp3",
+   "duration": 27.41
+  },
+  "Ethylene": {
+   "file": "bl/ethylene.mp3",
+   "duration": 22.76
+  },
+  "MEK": {
+   "file": "bl/mek.mp3",
+   "duration": 24.68
+  },
+  "Glycol Ethers (E-Series)": {
+   "file": "bl/glycol-ethers-e-series.mp3",
+   "duration": 31.33
+  },
+  "Ethanolamines": {
+   "file": "bl/ethanolamines.mp3",
+   "duration": 21.09
+  },
+  "MEG / DEG / TEG": {
+   "file": "bl/meg-deg-teg.mp3",
+   "duration": 31.65
+  },
+  "Crude Oil": {
+   "file": "bl/crude-oil.mp3",
+   "duration": 23.14
+  },
+  "Aliphatic Solvents": {
+   "file": "bl/aliphatic-solvents.mp3",
+   "duration": 25.55
+  },
+  "Aromatic Solvents": {
+   "file": "bl/aromatic-solvents.mp3",
+   "duration": 27.02
+  },
+  "Toluol & Xylol": {
+   "file": "bl/toluol-xylol.mp3",
+   "duration": 25.4
+  },
+  "Natural Gas": {
+   "file": "bl/natural-gas.mp3",
+   "duration": 16.1
+  },
+  "Methanol": {
+   "file": "bl/methanol.mp3",
+   "duration": 23.89
+  },
+  "D-Limonene": {
+   "file": "bl/d-limonene.mp3",
+   "duration": 24.53
+  },
+  "Plasticizers": {
+   "file": "bl/plasticizers.mp3",
+   "duration": 24.4
+  },
+  "Ethanol": {
+   "file": "bl/ethanol.mp3",
+   "duration": 23.55
+  },
+  "Glycerin": {
+   "file": "bl/glycerin.mp3",
+   "duration": 25.49
+  },
+  "Methyl Soyate / Sorbitol / Oleic Acid": {
+   "file": "bl/methyl-soyate-sorbitol-oleic-acid.mp3",
+   "duration": 28.47
+  }
+ },
+ "fd": {
+  "Propylene": {
+   "file": "fd/propylene.mp3",
+   "duration": 154.26
+  },
+  "Propylene Oxide": {
+   "file": "fd/propylene-oxide.mp3",
+   "duration": 47.78
+  },
+  "Acetone": {
+   "file": "fd/acetone.mp3",
+   "duration": 116.11
+  },
+  "IPA / Alcohol": {
+   "file": "fd/ipa-alcohol.mp3",
+   "duration": 116.41
+  },
+  "Propylene Glycols": {
+   "file": "fd/propylene-glycols.mp3",
+   "duration": 65.05
+  },
+  "Glycol Ethers (P-Series)": {
+   "file": "fd/glycol-ethers-p-series.mp3",
+   "duration": 47.48
+  },
+  "Ethylene": {
+   "file": "fd/ethylene.mp3",
+   "duration": 80.25
+  },
+  "MEK": {
+   "file": "fd/mek.mp3",
+   "duration": 43.12
+  },
+  "Glycol Ethers (E-Series)": {
+   "file": "fd/glycol-ethers-e-series.mp3",
+   "duration": 52.93
+  },
+  "Ethanolamines": {
+   "file": "fd/ethanolamines.mp3",
+   "duration": 51.85
+  },
+  "MEG / DEG / TEG": {
+   "file": "fd/meg-deg-teg.mp3",
+   "duration": 146.26
+  },
+  "Crude Oil": {
+   "file": "fd/crude-oil.mp3",
+   "duration": 38.32
+  },
+  "Aliphatic Solvents": {
+   "file": "fd/aliphatic-solvents.mp3",
+   "duration": 43.59
+  },
+  "Aromatic Solvents": {
+   "file": "fd/aromatic-solvents.mp3",
+   "duration": 65.97
+  },
+  "Toluol & Xylol": {
+   "file": "fd/toluol-xylol.mp3",
+   "duration": 43.15
+  },
+  "Natural Gas": {
+   "file": "fd/natural-gas.mp3",
+   "duration": 20.2
+  },
+  "Methanol": {
+   "file": "fd/methanol.mp3",
+   "duration": 42.8
+  },
+  "D-Limonene": {
+   "file": "fd/d-limonene.mp3",
+   "duration": 39.73
+  },
+  "Plasticizers": {
+   "file": "fd/plasticizers.mp3",
+   "duration": 57.22
+  },
+  "Ethanol": {
+   "file": "fd/ethanol.mp3",
+   "duration": 120.18
+  },
+  "Glycerin": {
+   "file": "fd/glycerin.mp3",
+   "duration": 83.56
+  },
+  "Methyl Soyate / Sorbitol / Oleic Acid": {
+   "file": "fd/methyl-soyate-sorbitol-oleic-acid.mp3",
+   "duration": 87.98
+  }
+ }
+}

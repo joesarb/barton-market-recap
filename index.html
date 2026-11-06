@@ -674,6 +674,16 @@
   .q-actions button { flex: 1; font: inherit; font-size: 15px; border: 1px solid var(--border); background: none; color: var(--text); border-radius: 10px; padding: 12px 6px; cursor: pointer; }
   .q-actions button.done { color: var(--stable); border-color: var(--stable); }
 
+  /* ===== Listen buttons on each text block ===== */
+  .listen-sm { font-family: 'Barlow', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.01em; color: var(--text); background: none; border: 1px solid var(--text); border-radius: 999px; padding: 5px 12px; cursor: pointer; white-space: nowrap; }
+  .listen-sm.playing { background: var(--text); color: var(--bg); }
+  .listen-sm[hidden] { display: none; }
+  .syn-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .syn-head .synopsis-label { margin-bottom: 0; }
+  .fd-actions { display: flex; gap: 8px; align-items: center; }
+  .macro-listen { margin-bottom: 12px; }
+  .mini-player.no-skip #mpSkip { display: none; }
+
   /* ===== Listen ===== */
   .listen-row { margin-bottom: 14px; }
   .listen-btn { width: 100%; font: inherit; font-size: 18px; font-weight: 700; padding: 14px; border-radius: 12px; border: 2px solid var(--text); background: var(--surface); color: var(--text); cursor: pointer; }
@@ -735,7 +745,7 @@
   <div class="mp-now" id="mpNow">Starting…</div>
   <div class="mp-btns">
     <button id="mpPause" onclick="listenPause()">⏸ Pause</button>
-    <button onclick="listenSkip()">⏭ Skip</button>
+    <button id="mpSkip" onclick="listenSkip()">⏭ Skip</button>
     <button id="mpRate" onclick="listenRate()">1×</button>
     <button onclick="listenStop()">■ Stop</button>
   </div>
@@ -1498,14 +1508,29 @@
 
       const act = document.createElement('div');
       act.className = 'q-actions';
-      act.innerHTML = '<button type="button" data-a="full">Full detail ▾</button><button type="button" data-a="copy" data-label="⧉ Copy">⧉ Copy</button><button type="button" data-a="listen">🔊 Listen</button>';
+      act.innerHTML = '<button type="button" data-a="full">Full detail ▾</button><button type="button" data-a="copy" data-label="⧉ Copy">⧉ Copy</button>';
       act.querySelector('[data-a="full"]').onclick = function () {
         const on = row.classList.toggle('show-full');
         this.textContent = on ? 'Hide detail ▴' : 'Full detail ▾';
       };
       act.querySelector('[data-a="copy"]').onclick = function () { copyFromRow(row, this); };
-      act.querySelector('[data-a="listen"]').onclick = () => listenItem(row);
       row.querySelector('.synopsis').insertAdjacentElement('afterend', act);
+
+      // Listen buttons sit on each block's own heading line, so you see them before you start reading
+      const syn = row.querySelector('.synopsis');
+      const synLabel = syn.querySelector('.synopsis-label');
+      const synHead = document.createElement('div');
+      synHead.className = 'syn-head';
+      syn.insertBefore(synHead, synLabel);
+      synHead.appendChild(synLabel);
+      synHead.appendChild(makeListenBtn('bl', rowName(row), 'Listen to the Bottom Line'));
+      const fdHead = row.querySelector('.full-detail-head');
+      const copyBtn = fdHead.querySelector('.copy-btn');
+      const fdActions = document.createElement('span');
+      fdActions.className = 'fd-actions';
+      fdHead.appendChild(fdActions);
+      fdActions.appendChild(makeListenBtn('fd', rowName(row), 'Listen to the Full Detail'));
+      fdActions.appendChild(copyBtn);
     });
   }
   function initFilterCounts() {
@@ -1521,63 +1546,115 @@
   }
 
   // ===== Listen =====
-  // Preferred: a real audio file (natural voice) so it plays like a podcast: lock-screen / car controls, takes over audio.
-  // Fallback: the browser's built-in speech (used if the audio files aren't available).
+  // Every section has its own small audio file (natural voice) that plays from its first word to its final period
+  // and stops by itself. If the audio files can't be loaded, the phone's built-in voice reads the same text instead.
   const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-  const VOICE_OPTS = [{ id: 'af_heart', label: 'Heart', sub: 'female' }, { id: 'am_michael', label: 'Michael', sub: 'male' }];
-  const AUD = { el: new Audio(), meta: null, voice: null, ready: false, active: false, mode: null, stopAt: null, rate: 1, cur: null, rates: [1, 1.25, 1.5] };
+  const AUD = { el: new Audio(), manifest: null, ready: false, active: false, kind: null, marks: null, cur: null, rate: 1, rates: [1, 1.25, 1.5] };
+  const CUR = { id: null };           // which section is playing right now, e.g. 'bl:Acetone', 'fd:Acetone', 'overview:', 'briefing:all'
   AUD.el.preload = 'none';
   const ttsOK = () => 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
-  const audioVoicePref = () => { const v = load('barsol-voice'); return VOICE_OPTS.some(o => o.id === v) ? v : VOICE_OPTS[0].id; };
+  const canListen = () => AUD.ready || ttsOK();
 
-  function audioLoad(voice) {
+  function audioLoad() {
     AUD.ready = false;
-    return fetch('briefing-' + voice + '.json', { cache: 'no-cache' })
+    return fetch('audio/manifest.json', { cache: 'no-cache' })
       .then(r => { if (!r.ok) throw new Error('no audio'); return r.json(); })
-      .then(m => {
-        AUD.meta = m; AUD.voice = voice; AUD.ready = true;
-        AUD.el.src = 'briefing-' + voice + '.mp3?v=' + encodeURIComponent(m.generated);
-      })
+      .then(m => { AUD.manifest = m; AUD.ready = true; })
       .catch(() => { AUD.ready = false; })
-      .then(buildListenUI);
+      .then(() => { buildListenUI(); refreshListenButtons(); });
+  }
+  const clipURL = file => 'audio/' + file + '?v=' + encodeURIComponent(AUD.manifest.generated);
+  function clipFor(kind, name) {
+    const m = AUD.manifest;
+    if (!m) return null;
+    if (kind === 'overview' || kind === 'briefing') return m[kind] || null;
+    return (m[kind] && m[kind][name]) || null;
   }
 
-  function markTarget(key) {
-    const name = key.replace(/^(b:i:|d:)/, '');
-    return productRows().find(r => rowName(r) === name) || null;
+  // ---- the Listen buttons
+  function makeListenBtn(kind, name, title, label) {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'listen-sm'; b.title = title;
+    b.dataset.id = kind + ':' + name; b.dataset.label = label || '🔊 Listen';
+    b.textContent = b.dataset.label;
+    b.onclick = e => { e.stopPropagation(); listenSection(kind, name); };
+    return b;
   }
-  function listenMark(el) {
-    document.querySelectorAll('.speaking').forEach(x => x.classList.remove('speaking'));
-    if (el && el.offsetParent) { el.classList.add('speaking'); el.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
+  function refreshListenButtons() {
+    const on = canListen();
+    const live = AUD.active || L.on;
+    document.querySelectorAll('.listen-sm').forEach(b => {
+      b.hidden = !on;
+      const playing = live && CUR.id === b.dataset.id;
+      b.classList.toggle('playing', playing);
+      b.textContent = playing ? '■ Stop' : b.dataset.label;
+    });
+    const top = document.getElementById('listenBtn');
+    if (top) top.firstChild.textContent = (live && CUR.id === 'briefing:all') ? '■ Stop the briefing' : '🔊 Listen to the briefing';
   }
-
   function buildListenUI() {
     const host = document.getElementById('snapListen');
-    if (!AUD.ready && !ttsOK()) { host.innerHTML = ''; return; }
-    let mins, note;
-    if (AUD.ready) { mins = Math.max(1, Math.round(AUD.meta.briefingEnd / 60)); note = 'About ' + mins + ' min · plays like a podcast, with lock-screen and car controls'; }
-    else { mins = 2; note = 'About 2 min · uses your phone\'s built-in voice'; }
-    let html = '<button type="button" class="listen-btn" id="listenBtn">🔊 Listen to the briefing<small>' + note + '</small></button>';
-    if (AUD.ready) {
-      html += '<div class="voice-pick"><span>Voice:</span>' +
-        VOICE_OPTS.map(o => '<button type="button" data-v="' + o.id + '" class="' + (o.id === AUD.voice ? 'on' : '') + '">' + o.label + ' · ' + o.sub + '</button>').join('') + '</div>';
-    }
-    host.innerHTML = html;
-    document.getElementById('listenBtn').onclick = () => (AUD.ready ? audioBriefing() : speechBriefing());
-    host.querySelectorAll('[data-v]').forEach(b => b.onclick = () => { listenStop(); store('barsol-voice', b.dataset.v); audioLoad(b.dataset.v); });
+    if (!canListen()) { host.innerHTML = ''; return; }
+    const note = AUD.ready ? 'About ' + Math.max(1, Math.round(AUD.manifest.briefing.duration / 60)) + ' min · plays like a podcast, with lock-screen and car controls'
+                           : 'About 2 min · uses your phone\'s built-in voice';
+    host.innerHTML = '<button type="button" class="listen-btn" id="listenBtn">🔊 Listen to the briefing<small>' + note + '</small></button>';
+    document.getElementById('listenBtn').onclick = listenBriefing;
+    refreshListenButtons();
   }
-  function listenItem(row) { if (AUD.ready) audioItem(row); else speechItem(row); }
+  function decorateMacro() {
+    const body = document.querySelector('.macro-body');
+    const wrap = document.createElement('div');
+    wrap.className = 'macro-listen';
+    wrap.appendChild(makeListenBtn('overview', '', 'Listen to the market overview', '🔊 Listen to the overview'));
+    body.insertBefore(wrap, body.firstChild);
+  }
 
-  // ---- audio engine
-  function markAt(prefix, t) {
-    let cur = null;
-    AUD.meta.marks.forEach(m => { if (m.key.startsWith(prefix) && m.start <= t + 0.05) cur = m; });
-    return cur;
+  // ---- what each button reads and highlights
+  function sectionTarget(kind, name) {
+    if (kind === 'overview') return document.getElementById('macroOverview');
+    return productRows().find(r => rowName(r) === name) || null;
   }
-  function nextMarkStart(prefix, t) {
-    const n = AUD.meta.marks.find(m => m.key.startsWith(prefix) && m.start > t + 0.3);
-    return n ? n.start : null;
+  function sectionLabel(kind, name) {
+    return kind === 'bl' ? name + ': Bottom Line' : kind === 'fd' ? name + ': Full Detail' : 'Market Overview';
   }
+  function bottomLineText(row) {
+    const c = row.querySelector('.synopsis').cloneNode(true);
+    const h = c.querySelector('.syn-head'); if (h) h.remove();
+    return c.textContent.trim();
+  }
+  function sectionText(kind, name) {            // used only by the phone-voice fallback
+    if (kind === 'overview') {
+      const m = document.getElementById('macroOverview');
+      return m.querySelector('h2').textContent.trim() + '. ' + Array.from(m.querySelectorAll('.macro-body p')).map(p => p.textContent.trim()).join(' ');
+    }
+    const row = sectionTarget(kind, name);
+    const lead = rowName(row) + ', ' + TREND_SAY[row.dataset.trend] + '. ';
+    return lead + (kind === 'bl' ? bottomLineText(row) : row.querySelector('.full-detail-text').textContent.trim());
+  }
+  function markTarget(key) {
+    const name = key.replace(/^b:i:/, '');
+    return productRows().find(r => rowName(r) === name) || null;
+  }
+  function listenMark(el, scroll) {
+    document.querySelectorAll('.speaking').forEach(x => x.classList.remove('speaking'));
+    if (el && el.offsetParent) { el.classList.add('speaking'); if (scroll) el.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
+  }
+
+  function listenSection(kind, name) {
+    const id = kind + ':' + name;
+    if (CUR.id === id && (AUD.active || L.on)) return listenStop();          // tapping the same button again stops it
+    const clip = AUD.ready ? clipFor(kind, name) : null;
+    if (clip) playClip(id, clip.file, sectionLabel(kind, name), sectionTarget(kind, name), false, () => speechSection(kind, name));
+    else speechSection(kind, name);
+  }
+  function listenBriefing() {
+    if (CUR.id === 'briefing:all' && (AUD.active || L.on)) return listenStop();
+    const clip = AUD.ready ? clipFor('briefing') : null;
+    if (clip) { playClip('briefing:all', clip.file, 'Market briefing', null, true, speechBriefing); AUD.marks = AUD.manifest.briefing.marks; }
+    else speechBriefing();
+  }
+
+  // ---- audio engine: one file per section, plays to its natural end
   function sessionInit() {
     if (!('mediaSession' in navigator)) return;
     const a = AUD.el, set = (k, f) => { try { navigator.mediaSession.setActionHandler(k, f); } catch (e) {} };
@@ -1595,66 +1672,40 @@
       });
     } catch (e) {}
   }
-  function audioPlayFrom(t, stopAt, mode, fail) {
-    if (ttsOK()) speechSynthesis.cancel();
+  function playClip(id, file, label, el, scroll, fail) {
     stopSpeech();
     const a = AUD.el;
-    AUD.mode = mode; AUD.stopAt = stopAt; AUD.active = true; AUD.cur = null;
+    AUD.active = true; AUD.kind = id.split(':')[0]; AUD.marks = null; AUD.cur = null; AUD.label = label; CUR.id = id;
+    a.defaultPlaybackRate = AUD.rate;
+    a.src = clipURL(file);
     a.playbackRate = AUD.rate;
-    sessionInit(); sessionTitle('Chemical Market Update');
-    const seek = () => { a.currentTime = t; };
-    if (a.readyState >= 1) { seek(); a.muted = false; }
-    else if (t > 0) {
-      a.muted = true;
-      a.addEventListener('loadedmetadata', seek, { once: true });
-      a.addEventListener('seeked', () => { a.muted = false; }, { once: true });
-    } else { a.muted = false; }
+    sessionInit(); sessionTitle(label);
     const p = a.play();
-    if (p && p.catch) p.catch(() => { AUD.active = false; AUD.ready = false; listenUI(); buildListenUI(); fail(); });
-    listenUI();
-  }
-  // Stop a little AFTER the speech ends: phones (esp. Bluetooth/CarPlay) play audio a fraction of a second behind the
-  // reported position, and a hard stop at the exact end clips the last word. The silent pad after each clip is 0.45-0.8s.
-  function audioBriefing() { audioPlayFrom(0, AUD.meta.briefingEnd + 0.5, 'b:', speechBriefing); }
-  function audioItem(row) {
-    const m = AUD.meta.marks.find(x => x.key === 'd:' + rowName(row));
-    if (!m) return speechItem(row);
-    // m.end = where this clip's speech ends; a silent pad follows, so a small overshoot is inaudible
-    const end = (m.end != null ? m.end : (nextMarkStart('d:', m.start) || AUD.meta.duration) - 0.8) + 0.45;
-    audioPlayFrom(m.start, end, 'd:', () => speechItem(row));
+    if (p && p.catch) p.catch(() => { AUD.active = false; AUD.ready = false; CUR.id = null; listenUI(); buildListenUI(); fail(); });
+    listenMark(el, scroll); listenUI(); refreshListenButtons();
   }
   function audioBack() {
-    if (!AUD.active || AUD.mode !== 'b:') return;
+    if (!AUD.active || !AUD.marks) return;
     const t = AUD.el.currentTime;
-    const prev = AUD.meta.marks.filter(m => m.key.startsWith('b:') && m.start < t - 2).pop();
+    const prev = AUD.marks.filter(m => m.start < t - 2).pop();
     AUD.el.currentTime = prev ? prev.start : 0;
   }
-  let stopTimer = null;
-  function armStop() {
-    clearTimeout(stopTimer); stopTimer = null;
-    if (!AUD.active || AUD.stopAt == null || AUD.el.paused) return;
-    const ms = Math.max(0, (AUD.stopAt - AUD.el.currentTime) * 1000 / (AUD.el.playbackRate || 1));
-    stopTimer = setTimeout(() => { if (AUD.active && AUD.stopAt != null) listenStop(); }, ms);
-  }
   AUD.el.addEventListener('timeupdate', () => {
-    if (!AUD.active || !AUD.meta) return;
+    if (!AUD.active || !AUD.marks) return;                       // only the briefing has per-product marks
     const t = AUD.el.currentTime;
-    if (AUD.stopAt != null && t >= AUD.stopAt) return listenStop();
-    const m = markAt(AUD.mode, t);
+    const m = AUD.marks.filter(x => x.start <= t + 0.05).pop();
     if (m && m !== AUD.cur) {
       AUD.cur = m;
-      listenMark(markTarget(m.key));
-      const label = m.key.replace(/^(b:i:|d:)/, '');
-      sessionTitle(label);
+      listenMark(markTarget(m.key), true);
+      sessionTitle(m.key.replace(/^b:i:/, ''));
       listenUI();
     }
   });
-  AUD.el.addEventListener('ended', () => listenStop());
-  AUD.el.addEventListener('pause', () => { clearTimeout(stopTimer); stopTimer = null; if (AUD.active) listenUI(); });
+  AUD.el.addEventListener('ended', () => listenStop());          // natural end of the section: stop, never continue
+  AUD.el.addEventListener('pause', () => { if (AUD.active) listenUI(); });
   AUD.el.addEventListener('play', () => { if (AUD.active) listenUI(); });
-  ['playing', 'seeked', 'ratechange'].forEach(ev => AUD.el.addEventListener(ev, armStop));
 
-  // ---- built-in speech fallback
+  // ---- phone's built-in voice (fallback only)
   // ALL-CAPS acronyms are read letter by letter, run together ("I.P.A.") for the phone's built-in voice.
   const SAY_WORD = { OPEC: 'OPEC', PET: 'pet' }, SAY_AS = { ICIS: 'eye sis' };
   function speakable(t) {
@@ -1673,14 +1724,16 @@
       .replace(/\s+([,;:])/g, '$1').replace(/\.\s+\./g, '.').replace(/\s+/g, ' ').trim();
   }
   const L = { items: [], idx: 0, on: false, paused: false, rate: 1, token: 0, rates: [1, 1.25, 1.5, 0.85] };
+  const chunkSentences = t => (t.match(/[^.!?]+[.!?]+(?:\s|$)|[^.!?]+$/g) || [t]).map(x => x.trim()).filter(Boolean);
 
-  function speechBriefingItems() {
-    return productRows().map(r => ({ text: rowName(r) + ', ' + TREND_SAY[r.dataset.trend] + '. ' + (r.dataset.line || '') + '.', el: r }));
+  function speechBriefing() {
+    CUR.id = 'briefing:all';
+    listenStart(productRows().map(r => ({ text: rowName(r) + ', ' + TREND_SAY[r.dataset.trend] + '. ' + (r.dataset.line || '') + '.', el: r, scroll: true })));
   }
-  function speechBriefing() { listenStart(speechBriefingItems()); }
-  function speechItem(row) {
-    const syn = row.querySelector('.synopsis'); const lab = syn.querySelector('.synopsis-label');
-    listenStart([{ text: rowName(row) + ', ' + TREND_SAY[row.dataset.trend] + '. ' + syn.textContent.replace(lab ? lab.textContent : '', '').trim(), el: row }]);
+  function speechSection(kind, name) {
+    CUR.id = kind + ':' + name;
+    const el = sectionTarget(kind, name);
+    listenStart(chunkSentences(sectionText(kind, name)).map(t => ({ text: t, el: el, scroll: false })));
   }
   function pickVoice() {
     const vs = speechSynthesis.getVoices().filter(v => /^en/i.test(v.lang));
@@ -1695,12 +1748,12 @@
   }
   function speechSpeak() {
     const item = L.items[L.idx];
-    if (!item) return stopSpeech();
+    if (!item) return listenStop();
     const my = ++L.token;
     const u = new SpeechSynthesisUtterance(speakable(item.text));
     u.rate = L.rate; u.lang = 'en-US';
     const v = pickVoice(); if (v) u.voice = v;
-    u.onstart = () => { if (my === L.token) { listenMark(item.el); listenUI(); } };
+    u.onstart = () => { if (my === L.token) { listenMark(item.el, item.scroll); listenUI(); } };
     const next = () => { if (my === L.token && L.on && !L.paused) { L.idx++; speechSpeak(); } };
     u.onend = next;
     u.onerror = e => { if (e.error !== 'canceled' && e.error !== 'interrupted') next(); };
@@ -1717,13 +1770,15 @@
     const mp = document.getElementById('miniPlayer');
     const live = AUD.active || L.on;
     mp.hidden = !live;
+    mp.classList.toggle('no-skip', AUD.active && AUD.kind !== 'briefing');
     if (!live) return;
     const paused = AUD.active ? AUD.el.paused : L.paused;
     const rate = AUD.active ? AUD.rate : L.rate;
     document.getElementById('mpPause').textContent = paused ? '▶ Resume' : '⏸ Pause';
     document.getElementById('mpRate').textContent = rate + '×';
     let now = 'Listening';
-    if (AUD.active && AUD.cur) now = AUD.cur.key.replace(/^(b:i:|d:)/, '');
+    if (AUD.active && AUD.cur) now = AUD.cur.key.replace(/^b:i:/, '');
+    else if (AUD.active) now = AUD.label || 'Listening';
     else if (L.on && L.items[L.idx]) now = L.items[L.idx].text.split('.')[0];
     document.getElementById('mpNow').textContent = paused ? 'Paused' : '🔊 ' + now;
   }
@@ -1735,8 +1790,8 @@
   }
   function listenSkip() {
     if (AUD.active) {
-      const n = AUD.mode === 'b:' ? nextMarkStart('b:', AUD.el.currentTime) : null;
-      if (n == null || n >= AUD.stopAt) return listenStop();
+      const n = AUD.marks ? (AUD.marks.find(m => m.start > AUD.el.currentTime + 0.3) || {}).start : null;
+      if (n == null) return listenStop();
       AUD.el.currentTime = n; return;
     }
     if (!L.on) return;
@@ -1745,19 +1800,19 @@
   function listenRate() {
     if (AUD.active) {
       AUD.rate = AUD.rates[(AUD.rates.indexOf(AUD.rate) + 1) % AUD.rates.length];
-      AUD.el.playbackRate = AUD.rate; listenUI(); return;
+      AUD.el.playbackRate = AUD.rate; AUD.el.defaultPlaybackRate = AUD.rate; listenUI(); return;
     }
     L.rate = L.rates[(L.rates.indexOf(L.rate) + 1) % L.rates.length];
     if (L.on && !L.paused) { L.token++; speechSynthesis.cancel(); speechSpeak(); } else listenUI();
   }
   function listenStop() {
-    clearTimeout(stopTimer); stopTimer = null;
     if (AUD.active) {
-      AUD.active = false; AUD.el.pause(); AUD.el.muted = false;
+      AUD.active = false; AUD.el.pause();
       if ('mediaSession' in navigator) { try { navigator.mediaSession.playbackState = 'none'; } catch (e) {} }
     }
     stopSpeech();
-    listenMark(null); listenUI();
+    CUR.id = null; AUD.marks = null; AUD.cur = null;
+    listenMark(null); listenUI(); refreshListenButtons();
   }
   window.addEventListener('pagehide', () => { if (ttsOK()) speechSynthesis.cancel(); });
 
@@ -1795,9 +1850,10 @@
   })();
 
   decorateRows();
+  decorateMacro();
   initFilterCounts();
   buildListenUI();
-  audioLoad(audioVoicePref());
+  audioLoad();
   (function initView() {
     const v = load('barsol-view');
     const view = v === 'quick' || v === 'full' ? v : (isMobile() ? 'quick' : 'full');

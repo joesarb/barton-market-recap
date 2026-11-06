@@ -15,14 +15,20 @@ Barton Solvents Monthly Market Recap
 - Iran war banner text (Listen reads its first sentence)
 - Tariff Timeline: add the new month, update the intro date, and replace the PDF + link
 
-## Regenerate the listenable briefing (after index.html is final)
-Listen plays real audio files (natural voice, works with lock-screen/car controls). They must be rebuilt
-every month, otherwise they will describe last month's data:
+## Regenerate the listenable audio (after index.html is final)
+Every Listen button plays its own small audio file (Heart voice, natural sounding, no login needed). They must be
+rebuilt every month, otherwise they will describe last month's data:
 
     pip install kokoro-onnx soundfile        # one time; ffmpeg must be installed
     # one-time download (not committed): kokoro-v1.0.int8.onnx + voices-v1.0.bin
     #   https://github.com/thewh1teagle/kokoro-onnx/releases/tag/model-files-v1.0
     python3 tools/make_briefing.py --model kokoro-v1.0.int8.onnx --voices voices-v1.0.bin
 
-This writes `briefing-af_heart.mp3/.json` and `briefing-am_michael.mp3/.json`
-(the page falls back to the phone's built-in voice if the files are missing).
+This writes `audio/` (about 17 MB, ~12 minutes to build):
+- `briefing.mp3` - each product + trend + one-line takeaway, in page order (highlight marks are in `manifest.json`)
+- `overview.mp3` - the full market overview
+- `bl/<product>.mp3` - each Bottom Line, `fd/<product>.mp3` - each Full Detail
+- `manifest.json` - file names and lengths (the page reads this)
+
+Each file ends with a short silent tail and plays to its natural end. If the files are missing the page falls back to
+the phone's built-in voice. Listen buttons are on each block's heading line (Bottom Line, Full Detail, Market Overview).
