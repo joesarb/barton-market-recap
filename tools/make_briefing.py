@@ -25,8 +25,9 @@ TREND_SAY = {'up': 'Up', 'stable-up': 'Stable to up', 'stable': 'Stable', 'stabl
 SAY_AS_WORD = {'OPEC': 'OPEC', 'PET': 'pet'}      # acronyms people say as a word
 SAY_AS = {'ICIS': 'eye sis'}                      # special pronunciations
 LB, RB = '\u27e6', '\u27e7'                       # markers around letters to spell out
-LETTER_PH = {'A': 'ˈeɪ', 'B': 'bˈiː', 'C': 'sˈiː', 'D': 'dˈiː', 'E': 'ˈiː', 'F': 'ˈɛf', 'G': 'dʒˈiː', 'H': 'ˈeɪtʃ',
-             'I': 'ˈaɪ', 'J': 'dʒˈeɪ', 'K': 'kˈeɪ', 'L': 'ˈɛl', 'M': 'ˈɛm', 'N': 'ˈɛn', 'O': 'ˈoʊ', 'P': 'pˈiː',
+# (G, J and H use the model's single-token affricates ʤ / ʧ, not 'dʒ' / 'tʃ' typed as two sounds, which blurred the E before G.)
+LETTER_PH = {'A': 'ˈeɪ', 'B': 'bˈiː', 'C': 'sˈiː', 'D': 'dˈiː', 'E': 'ˈiː', 'F': 'ˈɛf', 'G': 'ʤˈiː', 'H': 'ˈeɪʧ',
+             'I': 'ˈaɪ', 'J': 'ʤˈeɪ', 'K': 'kˈeɪ', 'L': 'ˈɛl', 'M': 'ˈɛm', 'N': 'ˈɛn', 'O': 'ˈoʊ', 'P': 'pˈiː',
              'Q': 'kjˈuː', 'R': 'ˈɑːɹ', 'S': 'ˈɛs', 'T': 'tˈiː', 'U': 'jˈuː', 'V': 'vˈiː', 'W': 'dˈʌbəljˌuː',
              'X': 'ˈɛks', 'Y': 'wˈaɪ', 'Z': 'zˈiː'}
 
