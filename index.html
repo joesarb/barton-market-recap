@@ -683,6 +683,7 @@
   .fd-actions { display: flex; gap: 8px; align-items: center; }
   .macro-listen { margin-bottom: 12px; }
   .mini-player.no-skip #mpSkip { display: none; }
+  .mp-now.wrap { white-space: normal; line-height: 1.3; }
 
   /* ===== Listen ===== */
   .listen-row { margin-bottom: 14px; }
@@ -696,7 +697,7 @@
   .voice-pick { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 14px; color: var(--muted); }
   .voice-pick button { flex: 1; font: inherit; font-size: 15px; border: 1px solid var(--border); background: none; color: var(--text); border-radius: 10px; padding: 9px 6px; cursor: pointer; }
   .voice-pick button.on { border-color: var(--text); font-weight: 700; background: var(--synopsis-bg); }
-  .product-row.speaking, .war-banner.speaking, .section-label.speaking { outline: 3px solid var(--text); outline-offset: 2px; }
+  .product-row.speaking, .synopsis.speaking, .full-detail-text.speaking, .war-banner.speaking, .section-label.speaking { outline: 3px solid var(--text); outline-offset: 2px; }
 
   .mini-player { position: fixed; left: 12px; right: 12px; bottom: 76px; z-index: 130; background: var(--surface); border: 2px solid var(--text); border-radius: 14px; padding: 10px 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.35); }
   .mini-player[hidden] { display: none; }
@@ -1514,10 +1515,7 @@
       const act = document.createElement('div');
       act.className = 'q-actions';
       act.innerHTML = '<button type="button" data-a="full">Full detail ▾</button><button type="button" data-a="copy" data-label="⧉ Copy">⧉ Copy</button>';
-      act.querySelector('[data-a="full"]').onclick = function () {
-        const on = row.classList.toggle('show-full');
-        this.textContent = on ? 'Hide detail ▴' : 'Full detail ▾';
-      };
+      act.querySelector('[data-a="full"]').onclick = () => setShowFull(row, !row.classList.contains('show-full'));
       act.querySelector('[data-a="copy"]').onclick = function () { copyFromRow(row, this); };
       row.querySelector('.synopsis').insertAdjacentElement('afterend', act);
 
@@ -1546,6 +1544,11 @@
       const c = document.createElement('span'); c.className = 'fcount'; c.textContent = n; btn.appendChild(c);
     });
   }
+  function setShowFull(row, on) {              // Quick view: show or hide a card's Full Detail text
+    row.classList.toggle('show-full', on);
+    const btn = row.querySelector('.q-actions [data-a="full"]');
+    if (btn) btn.textContent = on ? 'Hide detail ▴' : 'Full detail ▾';
+  }
   function collapseProductRows() {
     productRows().forEach(row => { row.classList.remove('open'); row.querySelector('.product-detail').classList.add('closed'); });
   }
@@ -1554,7 +1557,7 @@
   // Every section has its own small audio file (natural voice) that plays from its first word to its final period
   // and stops by itself. If the audio files can't be loaded, the phone's built-in voice reads the same text instead.
   const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-  const AUD = { el: new Audio(), manifest: null, ready: false, active: false, kind: null, marks: null, cur: null, rate: 1, rates: [1, 1.25, 1.5] };
+  const AUD = { list: null, el: new Audio(), manifest: null, ready: false, active: false, kind: null, marks: null, cur: null, rate: 1, rates: [1, 1.25, 1.5] };
   const CUR = { id: null };           // which section is playing right now, e.g. 'bl:Acetone', 'fd:Acetone', 'overview:', 'list:brief'
   AUD.el.preload = 'none';
   const ttsOK = () => 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
@@ -1655,13 +1658,31 @@
     const lead = rowName(row) + ', ' + TREND_SAY[row.dataset.trend] + '. ';
     return lead + (kind === 'bl' ? bottomLineText(row) : row.querySelector('.full-detail-text').textContent.trim());
   }
+  function listBlock(kind, row) {              // the block being read: the card, its Bottom Line, or its Full Detail text
+    if (!row) return null;
+    if (kind === 'medium') return row.querySelector('.synopsis');
+    if (kind === 'full') return row.querySelector('.full-detail-text');
+    return row;
+  }
   function markTarget(key) {
     const name = key.replace(/^b:i:/, '');
-    return productRows().find(r => rowName(r) === name) || null;
+    return listBlock(AUD.list, productRows().find(r => rowName(r) === name));
+  }
+  // Read along: open the text that is about to be read on every card
+  function prepareReadAlong(kind) {
+    if (kind !== 'medium' && kind !== 'full') return;
+    productRows().forEach(r => {
+      if (r.classList.contains('hidden')) return;
+      r.classList.add('open'); r.querySelector('.product-detail').classList.remove('closed');
+      if (kind === 'full') setShowFull(r, true);
+    });
   }
   function listenMark(el, scroll) {
     document.querySelectorAll('.speaking').forEach(x => x.classList.remove('speaking'));
-    if (el && el.offsetParent) { el.classList.add('speaking'); if (scroll) el.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
+    if (el && el.offsetParent) {
+      el.classList.add('speaking');
+      if (scroll) window.scrollTo({ top: Math.max(0, el.getBoundingClientRect().top + window.pageYOffset - stickyOffset() - 10), behavior: 'smooth' });
+    }
   }
 
   function listenSection(kind, name) {
@@ -1675,8 +1696,9 @@
     const id = 'list:' + kind;
     if (CUR.id === id && (AUD.active || L.on)) return listenStop();
     const clip = AUD.ready ? clipFor('list', kind) : null;
-    if (clip) { playClip(id, clip.file, LIST_NAME[kind], null, true, () => speechList(kind)); AUD.marks = clip.marks; }
-    else speechList(kind);
+    prepareReadAlong(kind);
+    if (clip) { playClip(id, clip.file, LIST_NAME[kind], null, true, () => speechList(kind)); AUD.marks = clip.marks; AUD.list = kind; }
+    else { AUD.list = kind; speechList(kind); }
   }
 
   // ---- audio engine: one file per section, plays to its natural end
@@ -1756,10 +1778,10 @@
     const items = [];
     productRows().forEach(r => {
       const lead = rowName(r) + ', ' + TREND_SAY[r.dataset.trend] + '.';
-      if (kind === 'brief') items.push({ text: lead + ' ' + (r.dataset.line || '') + '.', el: r, scroll: true });
+      if (kind === 'brief') items.push({ text: lead + ' ' + (r.dataset.line || '') + '.', el: listBlock(kind, r), scroll: true });
       else {
         const body = kind === 'medium' ? bottomLineText(r) : r.querySelector('.full-detail-text').textContent.trim();
-        chunkSentences(lead + ' ' + body).forEach((t, i) => items.push({ text: t, el: r, scroll: i === 0 }));
+        chunkSentences(lead + ' ' + body).forEach((t, i) => items.push({ text: t, el: listBlock(kind, r), scroll: i === 0 }));
       }
     });
     listenStart(items);
@@ -1811,10 +1833,16 @@
     document.getElementById('mpPause').textContent = paused ? '▶ Resume' : '⏸ Pause';
     document.getElementById('mpRate').textContent = rate + '×';
     let now = 'Listening';
-    if (AUD.active && AUD.cur) now = AUD.cur.key.replace(/^b:i:/, '');
+    let wrap = false;
+    if (AUD.active && AUD.cur) {
+      now = AUD.cur.key.replace(/^b:i:/, '');
+      if (AUD.list === 'brief') { const r = productRows().find(x => rowName(x) === now); if (r && r.dataset.line) { now += ' · ' + r.dataset.line; wrap = true; } }
+    }
     else if (AUD.active) now = AUD.label || 'Listening';
     else if (L.on && L.items[L.idx]) now = L.items[L.idx].text.split('.')[0];
-    document.getElementById('mpNow').textContent = paused ? 'Paused' : '🔊 ' + now;
+    const mpNow = document.getElementById('mpNow');
+    mpNow.classList.toggle('wrap', wrap && !paused);
+    mpNow.textContent = paused ? 'Paused' : '🔊 ' + now;
   }
   function listenPause() {
     if (AUD.active) { if (AUD.el.paused) AUD.el.play(); else AUD.el.pause(); listenUI(); return; }
