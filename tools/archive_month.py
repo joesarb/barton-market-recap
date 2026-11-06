@@ -51,6 +51,8 @@ def main():
 
     out = re.sub(r'(<body[^>]*>)', lambda m: m.group(1) + BANNER.format(label=label, updated=updated), html, count=1)
     out = out.replace('</head>', STYLE + '</head>', 1)
+    if 'name="robots"' not in out:
+        out = out.replace('</head>', '<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">\n</head>', 1)
     out = out.replace('<title>', '<title>Archive - ', 1)
     open(os.path.join(folder, 'index.html'), 'w', encoding='utf-8').write(out)
 
