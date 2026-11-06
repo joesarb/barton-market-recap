@@ -20,17 +20,35 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December']
 VOICES = ['af_heart', 'am_michael']
 TREND_SAY = {'up': 'Up', 'stable-up': 'Stable to up', 'stable': 'Stable', 'stable-down': 'Stable to down', 'down': 'Down', 'volatile': 'Volatile'}
-# ALL-CAPS acronyms (2-5 letters) are spelled out letter by letter with periods ("I. P. A."), which the voice
-# reads as distinct letters. (Plain "I P A" gets slurred together and a lone "A" can come out as "uh".)
+# ALL-CAPS acronyms (2-5 letters) are marked here and then pronounced letter by letter, run together with no pauses,
+# by giving the voice the exact phonemes for each letter name (so "A" is "ay", never the word "uh").
 SAY_AS_WORD = {'OPEC': 'OPEC', 'PET': 'pet'}      # acronyms people say as a word
 SAY_AS = {'ICIS': 'eye sis'}                      # special pronunciations
+LB, RB = '\u27e6', '\u27e7'                       # markers around letters to spell out
+LETTER_PH = {'A': 'ˈeɪ', 'B': 'bˈiː', 'C': 'sˈiː', 'D': 'dˈiː', 'E': 'ˈiː', 'F': 'ˈɛf', 'G': 'dʒˈiː', 'H': 'ˈeɪtʃ',
+             'I': 'ˈaɪ', 'J': 'dʒˈeɪ', 'K': 'kˈeɪ', 'L': 'ˈɛl', 'M': 'ˈɛm', 'N': 'ˈɛn', 'O': 'ˈoʊ', 'P': 'pˈiː',
+             'Q': 'kjˈuː', 'R': 'ˈɑːɹ', 'S': 'ˈɛs', 'T': 'tˈiː', 'U': 'jˈuː', 'V': 'vˈiː', 'W': 'dˈʌbəljˌuː',
+             'X': 'ˈɛks', 'Y': 'wˈaɪ', 'Z': 'zˈiː'}
 
 
 def spell_acronym(m):
     w = m.group(0)
     if w in SAY_AS_WORD: return SAY_AS_WORD[w]
     if w in SAY_AS: return SAY_AS[w]
-    return ' '.join(c + '.' for c in w) + ' '
+    return LB + w + RB
+
+
+def to_phonemes(tokenizer, text):
+    """Phonemize normal words with the model's tokenizer; spell marked acronyms with exact letter phonemes."""
+    out = []
+    for part in re.split('(' + LB + '[A-Z]+' + RB + ')', text):
+        if not part.strip():
+            continue
+        if part.startswith(LB):
+            out.append(''.join(LETTER_PH[c] for c in part[1:-1]))
+        else:
+            out.append(tokenizer.phonemize(part.strip(), 'en-us').strip())
+    return ' '.join(out)
 
 
 def speakable(t):
@@ -47,10 +65,9 @@ def speakable(t):
     for a, b in [('thru','through'),('EOY','end of year'),('EOM','end of month'),('FM','force majeure'),('avg','average'),
                  ('Oct','October'),('Nov','November'),('Dec','December'),('Q1','Q one'),('Q2','Q two'),('Q3','Q three'),('Q4','Q four')]:
         t = re.sub(r'\b' + a + r'\b', b, t)
-    t = re.sub(r'\b([A-Z])-(Series)\b', r'\1. \2', t)                       # "P-Series" -> "P. Series"
+    t = re.sub(r'\b([A-Z])-(Series)\b', lambda m: LB + m.group(1) + RB + ' ' + m.group(2), t)   # "P-Series" -> letter P + Series
     t = re.sub(r'(?<![A-Za-z])[A-Z]{2,5}(?![a-z])', spell_acronym, t)           # every other ALL-CAPS acronym
     t = re.sub(r'\s+([,;:])', r'\1', t)                                         # no space before , ; :
-    t = re.sub(r'\.\s+\.', '.', t)                                              # "U. S. D. A. ." -> "U. S. D. A."
     return re.sub(r'\s+', ' ', t).strip()
 
 
@@ -77,7 +94,7 @@ def render(k, voice, speed, when, war_short, cats, out):
     parts, marks, t = [], [], 0.0
     def add(key, text, gap):
         nonlocal t
-        samples, rate = k.create(speakable(text), voice=voice, speed=speed, lang='en-us')
+        samples, rate = k.create(to_phonemes(k.tokenizer, speakable(text)), voice=voice, speed=speed, lang='en-us', is_phonemes=True)
         assert rate == sr
         marks.append({'key': key, 'start': round(t, 2), 'end': round(t + len(samples) / sr, 2)})  # end = speech only, before the pad
         pad = np.zeros(int(sr * gap), dtype=np.float32)
