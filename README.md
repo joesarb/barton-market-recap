@@ -2,6 +2,9 @@
 Barton Solvents Monthly Market Recap
 
 ## Monthly update checklist (index.html)
+Shortcut: in a Claude Code session on this repo, upload the month's market analysis and tariff PDF and say "new market recap".
+The `monthly-recap` skill (`.claude/skills/monthly-recap/SKILL.md`) runs every step below and opens a pull request.
+
 0. FIRST, archive the month being replaced: `python3 tools/archive_month.py`
    (saves a frozen copy + its tariff PDF under `archive/` and adds it to the "Past months" menu)
    Then, AFTER updating index.html with the new month, refresh the trend strips: `python3 tools/build_history.py`
