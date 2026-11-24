@@ -60,4 +60,3 @@ Wait. On "ship it": squash-merge, then confirm the GitHub Pages build finished (
 - The page is live (link).
 - Barsol Lookup has the new recap.
 - The rep app update is ready, awaiting "ship it" (PR link), or live if he already said so.
-- Reminder: reps upload the new monthly sales analysis themselves in the Market Recap tab so the customer matching and flags use fresh numbers.
