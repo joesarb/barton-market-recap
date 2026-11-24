@@ -2,6 +2,7 @@
 Barton Solvents Monthly Market Recap
 
 ## Monthly update checklist (index.html)
+(When Joe uploads the new PDFs, the `update-market-recap` skill in `.claude/skills/` runs this whole checklist plus the app and rep app steps below.)
 0. FIRST, archive the month being replaced: `python3 tools/archive_month.py`
    (saves a frozen copy + its tariff PDF under `archive/` and adds it to the "Past months" menu)
    Then, AFTER updating index.html with the new month, refresh the trend strips: `python3 tools/build_history.py`
