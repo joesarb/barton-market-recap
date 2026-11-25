@@ -2,6 +2,7 @@
 Barton Solvents Monthly Market Recap
 
 ## Monthly update checklist (index.html)
+(When Joe uploads the new PDFs, the `update-market-recap` skill in `.claude/skills/` runs this whole checklist plus the app and rep app steps below.)
 0. FIRST, archive the month being replaced: `python3 tools/archive_month.py`
    (saves a frozen copy + its tariff PDF under `archive/` and adds it to the "Past months" menu)
    Then, AFTER updating index.html with the new month, refresh the trend strips: `python3 tools/build_history.py`
@@ -36,6 +37,14 @@ This writes `audio/` (about 35 MB, ~18 minutes to build):
 Each file ends with a short silent tail and plays to its natural end. If the files are missing the page falls back to
 the phone's built-in voice. The top "Listen to the briefing" button opens the Brief / Medium / Full menu; the other Listen buttons are on each block's
 heading line (Bottom Line, Full Detail, Market Overview).
+
+## Market Recap tab (Barsol Lookup + Barsol Rep App)
+The monthly recap is also a tab in the apps, with customers matched from each rep's own sales analysis. After `index.html` is final:
+1. `python3 tools/export_recap.py market_recap.json` (needs `pip install beautifulsoup4`). Check its warning: any new or renamed topic needs a line in `tools/market_rules.json` or it matches no customers.
+2. Read the live Barsol Lookup page (Artifact read, saves the full page), then `python3 tools/swap_recap_in_app.py <saved index.html> market_recap.json <out_dir>`.
+3. Publish `<out_dir>/app_publish.html` to Barsol Lookup (same URL).
+4. Sync the rep app: in `joesarb/barsol-rep-app`, `python3 build/build.py <out_dir>/app_full.html dist build/data.key`, then commit and push `main` (see that repo's README for the data key).
+Reps upload their own monthly "S/A Customer Product Sales By Sales Agent" PDF (in pounds) inside the tab. `tools/market_module/mk_module.js` is a copy of the tab's code and `integrate.py` is how it was added, kept for reference. Never put customer or sales data in this repo (it is public).
 
 ## Search engines
 Every page carries `<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">` (the main page and each archived

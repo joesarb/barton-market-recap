@@ -1,0 +1,27 @@
+{
+  "_about": "Which products in a rep's sales analysis belong to each recap topic. 're' is a case-insensitive regular expression matched against the product name. 'feed' marks a feedstock topic that rolls up the listed topics. Topics not listed here show the recap but match no customers. Review this file each month when topics are added or renamed.",
+  "topics": {
+    "Acetone": {"re": "^acetone"},
+    "IPA / Alcohol": {"re": "^ipa\\b|isopropyl|butanol|propanol|n-propyl"},
+    "Propylene Glycols": {"re": "propylene glycol|dowfrost"},
+    "Glycol Ethers (P-Series)": {"re": "pm acetate|barsol (pm|dpm|tpm)\\b|dowanol|propylene glycol (methyl|butyl)"},
+    "MEK": {"re": "methyl ethyl ketone|^mek\\b"},
+    "Glycol Ethers (E-Series)": {"re": "barsol (eb|db)\\b|cellosolve|carbitol"},
+    "Ethanolamines": {"re": "ethanolamine"},
+    "MEG / DEG / TEG": {"re": "ethylene glycol|diethylene|triethylene|dowtherm|antifreeze"},
+    "Aliphatic Solvents": {"re": "barsol 142|vm ?& ?p|hexane|heptane|exxsol"},
+    "Aromatic Solvents": {"re": "mineral spirits|barsol d-100|barsol d-150|aromatic (100|150|200)"},
+    "Toluol & Xylol": {"re": "\\b(toluol|toluene|xylol|xylene)"},
+    "Methanol": {"re": "^methanol"},
+    "D-Limonene": {"re": "limonene"},
+    "Plasticizers": {"re": "plasticizer|dinp|didp|totm|dotp"},
+    "Ethanol": {"re": "^sda\\b|govt form|gov't form|ethyl alcohol|synasol"},
+    "Glycerin": {"re": "glycerin"},
+    "Methyl Soyate / Sorbitol / Oleic Acid": {"re": "methyl soyate|sorbitol|oleic acid"},
+    "Propylene": {"feed": ["Acetone", "IPA / Alcohol", "Propylene Glycols", "Glycol Ethers (P-Series)"]},
+    "Propylene Oxide": {"feed": ["Propylene Glycols", "Glycol Ethers (P-Series)"]},
+    "Ethylene": {"feed": ["MEG / DEG / TEG", "Ethanolamines", "Glycol Ethers (E-Series)"]},
+    "Crude Oil": {"feed": ["Aliphatic Solvents", "Aromatic Solvents", "Toluol & Xylol"]},
+    "Natural Gas": {"feed": ["Methanol"]}
+  }
+}
